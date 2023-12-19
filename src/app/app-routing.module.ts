@@ -4,6 +4,7 @@ import { FullLayoutComponent } from './layout/full-layout/full-layout.component'
 import { Full_ROUTES } from './shared/routes/full-layout.routes';
 import { ContentLayoutComponent } from './layout/content-layout/content-layout.component';
 import { CONTENT_ROUTES } from './shared/routes/content-layout.routes';
+import { AuthGuard } from './guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -12,7 +13,7 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   { path: '', component: FullLayoutComponent, data: { title: 'full Views' }, children: Full_ROUTES, },
-  { path: '', component: ContentLayoutComponent, data: { title: 'content Views' }, children: CONTENT_ROUTES },
+  { path: '', component: ContentLayoutComponent, data: { title: 'content Views' }, children: CONTENT_ROUTES ,canActivate:[AuthGuard]},
   { path: '**', redirectTo: '/error/error-404' }
 ];
 
