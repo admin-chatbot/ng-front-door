@@ -21,8 +21,7 @@ export class AuthService {
 
 
   login(login:Login) : Observable<string | any> {
-    const url = this.url.login();
-    alert(JSON.stringify(login));
+    const url = this.url.login(); 
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.post<any>(url,login,httpOptions)
     .pipe(
