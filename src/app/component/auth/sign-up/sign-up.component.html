@@ -8,9 +8,9 @@
           <div class="card-body">
             <p class="login-box-msg">Register a new membership</p>
       
-            <form action="../../index.html" method="post">
+            <form  [formGroup]="signupForm" (ngSubmit)="onSubmit()">
               <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Full name">
+                <input type="text" class="form-control" placeholder="Full name" formControlName="fullName">
                 <div class="input-group-append">
                   <div class="input-group-text">
                     <span class="fas fa-user"></span>
@@ -18,7 +18,7 @@
                 </div>
               </div>
               <div class="input-group mb-3">
-                <input type="email" class="form-control" placeholder="Email">
+                <input type="email" class="form-control" placeholder="Email" formControlName="email">
                 <div class="input-group-append">
                   <div class="input-group-text">
                     <span class="fas fa-envelope"></span>
@@ -26,7 +26,7 @@
                 </div>
               </div>
               <div class="input-group mb-3">
-                <input type="password" class="form-control" placeholder="Password">
+                <input type="password" class="form-control" placeholder="Password" formControlName="password">
                 <div class="input-group-append">
                   <div class="input-group-text">
                     <span class="fas fa-lock"></span>
@@ -34,13 +34,55 @@
                 </div>
               </div>
               <div class="input-group mb-3">
-                <input type="password" class="form-control" placeholder="Retype password">
+                <input type="password" class="form-control" placeholder="Retype password" formControlName="retypePassword">
                 <div class="input-group-append">
                   <div class="input-group-text">
                     <span class="fas fa-lock"></span>
                   </div>
                 </div>
+              </div>             
+             
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Address" formControlName="address">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-map-marker-alt"></span>
+                  </div>
+                </div>
               </div>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Contact Number" formControlName="contactNumber">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-phone"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Turnover" formControlName="turnover">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-chart-line"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Employee Count" formControlName="employeeCount">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-users"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="GST Number" formControlName="gstNumber">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-barcode"></span>
+                  </div>
+                </div>
+              </div>
+             
               <div class="row">
                 <div class="col-8">
                   <div class="icheck-primary">
@@ -52,7 +94,7 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-4">
-                  <button type="submit" class="btn btn-primary btn-block">Register</button>
+                  <button type="submit" class="btn btn-primary btn-block" [disabled]="submitted">Register</button>
                 </div>
                 <!-- /.col -->
               </div>
