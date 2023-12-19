@@ -21,8 +21,7 @@ export class ApplicationService {
 
 
   onBoard(application:Application) : Observable<string | any> {
-    const url = this.url.application();
-    alert(url)
+    const url = this.url.application();     
     application.id=0;
     alert(JSON.stringify(application));
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':'sfsdfklksf-sfdfsf', 'Content-Type': 'application/json','accept':'application/json' }) };
