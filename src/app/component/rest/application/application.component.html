@@ -1,0 +1,75 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Application OnBoard</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Application OnBoard</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-6">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"></h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form  [formGroup]='applicationForm' (ngSubmit)="onSubmit()">
+
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="txtName">Name</label>
+                                    <input type="text" class="form-control" id="txtName"
+                                        placeholder="Enter name"
+                                        formControlName="name" >
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtPurpose">Purpose</label>
+                                    <input type="text" class="form-control" id="txtPurpose"
+                                        placeholder="Enter purpose"
+                                        formControlName="purpose">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtSourceUrl">Source Url</label>
+                                    <input type="text" class="form-control" id="txtSourceUrl"
+                                        placeholder="Enter sourceUrl"
+                                        formControlName="sourceUrl">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtServiceDocUrl">Service Doc Url</label>
+                                    <input type="text" class="form-control" id="txtServiceDocUrl"
+                                        placeholder="Enter service Doc Url"
+                                        formControlName="serviceDocUrl">
+                                </div>
+                                 
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary" [disabled]="submitted">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
