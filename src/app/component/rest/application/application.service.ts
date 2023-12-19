@@ -20,8 +20,6 @@ export class ApplicationService {
   }
 
 
-
-
   onBoard(application:Application) : Observable<string | any> {
     const url = this.url.application();
     alert(url)
