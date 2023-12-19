@@ -43,12 +43,16 @@ export class SignInComponent implements OnInit {
     this.authService.login(login)
       .subscribe(r=>{
         if (r.errorCode != undefined && r.errorCode != 200) { 
-          alert(r)           
-        } else {
+          alert("Invalid Username and Password.")           
+        } else {          
           localStorage.setItem('isLoggedIn', "true")
-          localStorage.setItem('token', r.data)
-          alert(r.data)
-          alert('Successfully login')
+          localStorage.setItem('token', r.data.token)  
+          localStorage.setItem('name',r.data.clientName)
+          localStorage.setItem('email',r.data.email)
+          localStorage.setItem('id',r.data.id)
+          this.router.navigate(['/']).then(() => {
+            window.location.reload();
+          });
         }
         this.submitted = false;
       })

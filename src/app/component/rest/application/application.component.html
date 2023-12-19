@@ -28,42 +28,40 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form  [formGroup]='applicationForm' (ngSubmit)="onSubmit()">
+                        <form [formGroup]='applicationForm' (ngSubmit)="onSubmit()">
 
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="txtName">Name</label>
-                                    <input type="text" class="form-control" id="txtName"
-                                        placeholder="Enter name"
-                                        formControlName="name" >
+                                    <input type="text" class="form-control" id="txtName" placeholder="Enter name"
+                                        formControlName="name">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="txtPurpose">Purpose</label>
-                                    <input type="text" class="form-control" id="txtPurpose"
-                                        placeholder="Enter purpose"
+                                    <input type="text" class="form-control" id="txtPurpose" placeholder="Enter purpose"
                                         formControlName="purpose">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="txtSourceUrl">Source Url</label>
                                     <input type="text" class="form-control" id="txtSourceUrl"
-                                        placeholder="Enter sourceUrl"
-                                        formControlName="sourceUrl">
+                                        placeholder="Enter sourceUrl" formControlName="sourceUrl">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="txtServiceDocUrl">Service Doc Url</label>
                                     <input type="text" class="form-control" id="txtServiceDocUrl"
-                                        placeholder="Enter service Doc Url"
-                                        formControlName="serviceDocUrl">
+                                        placeholder="Enter service Doc Url" formControlName="serviceDocUrl">
                                 </div>
-                                 
+
                             </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary" [disabled]="submitted">Submit</button>
+                                &nbsp;&nbsp;
+                                <button type="reset" class="btn btn-danger">Cancel</button>
                             </div>
                         </form>
                     </div>
