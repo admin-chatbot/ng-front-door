@@ -12,6 +12,8 @@ import { ApplicationComponent } from './component/rest/application/application.c
 import { PageNotFoundComponent } from './component/rest/page-not-found/page-not-found.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ViewApplicationComponent } from './component/rest/view-application/view-application.component';
+import { BillingComponent } from './component/rest/billing/billing.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SignUpComponent,
     DashboardComponent,
     ApplicationComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    ViewApplicationComponent,
+    BillingComponent
   ],
   imports: [
     BrowserModule,
