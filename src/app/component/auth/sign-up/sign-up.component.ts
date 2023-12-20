@@ -19,7 +19,7 @@ export class SignUpComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute,private formBuilder: FormBuilder, private messageService: MessageService
     ,private authService: AuthService) { 
     this.signupForm = this.formBuilder.group({
-        fullName: ['client32', [Validators.required]],
+        name: ['client32', [Validators.required]],
         email: ['client32@gmail.com', [Validators.required]], 
         password:['client@123',Validators.required],
         retypePassword:['client@123',Validators.required],
@@ -44,16 +44,18 @@ export class SignUpComponent implements OnInit {
     }
     this.submitted = true;
     const signup : Signup = {} as Signup;
-    alert(JSON.stringify(this.f))
-    signup.name = this.f['fullName'].value;
+   
+    
+    signup.clientName = this.f['name'].value;
     signup.email = this.f['email'].value;
     signup.password = this.f['password'].value;   
     signup.address = this.f['address'].value;
-    signup.contactnumber = this.f['contactnumber'].value;
+    signup.contactNumber = this.f['contactNumber'].value;
     signup.turnover = this.f['turnover'].value;
-    signup.employeecount = this.f['employeecount'].value;
-    signup.gstnumber = this.f['gstnumber'].value;
+    signup.employeeCount = this.f['employeeCount'].value;
+    signup.gstNumber = this.f['gstNumber'].value;
    
+    alert(JSON.stringify(signup))
 
     this.authService.signup(signup)
     .subscribe(r=>{

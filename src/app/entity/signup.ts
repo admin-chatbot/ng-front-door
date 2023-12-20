@@ -1,11 +1,12 @@
 export class Signup {
-    name!: string;
+    id!:number;
+    clientName!: string;
     email!:string;
     password!:string;
     retypepassword!:string;
     address!:string;
-    contactnumber!:string;
+    contactNumber!:string;
     turnover!:string;
-    employeecount!:string;
-    gstnumber!:string;
+    employeeCount!:string;
+    gstNumber!:string;
 }
