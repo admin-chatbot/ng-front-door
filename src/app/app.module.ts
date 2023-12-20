@@ -12,6 +12,7 @@ import { ApplicationComponent } from './component/rest/application/application.c
 import { PageNotFoundComponent } from './component/rest/page-not-found/page-not-found.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SignupSuccessComponent } from './component/auth/signup-success/signup-success.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SignUpComponent,
     DashboardComponent,
     ApplicationComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    SignupSuccessComponent
   ],
   imports: [
     BrowserModule,

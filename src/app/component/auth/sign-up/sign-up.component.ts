@@ -63,7 +63,9 @@ export class SignUpComponent implements OnInit {
       if (r.errorCode != undefined && r.errorCode != 200) { 
         alert('Not able to onboard. please try again in sometime')           
       } else {
-        alert('Successfully on board')
+        localStorage.setItem('email',signup.email)
+        
+        this.router.navigate(['auth/signup-success'])
       }
       this.submitted = false;
     });
