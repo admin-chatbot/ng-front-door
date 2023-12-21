@@ -19,4 +19,8 @@ export class UrlService {
   public signup():string {
     return environment.baseEndpoint + "auth/register/";
   }
+
+  public service():string {
+    return environment.baseEndpoint + "service/";
+  }
 }

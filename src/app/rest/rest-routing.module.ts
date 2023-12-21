@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from '../component/rest/dashboard/dashboard.component';
 import { ApplicationComponent } from '../component/rest/application/application.component';
+import { ServiceComponent } from '../component/rest/service/service.component';
 
 const routes: Routes = [
   {
@@ -14,7 +15,12 @@ const routes: Routes = [
       {
         path:'application',
         component:ApplicationComponent
-      }
+      },
+
+      {
+        path:'service',
+        component:ServiceComponent
+            }
     ]
   }
 ];

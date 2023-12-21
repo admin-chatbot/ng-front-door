@@ -13,6 +13,7 @@ import { PageNotFoundComponent } from './component/rest/page-not-found/page-not-
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignupSuccessComponent } from './component/auth/signup-success/signup-success.component';
+import { ServiceComponent } from './component/rest/service/service.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { SignupSuccessComponent } from './component/auth/signup-success/signup-s
     DashboardComponent,
     ApplicationComponent,
     PageNotFoundComponent,
-    SignupSuccessComponent
+    SignupSuccessComponent,
+    ServiceComponent
   ],
   imports: [
     BrowserModule,
