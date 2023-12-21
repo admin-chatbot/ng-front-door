@@ -1,0 +1,164 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Application</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Application</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+
+            <!-- /.row -->
+            <div class="row">
+                <div class="col-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"></h3>
+
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <input type="text" name="table_search" class="form-control float-right"
+                                        placeholder="Search">
+
+                                    <div class="input-group-append">
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>name</th>
+                                        <th>purpose</th>
+                                        <th>Date</th>
+                                        <th>STATUS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let application of originalApplication;index as i">
+                                        <td>{{application.name}}</td>
+                                        <td>{{application.purpose}}</td>
+                                        <td>{{application.registerDate}}</td>
+                                        <td>{{application.status}}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-default">Action</button>
+                                                <button type="button"
+                                                    class="btn btn-default dropdown-toggle dropdown-icon"
+                                                    data-toggle="dropdown">
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <div class="dropdown-menu" role="menu">
+                                                    <a class="dropdown-item" (click)="view(i)">View</a>
+                                                    <a class="dropdown-item" href="#">Fetch Services</a>
+                                                    <div class="dropdown-divider"></div>
+                                                    <a class="dropdown-item" href="#">Delete</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title"> Details</h3>
+
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <div class="input-group-append">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <form [formGroup]='applicationEditForm' (ngSubmit)="onSubmit()">
+
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="txtName">Name</label>
+                                        <input type="text" class="form-control" id="txtName" placeholder="Enter name"
+                                            formControlName="name">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="txtPurpose">Purpose</label>
+                                        <input type="text" class="form-control" id="txtPurpose"
+                                            placeholder="Enter purpose" formControlName="purpose">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="txtSourceUrl">Source Url</label>
+                                        <input type="text" class="form-control" id="txtSourceUrl"
+                                            placeholder="Enter sourceUrl" formControlName="sourceUrl">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="txtServiceDocUrl">Service Doc Url</label>
+                                        <input type="text" class="form-control" id="txtServiceDocUrl"
+                                            placeholder="Enter service Doc Url" formControlName="serviceDocUrl">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="txtServiceDocUrl">Date</label>
+                                        <input type="text" class="form-control" id="txtServiceDocUrl"
+                                              formControlName="date"  />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="txtServiceDocUrl">Status</label>
+                                        <input type="text" class="form-control" id="txtServiceDocUrl"
+                                              formControlName="status" />
+                                    </div>
+
+                                </div>
+                                <!-- /.card-body -->
+
+                                <div class="card-footer">
+                                    <button type="submit" class="btn btn-primary" [disabled]="submitted">Edit</button>
+                                    &nbsp;&nbsp;
+                                    <button type="reset" class="btn btn-danger">Cancel</button>
+                                </div>
+                            </form>
+
+                        </div>
+                        <!-- /.card-body -->
+                    </div>
+                    <!-- /.card -->
+                </div>
+
+
+            </div>
+            <!-- /.row -->
+
+
+        </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+</div>
