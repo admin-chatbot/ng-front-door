@@ -4,6 +4,7 @@ import { DashboardComponent } from '../component/rest/dashboard/dashboard.compon
 import { ApplicationComponent } from '../component/rest/application/application.component';
 import { ViewApplicationComponent } from '../component/rest/view-application/view-application.component';
 import { BillingComponent } from '../component/rest/billing/billing.component';
+import { ServiceComponent } from '../component/rest/service/service.component'; 
 
 const routes: Routes = [
   {
@@ -24,7 +25,12 @@ const routes: Routes = [
       {
         path:'billing',
         component:BillingComponent
-      }
+      },
+
+      {
+        path:'service',
+        component:ServiceComponent
+            }
     ]
   }
 ];

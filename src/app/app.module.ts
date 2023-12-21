@@ -11,9 +11,12 @@ import { DashboardComponent } from './component/rest/dashboard/dashboard.compone
 import { ApplicationComponent } from './component/rest/application/application.component';
 import { PageNotFoundComponent } from './component/rest/page-not-found/page-not-found.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
 import { ViewApplicationComponent } from './component/rest/view-application/view-application.component';
 import { BillingComponent } from './component/rest/billing/billing.component';
+import { SignupSuccessComponent } from './component/auth/signup-success/signup-success.component';
+import { ServiceComponent } from './component/rest/service/service.component';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +29,10 @@ import { BillingComponent } from './component/rest/billing/billing.component';
     ApplicationComponent,
     PageNotFoundComponent,
     ViewApplicationComponent,
-    BillingComponent
+    BillingComponent,
+    SignupSuccessComponent,
+    ServiceComponent
+
   ],
   imports: [
     BrowserModule,

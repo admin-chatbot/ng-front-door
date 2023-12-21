@@ -1,0 +1,95 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Service OnBoard</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Service OnBoard</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-6">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title"></h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form [formGroup]='serviceForm' (ngSubmit)="onSubmit()">
+                            
+
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="clientId">Client Id</label>
+                                    <input type="text" class="form-control" id="clientId" placeholder="Enter Client Id"
+                                        formControlName="clientId">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="applicationId">Application Id</label>
+                                    <input type="text" class="form-control" id="applicationId" placeholder="Enter Application Id"
+                                        formControlName="applicationId">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="endpoint">Service Endpoint</label>
+                                    <input type="text" class="form-control" id="endPoint"
+                                        placeholder="Enter Service Endpoint" formControlName="endpoint">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="method">HTTP Method</label>
+                                    <select class="form-control" id="method" formControlName="method">
+                                        <option *ngFor="let httpMethod of httpMethods" [value]="httpMethod">{{ httpMethod }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="name">Service Name</label>
+                                    <input type="text" class="form-control" id="name"
+                                        placeholder="Enter Service Name" formControlName="name">
+                                </div>
+
+                                <div class="form-group" (click)="onDropdownClick()">
+                                    <label for="ResponseType">Response Type</label>
+                                    <select class="form-control" id="ResponseType" formControlName="responseTypes" multiple>
+                                      <!-- Default value -->
+                                      <option value="" disabled selected>Select Response Type</option>
+                                  
+                                      <!-- Other response types (conditionally displayed) -->
+                                      <ng-container *ngFor="let responseType of responseTypes">
+                                        <option [value]="responseType" *ngIf="dropdownClicked">{{ responseType }}</option>
+                                      </ng-container>
+                                    </select>
+                                  </div>
+
+                            </div>
+                            <!-- /.card-body -->
+
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-primary" [disabled]="submitted">Submit</button>
+                                &nbsp;&nbsp;
+                                <button type="reset" class="btn btn-danger">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.card -->
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
