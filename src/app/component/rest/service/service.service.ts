@@ -32,7 +32,8 @@ export class ServiceService {
   }
 
   fetchService() : Observable<Service[] | any>{
-    const url = this.url.service();   
+    const url = this.url.service()+'1/';   
+    alert(url);
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.get<Service[]>(url, httpOptions)
     .pipe(

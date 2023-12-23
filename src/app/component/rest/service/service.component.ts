@@ -16,7 +16,7 @@ import { Application } from 'src/app/entity/application';
 })
 export class ServiceComponent implements OnInit {
   originalService: Service[]=[]
-  
+  clientId:any;
   serviceForm: FormGroup;
   httpMethods: string[] = ['GET', 'POST', 'PUT', 'DELETE']; // Add more methods as needed
   responseTypes: string[] = ['application/json', 'application/xml'];
@@ -42,8 +42,9 @@ export class ServiceComponent implements OnInit {
         requestTypes: [[]],
         responseTypes: [[]],
       });
+      
 
-      this.fetchApplication();        
+      this.getServices();        
 
       this.f['responseTypes'].valueChanges.subscribe(v=>{
         this.responseType = v;
@@ -52,6 +53,7 @@ export class ServiceComponent implements OnInit {
       this.f['requestTypes'].valueChanges.subscribe(v=>{
         this.requestType = v;
       });
+      this.clientId=localStorage.getItem('id');
 
     }
 
@@ -76,7 +78,12 @@ fetchApplication() {
     });
 }
 
-
+getServices(){
+  this.serviceService.fetchService()
+    .subscribe(r=>{ 
+        this.originalService = r;
+    });
+}
  
 
   onSubmit() {    
@@ -106,18 +113,19 @@ fetchApplication() {
     
 
     
-    this.serviceService.onBoard(service)
-      .subscribe(r=>{ 
-        if (r.errorCode != undefined && r.errorCode != 200) { 
-          alert('Not able to onboard. please try again in sometime')           
+    this.serviceService.onBoard(service).subscribe(
+      (r) => {
+        if (r.errorCode != undefined && r.errorCode != 200) {
+          alert('Not able to onboard. Please try again later.');
         } else {
-          alert('Successfully on board')
+          alert('Successfully onboarded.');
         }
         this.submitted = false;
-    });
-    
-    this.submitted = false;
-
-  }
-
-}
+      },
+      (error) => {
+        console.error('API Error:', error);
+        alert('An error occurred while communicating with the API.');
+        this.submitted = false;
+      }
+    );
+  }}

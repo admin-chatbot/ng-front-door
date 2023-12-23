@@ -35,30 +35,30 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let service of originalService; index as i">
-                                   
-                                    <td>{{service.endpoint}}</td>
-                                    <td>{{service.method}}</td>
-                                    <td>{{service.name}}</td>
-                                    <td>{{service.responseType}}</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-default">Action</button>
-                                            <button type="button"
-                                                class="btn btn-default dropdown-toggle dropdown-icon"
-                                                data-toggle="dropdown">
-                                                <span class="sr-only">Toggle Dropdown</span>
-                                            </button>
-                                            <div class="dropdown-menu" role="menu">
-                                                <a class="dropdown-item" >View</a>
-                                                <a class="dropdown-item" href="#">Fetch Services</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Delete</a>
-                                            </div>
-                                        </div>
-                                    </td>
+                                  <td>{{ service.endpoint }}</td>
+                                  <td>{{ service.method }}</td>
+                                  <td>{{ service.name }}</td>
+                                  <td>{{ service.responseType }}</td>
+                                  <td>
+                                    <div class="btn-group">
+                                      <button type="button" class="btn btn-default">Action</button>
+                                      <button
+                                        type="button"
+                                        class="btn btn-default dropdown-toggle dropdown-icon"
+                                        data-toggle="dropdown"
+                                      >
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                      </button>
+                                      <div class="dropdown-menu" role="menu">
+                                        <a class="dropdown-item">View</a>
+                                        <a class="dropdown-item" href="#">Fetch Services</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                      </div>
+                                    </div>
+                                  </td>
                                 </tr>
-
-                            </tbody>
+                              </tbody>
                         </table>
                     </div>
                     <div class="card-footer"> 
