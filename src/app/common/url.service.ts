@@ -23,4 +23,6 @@ export class UrlService {
   public service():string {
     return environment.baseEndpoint + "service/";
   }
+
+ 
 }

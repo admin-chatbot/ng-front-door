@@ -16,6 +16,7 @@ import { ViewApplicationComponent } from './component/rest/view-application/view
 import { BillingComponent } from './component/rest/billing/billing.component';
 import { SignupSuccessComponent } from './component/auth/signup-success/signup-success.component';
 import { ServiceComponent } from './component/rest/service/service.component';
+import { ViewServiceComponent } from './component/rest/view-service/view-service.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { ServiceComponent } from './component/rest/service/service.component';
     ViewApplicationComponent,
     BillingComponent,
     SignupSuccessComponent,
-    ServiceComponent
+    ServiceComponent,
+    ViewServiceComponent
 
   ],
   imports: [
