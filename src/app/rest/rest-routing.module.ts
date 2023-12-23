@@ -30,7 +30,7 @@ const routes: Routes = [
       {
         path:'service',
         component:ServiceComponent
-            }
+      }
     ]
   }
 ];

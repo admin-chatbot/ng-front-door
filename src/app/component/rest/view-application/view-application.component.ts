@@ -37,7 +37,7 @@ export class ViewApplicationComponent implements OnInit {
   onSubmit() {}
 
   getApplications(){
-    this.applicationService.fetchService()
+    this.applicationService.fetchApplication()
       .subscribe(r=>{ 
           this.originalApplication = r;
       });
