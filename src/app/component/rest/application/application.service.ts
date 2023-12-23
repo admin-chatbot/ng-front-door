@@ -32,7 +32,7 @@ export class ApplicationService {
     )
   }
 
-  fetchService() : Observable<Application[] | any>{
+  fetchApplication() : Observable<Application[] | any>{
     const url = this.url.application();   
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.get<Application[]>(url, httpOptions)
@@ -40,6 +40,8 @@ export class ApplicationService {
       catchError(this.handleError('applicationList'))
     );
   }
+
+
 
   
 

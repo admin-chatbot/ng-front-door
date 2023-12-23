@@ -12,7 +12,7 @@ export class ServiceService {
 
 
   private handleError: HandleError;
-
+  private token:any;
   constructor(private http: HttpClient,
     private httpErrorHandler: HttpErrorHandlerService, 
     private url : UrlService) {
@@ -31,6 +31,14 @@ export class ServiceService {
     )
   }
 
+  fetchService() : Observable<Service[] | any>{
+    const url = this.url.service();   
+    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
+    return this.http.get<Service[]>(url, httpOptions)
+    .pipe(
+      catchError(this.handleError('serviceList'))
+    );
+  }
   
 
 }

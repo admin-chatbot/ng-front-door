@@ -5,6 +5,7 @@ import { ApplicationComponent } from '../component/rest/application/application.
 import { ViewApplicationComponent } from '../component/rest/view-application/view-application.component';
 import { BillingComponent } from '../component/rest/billing/billing.component';
 import { ServiceComponent } from '../component/rest/service/service.component'; 
+import { ViewServiceComponent } from '../component/rest/view-service/view-service.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,11 @@ const routes: Routes = [
       {
         path:'service',
         component:ServiceComponent
+            },
+
+            {
+              path:'service/view',
+              component:ViewServiceComponent
             }
     ]
   }

@@ -13,6 +13,7 @@ import { Application } from 'src/app/entity/application';
 export class ApplicationComponent implements OnInit {
 
   applicationForm: FormGroup;
+  clientId:any;
 
   submitted = false;
 
@@ -25,7 +26,7 @@ export class ApplicationComponent implements OnInit {
         sourceUrl:['sourceUrl',Validators.required],
         serviceDocUrl:['serviceDocUrl',Validators.required]
       });
-
+     this.clientId=localStorage.getItem('id');
     }
 
     get f() { return this.applicationForm.controls; }
@@ -41,12 +42,12 @@ export class ApplicationComponent implements OnInit {
     }
     this.submitted = true;
     const application: Application = {} as Application;
-
+    
     application.name = this.f['name'].value;
     application.purpose  = this.f['purpose'].value;
     application.sourceUrl = this.f['sourceUrl'].value;
     application.serviceDocUrl = this.f['serviceDocUrl'].value;
-    application.clintId = 1;
+    application.clintId = Number.parseInt(this.clientId);
 
     
 
