@@ -19,8 +19,17 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
+                <div class="col-md-8">
+                    <div class="card-header">
+                        <h3 class="card-title"></h3>
+                    </div>
+                    <div class="card-body">
+                    </div>
+                    <div class="card-footer"> 
+                    </div>
+                </div>
                 <!-- left column -->
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">
@@ -29,19 +38,25 @@
                         <!-- /.card-header -->
                         <!-- form start -->
                         <form [formGroup]='serviceForm' (ngSubmit)="onSubmit()">
-                            
+
 
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="clientId">Client Id</label>
-                                    <input type="text" class="form-control" id="clientId" placeholder="Enter Client Id"
-                                        formControlName="clientId">
-                                </div>
+                                    <label for="clientId">Application Id</label>
+                                     
 
+                                     <select class="form-control" id="ResponseType" formControlName="client">
+                                        <!-- Default value -->
+                                        <option value="" disabled selected>Select Request Type</option>
+                                        <option *ngFor="let application of applications" [value]="application.id" >{{ application.name }}</option> 
+                                    </select>
+
+                                </div>    
+                                
                                 <div class="form-group">
-                                    <label for="applicationId">Application Id</label>
-                                    <input type="text" class="form-control" id="applicationId" placeholder="Enter Application Id"
-                                        formControlName="applicationId">
+                                    <label for="name">Service Name</label>
+                                    <input type="text" class="form-control" id="name" placeholder="Enter Service Name"
+                                        formControlName="name">
                                 </div>
 
                                 <div class="form-group">
@@ -51,32 +66,63 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="endpoint">Search Keyword</label>
+                                    <input type="text" class="form-control" id="txtKeyword"
+                                        placeholder="Enter Service Endpoint" formControlName="keyword">
+                                </div>
+
+                                <div class="form-group">
                                     <label for="method">HTTP Method</label>
                                     <select class="form-control" id="method" formControlName="method">
-                                        <option *ngFor="let httpMethod of httpMethods" [value]="httpMethod">{{ httpMethod }}</option>
+                                        <option *ngFor="let httpMethod of httpMethods" [value]="httpMethod">{{
+                                            httpMethod }}</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="name">Service Name</label>
-                                    <input type="text" class="form-control" id="name"
-                                        placeholder="Enter Service Name" formControlName="name">
+                                    <label for="endpoint">Summary</label>
+                                    <input type="text" class="form-control" id="txtKeyword"
+                                        placeholder="Enter Service Endpoint" formControlName="summary">
                                 </div>
 
-                                <div class="form-group" (click)="onDropdownClick()">
-                                    <label for="ResponseType">Response Type</label>
-                                    <select class="form-control" id="ResponseType" formControlName="responseTypes" multiple>
-                                      <!-- Default value -->
-                                      <option value="" disabled selected>Select Response Type</option>
-                                  
-                                      <!-- Other response types (conditionally displayed) -->
-                                      <ng-container *ngFor="let responseType of responseTypes">
-                                        <option [value]="responseType" *ngIf="dropdownClicked">{{ responseType }}</option>
-                                      </ng-container>
+                                <div class="form-group">
+                                    <label for="ResponseType">Request Type</label>
+                                    <select class="form-control" id="ResponseType" formControlName="requestTypes"  
+                                        multiple>
+                                        <!-- Default value -->
+                                        <option value="" disabled selected>Select Request Type</option>
+                                        <option *ngFor="let responseType of responseTypes" [value]="responseType" >{{ responseTypes }}</option> 
                                     </select>
-                                  </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="ResponseType">Response Type</label>
+                                    <select class="form-control" id="ResponseType" formControlName="responseTypes"  
+                                        multiple>
+                                        <!-- Default value -->
+                                        <option value="" disabled selected>Select Response Type</option>
+                                        <option *ngFor="let responseType of responseTypes" [value]="responseType"  >{{ responseType }}</option> 
+                                    </select>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="endpoint">response</label>
+                                    <input type="text" class="form-control" id="txtKeyword"
+                                        placeholder="Enter Service Endpoint" formControlName="response">
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label for="endpoint">responceTemplate</label>
+                                    <input type="text" class="form-control" id="txtKeyword"
+                                        placeholder="Enter Service Endpoint" formControlName="responseTemplate">
+                                </div>
 
                             </div>
+
+                           
+
                             <!-- /.card-body -->
 
                             <div class="card-footer">
@@ -92,4 +138,3 @@
         </div>
     </section>
 </div>
-
