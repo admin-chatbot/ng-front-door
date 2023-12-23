@@ -8,13 +8,15 @@ import { ApplicationService } from '../application/application.service';
 import { Application } from 'src/app/entity/application';
 
 
+
 @Component({
   selector: 'app-service',
   templateUrl: './service.component.html',
   styleUrls: ['./service.component.css']
 })
 export class ServiceComponent implements OnInit {
-
+  originalService: Service[]=[]
+  
   serviceForm: FormGroup;
   httpMethods: string[] = ['GET', 'POST', 'PUT', 'DELETE']; // Add more methods as needed
   responseTypes: string[] = ['application/json', 'application/xml'];

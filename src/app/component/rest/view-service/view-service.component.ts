@@ -51,7 +51,7 @@ export class ViewServiceComponent implements OnInit {
     this.f['endpoint'].setValue( this.service.endpoint)
     this.f['method'].setValue( this.service.method)
     this.f['name'].setValue( this.service.name)
-    this.f['responseType'].setValue( this.service.reponseType)
+    this.f['responseType'].setValue( this.service.responseType)
 }
 
 }
