@@ -15,12 +15,15 @@ import { Application } from 'src/app/entity/application';
   styleUrls: ['./service.component.css']
 })
 export class ServiceComponent implements OnInit {
+
+  private isOnboard = true;
   originalService: Service[]=[];
   service = {} as Service;
   clientId:any;
   serviceForm: FormGroup;
   httpMethods: string[] = ['GET', 'POST', 'PUT', 'DELETE']; // Add more methods as needed
   responseTypes: string[] = ['application/json', 'application/xml'];
+  requestTypes: string[] = ['application/json', 'application/xml'];
   submitted = false;
   dropdownClicked = false;
   applications: Application[] = [];
@@ -32,15 +35,15 @@ export class ServiceComponent implements OnInit {
     private messageService: MessageService,
     private applicationService:ApplicationService) { 
       this.serviceForm = this.formBuilder.group({
-        client: ['client12', [Validators.required]],
-        applicationId: ['1', [Validators.required]], 
+        client: ['', [Validators.required]],
+        applicationId: ['', [Validators.required]],
         method:['',Validators.required],
-        endpoint:['http:/client/v1',Validators.required],
-        name:['name',Validators.required],
-        keyword:['keyword',Validators.required],
-        summary:['summary',Validators.required],
-        response:['response',Validators.required],
-        responseTemplate:['responseTemplate',Validators.required],
+        endpoint:['',Validators.required],
+        name:['',Validators.required],
+        keyword:['',Validators.required],
+        summary:['',Validators.required],
+        response:['',Validators.required],
+        responseTemplate:['',Validators.required],
         requestTypes: [[]],
         responseTypes: [[]],
       });
@@ -64,15 +67,22 @@ export class ServiceComponent implements OnInit {
     
 
     get f() { return this.serviceForm.controls; }
-
+    
     view(i:number){
+      this.isOnboard = false;
+    
+      
       this.service = this.originalService[i];
+      this.f['applicationId'].setValue( this.service.applicationId)
+      this.f['keyword'].setValue(this.service.keyword);  
       this.f['name'].setValue( this.service.name)
       this.f['endpoint'].setValue( this.service.endpoint)
       this.f['method'].setValue( this.service.method)
-      this.f['requesttypes'].setValue( this.service.requestType)
-      this.f['applicationId'].setValue( this.service.applicationId)
-      
+      this.f['responseTypes'].setValue(this.service.responseType); 
+      this.f['requestTypes'].setValue(this.service.requestType); 
+      this.f['response'].setValue(this.service.response);
+      this.f['responseTemplate'].setValue(this.service.responseTemplate); 
+     
   }
 
   
@@ -105,10 +115,7 @@ getServices(){
       return;
     }
     this.submitted = true;
-    const service: Service = {} as Service;
-
-
-    
+    const service: Service = {} as Service;   
 
     service.id = 0
     service.clientId = this.f['client'].value;
@@ -123,22 +130,26 @@ getServices(){
     service.response = this.f['response'].value;
     service.responseType = this.responseType;
     service.requestType = this.requestType;   
-    
-
-    
-    this.serviceService.onBoard(service).subscribe(
-      (r) => {
-        if (r.errorCode != undefined && r.errorCode != 200) {
-          alert('Not able to onboard. Please try again later.');
-        } else {
-          alert('Successfully onboarded.');
+    alert(this.isOnboard);
+    if(this.isOnboard){
+      this.serviceService.onBoard(service).subscribe(
+        (r) => {
+          if (r.errorCode != undefined && r.errorCode != 200) {
+            alert('Not able to onboard. Please try again later.');
+          } else {
+            alert('Successfully onboarded.');
+          }
+          this.submitted = false;
+        },
+        (error) => {
+          console.error('API Error:', error);
+          alert('An error occurred while communicating with the API.');
+          this.submitted = false;
         }
-        this.submitted = false;
-      },
-      (error) => {
-        console.error('API Error:', error);
-        alert('An error occurred while communicating with the API.');
-        this.submitted = false;
-      }
-    );
+      );
+    }else{
+      alert('edit')
+    }
+    
+    
   }}

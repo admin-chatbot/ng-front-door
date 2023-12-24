@@ -38,7 +38,7 @@
                                   <td>{{ service.name }}</td>  
                                   <td>{{ service.endpoint }}</td>
                                   <td>{{ service.method }}</td>  
-                                  <td>{{ service.applicationId }}</td> 
+                                  
                                  
                                                              
                                  
@@ -79,15 +79,10 @@
 
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="clientId">Application Id</label>
-                                     
-
-                                     <select class="form-control" id="ResponseType" formControlName="client">
-                                        <!-- Default value -->
-                                        <option value="" disabled selected>Select Request Type</option>
-                                        <option *ngFor="let application of applications" [value]="application.id" >{{ application.name }}</option> 
-                                    </select>
-
+                                    <label for="applicationId">Application Id</label>                                     
+                                    <input type="text" class="form-control" id="applicationId" placeholder="Enter Application Id" formControlName="applicationId">
+                                   
+                                 
                                 </div>    
                                 
                                 <div class="form-group">
@@ -97,16 +92,21 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="summary">Service Summary</label>
+                                    <input type="text" class="form-control" id="summary" placeholder="Summary"
+                                        formControlName="summary">
+                                </div>
+
+                                <div class="form-group">
                                     <label for="endpoint">Service Endpoint</label>
                                     <input type="text" class="form-control" id="endPoint"
                                         placeholder="Enter Service Endpoint" formControlName="endpoint">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="endpoint">Search Keyword</label>
-                                    <input type="text" class="form-control" id="txtKeyword"
-                                        placeholder="Enter Service Endpoint" formControlName="keyword">
-                                </div>
+                                    <label for="keyword">Search Keyword</label>
+                                    <input type="text" class="form-control" id="txtKeyword" placeholder="Enter keyword" formControlName="keyword">
+                                  </div>
 
                                 <div class="form-group">
                                     <label for="method">HTTP Method</label>
@@ -116,44 +116,43 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="endpoint">Summary</label>
-                                    <input type="text" class="form-control" id="txtKeyword"
-                                        placeholder="Enter Service Endpoint" formControlName="summary">
-                                </div>
+                                
 
                                 <div class="form-group">
-                                    <label for="ResponseType">Request Type</label>
-                                    <select class="form-control" id="ResponseType" formControlName="requestTypes"  
-                                        multiple>
-                                        <!-- Default value -->
-                                        <option value="" disabled selected>Select Request Type</option>
-                                        <option *ngFor="let responseType of responseTypes" [value]="responseType" >{{ responseTypes }}</option> 
+                                    <label for="RequestType">Request Type</label>
+                                    <select class="form-control" id="RequestType" formControlName="requestTypes" multiple>
+                                      <!-- Default value -->
+                                      <option value="" disabled selected>Select Request Type</option>
+                                      <option *ngFor="let requestType of requestTypes" [value]="requestType"
+                                              [ngClass]="{'highlighted': requestType === f['requestTypes'].value}">
+                                        {{ requestType }}
+                                      </option>
                                     </select>
-                                </div>
+                                  </div>
 
                                 <div class="form-group">
                                     <label for="ResponseType">Response Type</label>
-                                    <select class="form-control" id="ResponseType" formControlName="responseTypes"  
-                                        multiple>
-                                        <!-- Default value -->
-                                        <option value="" disabled selected>Select Response Type</option>
-                                        <option *ngFor="let responseType of responseTypes" [value]="responseType"  >{{ responseType }}</option> 
+                                    <select class="form-control" id="ResponseType" formControlName="responseTypes" multiple>
+                                      <!-- Default value -->
+                                      <option value="" disabled selected>Select Response Type</option>
+                                      <option *ngFor="let responseType of responseTypes" [value]="responseType"
+                                              [ngClass]="{'highlighted': responseType === f['responseTypes'].value}">
+                                        {{ responseType }}
+                                      </option>
                                     </select>
-                                </div>
+                                  </div>                               
 
 
                                 <div class="form-group">
-                                    <label for="endpoint">response</label>
-                                    <input type="text" class="form-control" id="txtKeyword"
-                                        placeholder="Enter Service Endpoint" formControlName="response">
+                                    <label for="responseTemplate">Response Template</label>
+                                    <input type="text" class="form-control" id="responseTemplate"
+                                        placeholder="Enter Response Template" formControlName="responseTemplate">
                                 </div>
 
-
                                 <div class="form-group">
-                                    <label for="endpoint">responceTemplate</label>
-                                    <input type="text" class="form-control" id="txtKeyword"
-                                        placeholder="Enter Service Endpoint" formControlName="responseTemplate">
+                                    <label for="response">Response Format</label>
+                                    <input type="text" class="form-control" id="response"
+                                        placeholder="Enter Response Format" formControlName="response">
                                 </div>
 
                             </div>
