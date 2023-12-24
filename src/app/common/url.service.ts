@@ -24,5 +24,9 @@ export class UrlService {
     return environment.baseEndpoint + "service/";
   }
 
+  public dashboard():string {
+    return environment.baseEndpoint + "dashboard/";
+  }
+
  
 }
