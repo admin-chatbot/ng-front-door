@@ -26,19 +26,22 @@
                     <div class="card-body">
                         <table class="table table-hover text-nowrap">
                             <thead>
-                                <tr>
-                                    <th>ID</th>
+                                <tr>                
+                                  
+                                    <th>Name</th>
                                     <th>Endpoint</th>
                                     <th>Method</th>
-                                    <th>Name</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let service of originalService; index as i">
+                                  <td>{{ service.name }}</td>  
                                   <td>{{ service.endpoint }}</td>
-                                  <td>{{ service.method }}</td>
-                                  <td>{{ service.name }}</td>
-                                  <td>{{ service.responseType }}</td>
+                                  <td>{{ service.method }}</td>  
+                                  <td>{{ service.applicationId }}</td> 
+                                 
+                                                             
+                                 
                                   <td>
                                     <div class="btn-group">
                                       <button type="button" class="btn btn-default">Action</button>
@@ -50,9 +53,7 @@
                                         <span class="sr-only">Toggle Dropdown</span>
                                       </button>
                                       <div class="dropdown-menu" role="menu">
-                                        <a class="dropdown-item">View</a>
-                                        <a class="dropdown-item" href="#">Fetch Services</a>
-                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" (click)="view(i)">View</a>                                     
                                         <a class="dropdown-item" href="#">Delete</a>
                                       </div>
                                     </div>

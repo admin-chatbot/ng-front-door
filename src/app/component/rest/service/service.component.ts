@@ -15,14 +15,16 @@ import { Application } from 'src/app/entity/application';
   styleUrls: ['./service.component.css']
 })
 export class ServiceComponent implements OnInit {
-  originalService: Service[]=[]
+  originalService: Service[]=[];
+  service = {} as Service;
   clientId:any;
   serviceForm: FormGroup;
   httpMethods: string[] = ['GET', 'POST', 'PUT', 'DELETE']; // Add more methods as needed
   responseTypes: string[] = ['application/json', 'application/xml'];
   submitted = false;
   dropdownClicked = false;
-  applications:Application [] = [];
+  applications: Application[] = [];
+  //service:Service [] = [];
   responseType:string[] = [];
   requestType:string[] = [];
   constructor(private router: Router, private route: ActivatedRoute, 
@@ -44,7 +46,9 @@ export class ServiceComponent implements OnInit {
       });
       
 
-      this.getServices();        
+      this.getServices();   
+      
+    
 
       this.f['responseTypes'].valueChanges.subscribe(v=>{
         this.responseType = v;
@@ -61,6 +65,18 @@ export class ServiceComponent implements OnInit {
 
     get f() { return this.serviceForm.controls; }
 
+    view(i:number){
+      this.service = this.originalService[i];
+      this.f['name'].setValue( this.service.name)
+      this.f['endpoint'].setValue( this.service.endpoint)
+      this.f['method'].setValue( this.service.method)
+      this.f['requesttypes'].setValue( this.service.requestType)
+      this.f['applicationId'].setValue( this.service.applicationId)
+      
+  }
+
+  
+
   ngOnInit(): void {
   }
   onDropdownClick() {
@@ -68,20 +84,17 @@ export class ServiceComponent implements OnInit {
   }
 
 
-fetchApplication() {
-  this.applicationService.fetchApplication()
-    .subscribe(res=>{
-      if (res.errorCode != undefined && res.errorCode != 200) {                  
-      } else {
-        this.applications = res;
-      }
-    });
-}
+
 
 getServices(){
   this.serviceService.fetchService()
     .subscribe(r=>{ 
-        this.originalService = r;
+       
+        if (r.errorCode != undefined && r.errorCode != 200) {
+         console.log('error')
+        } else {
+          this.originalService = r;
+        }
     });
 }
  
