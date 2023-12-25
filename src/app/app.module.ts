@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewApplicationComponent } from './component/rest/view-application/view-application.component';
 import { BillingComponent } from './component/rest/billing/billing.component';
+import { AutoDiscoverComponent } from './component/rest/auto-discover/auto-discover.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { BillingComponent } from './component/rest/billing/billing.component';
     ApplicationComponent,
     PageNotFoundComponent,
     ViewApplicationComponent,
-    BillingComponent
+    BillingComponent,
+    AutoDiscoverComponent
   ],
   imports: [
     BrowserModule,

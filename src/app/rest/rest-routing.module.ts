@@ -4,6 +4,7 @@ import { DashboardComponent } from '../component/rest/dashboard/dashboard.compon
 import { ApplicationComponent } from '../component/rest/application/application.component';
 import { ViewApplicationComponent } from '../component/rest/view-application/view-application.component';
 import { BillingComponent } from '../component/rest/billing/billing.component';
+import { AutoDiscoverComponent } from '../component/rest/auto-discover/auto-discover.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
       {
         path:'billing',
         component:BillingComponent
+      },
+      {
+        path:'auto/discover',
+        component:AutoDiscoverComponent
       }
     ]
   }

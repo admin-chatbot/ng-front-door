@@ -4,6 +4,7 @@ import { MessageService } from 'src/app/http/message.service';
 import { ApplicationService } from '../application/application.service';
 import { Application } from 'src/app/entity/application';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { DataService } from 'src/app/common/data.service';
 
 @Component({
   selector: 'app-view-application',
@@ -17,7 +18,7 @@ export class ViewApplicationComponent implements OnInit {
   application = {} as Application;
   submitted:boolean = false;
 
-  constructor(private router: Router, private route: ActivatedRoute, private applicationService:ApplicationService,private formBuilder: FormBuilder,private messageService: MessageService) {
+  constructor(private router: Router, private route: ActivatedRoute, private applicationService:ApplicationService,private formBuilder: FormBuilder,private messageService: MessageService,private dataService: DataService) {
     this.getApplications(); 
     
     this.applicationEditForm = this.formBuilder.group({
@@ -41,6 +42,12 @@ export class ViewApplicationComponent implements OnInit {
       .subscribe(r=>{ 
           this.originalApplication = r;
       });
+  }
+
+  fetch(url:string) { 
+    alert(url)   
+    this.dataService.changeUrl(url);
+    this.router.navigate(['/main/auto/discover']) ;
   }
 
   view(i:number){
