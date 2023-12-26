@@ -1,4 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'src/app/http/message.service'; 
+import { ActivatedRoute, Router } from '@angular/router';
+import { Service } from 'src/app/entity/service';
+import { DashboardService } from '../dashboard/dashboard.service';
+import { Dashboard } from 'src/app/entity/dashboard';
+
+
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +14,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  dashboard: Dashboard = new Dashboard;
+  constructor(private router: Router, private route: ActivatedRoute, 
+    private messageService: MessageService,
+    private dashboardService:DashboardService) {      
+
+  }
+
+  fetchDashboard() {
+    this.dashboardService.fetchDashboard()
+      .subscribe(res=>{
+        if (res.errorCode != undefined && res.errorCode != 200) {                  
+        } else {
+          this.dashboard = res;
+        }
+      });
+  }  
 
   ngOnInit(): void {
   }
+
+ 
 
 }
