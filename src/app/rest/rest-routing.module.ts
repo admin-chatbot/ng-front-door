@@ -3,9 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from '../component/rest/dashboard/dashboard.component';
 import { ApplicationComponent } from '../component/rest/application/application.component';
 import { ViewApplicationComponent } from '../component/rest/view-application/view-application.component';
-import { BillingComponent } from '../component/rest/billing/billing.component';
+import { BillingComponent } from '../component/rest/billing/billing.component'; 
 import { ServiceComponent } from '../component/rest/service/service.component'; 
 import { ViewServiceComponent } from '../component/rest/view-service/view-service.component';
+import { AutoDiscoverComponent } from '../component/rest/auto-discover/auto-discover.component';
 
 const routes: Routes = [
   {
@@ -26,14 +27,15 @@ const routes: Routes = [
       {
         path:'billing',
         component:BillingComponent
-      },
-
+      }, 
       {
         path:'service',
         component:ServiceComponent
-            },
-
-           
+      }, 
+      {
+        path:'auto/discover',
+        component:AutoDiscoverComponent
+      } 
     ]
   }
 ];

@@ -16,6 +16,7 @@ export class UrlService {
     return environment.baseEndpoint + "auth/login/";
   }
 
+
   public signup():string {
     return environment.baseEndpoint + "auth/register/";
   }
@@ -25,4 +26,12 @@ export class UrlService {
   }
 
  
+
+  public serviceDiscover():string {
+    return environment.baseEndpoint + "service/discover/";
+  }
+  public serviceLoad():string {
+    return environment.baseEndpoint + "service/load/";
+  }
+
 }
