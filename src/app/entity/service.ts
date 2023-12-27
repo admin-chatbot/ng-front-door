@@ -9,7 +9,7 @@ export class Service {
     requestType!:string[];
     keyword!:string;
     summary!:string;
-    responseTemplate!:string;
+    botResponseTemplate!:string;
     status!:string;
-    response!:string;
+    responseSchema!:string;
 }

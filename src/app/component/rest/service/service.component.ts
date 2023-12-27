@@ -8,7 +8,6 @@ import { ApplicationService } from '../application/application.service';
 import { Application } from 'src/app/entity/application';
 
 
-
 @Component({
   selector: 'app-service',
   templateUrl: './service.component.html',
@@ -17,9 +16,12 @@ import { Application } from 'src/app/entity/application';
 export class ServiceComponent implements OnInit {
 
   private isOnboard = true;
+  submitButtonName = 'Submit';
   originalService: Service[]=[];
   service = {} as Service;
   clientId:any;
+  serviceId:any;
+
   serviceForm: FormGroup;
   httpMethods: string[] = ['GET', 'POST', 'PUT', 'DELETE']; // Add more methods as needed
   responseTypes: string[] = ['application/json', 'application/xml'];
@@ -33,25 +35,27 @@ export class ServiceComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, 
     private serviceService:ServiceService,private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private applicationService:ApplicationService) { 
-      this.serviceForm = this.formBuilder.group({
-        client: ['', [Validators.required]],
+    private applicationService:ApplicationService) {
+     
+      this.clientId=localStorage.getItem('id');
+      alert('the client id is'+this.clientId);
+        this.serviceForm = this.formBuilder.group({
+        id: ['0',Validators.required],
+        clientId: [this.clientId, [Validators.required]],
         applicationId: ['', [Validators.required]],
         method:['',Validators.required],
         endpoint:['',Validators.required],
         name:['',Validators.required],
         keyword:['',Validators.required],
         summary:['',Validators.required],
-        response:['',Validators.required],
-        responseTemplate:['',Validators.required],
+        responseSchema:['',Validators.required],
+        botResponseTemplate:['',Validators.required],
         requestTypes: [[]],
         responseTypes: [[]],
       });
       
 
-      this.getServices();   
-      
-    
+      this.getServices();    
 
       this.f['responseTypes'].valueChanges.subscribe(v=>{
         this.responseType = v;
@@ -60,7 +64,7 @@ export class ServiceComponent implements OnInit {
       this.f['requestTypes'].valueChanges.subscribe(v=>{
         this.requestType = v;
       });
-      this.clientId=localStorage.getItem('id');
+      
 
     }
 
@@ -70,30 +74,29 @@ export class ServiceComponent implements OnInit {
     
     view(i:number){
       this.isOnboard = false;
-    
-      
-      this.service = this.originalService[i];
+      this.submitButtonName='Edit';      
+      this.service = this.originalService[i];  
+      //this.f[this.id].setValue(18)  
+      this.f['id'].setValue( this.service.id)
       this.f['applicationId'].setValue( this.service.applicationId)
       this.f['keyword'].setValue(this.service.keyword);  
       this.f['name'].setValue( this.service.name)
+      this.f['summary'].setValue( this.service.summary);
       this.f['endpoint'].setValue( this.service.endpoint)
       this.f['method'].setValue( this.service.method)
       this.f['responseTypes'].setValue(this.service.responseType); 
       this.f['requestTypes'].setValue(this.service.requestType); 
-      this.f['response'].setValue(this.service.response);
-      this.f['responseTemplate'].setValue(this.service.responseTemplate); 
+      this.f['responseSchema'].setValue(this.service.responseSchema);
+      this.f['botResponseTemplate'].setValue(this.service.botResponseTemplate); 
+      
      
-  }
-
-  
+  } 
 
   ngOnInit(): void {
   }
   onDropdownClick() {
     this.dropdownClicked = true;
   }
-
-
 
 
 getServices(){
@@ -109,25 +112,27 @@ getServices(){
 }
  
 
+
+
   onSubmit() {    
     if (this.serviceForm.invalid) { 
+      console.log('Form values:', this.serviceForm.value);
       alert('invalid input')
       return;
     }
     this.submitted = true;
-    const service: Service = {} as Service;   
-
-    service.id = 0
-    service.clientId = this.f['client'].value;
+    const service: Service = {} as Service;  
+    service.id = this.f['id'].value;   
+    service.clientId  = this.clientId;
     service.applicationId  = this.f['applicationId'].value;
     service.endpoint = this.f['endpoint'].value; 
     service.method = this.f['method'].value;   
     service.name = this.f['name'].value    
     service.keyword = this.f['keyword'].value;
     service.summary = this.f['summary'].value;   
-    service.responseTemplate = this.f['responseTemplate'].value;
+    service.botResponseTemplate = this.f['botResponseTemplate'].value;
     service.status = "NEW";
-    service.response = this.f['response'].value;
+    service.responseSchema = this.f['responseSchema'].value;
     service.responseType = this.responseType;
     service.requestType = this.requestType;   
     alert(this.isOnboard);
@@ -148,7 +153,22 @@ getServices(){
         }
       );
     }else{
-      alert('edit')
+      this.serviceService.editService(service).subscribe(
+        (r) => {
+          if (r.errorCode != undefined && r.errorCode != 200) {
+            alert('Not able to edit. Please try again later.');
+          } else {
+            alert('Successfully edited.');
+          }
+          this.submitted = false;
+        },
+        (error) => {
+          console.error('API Error:', error);
+          alert('An error occurred while communicating with the API.');
+          this.submitted = false;
+        }
+      );
+      
     }
     
     
