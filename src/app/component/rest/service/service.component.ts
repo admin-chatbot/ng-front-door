@@ -113,6 +113,7 @@ getServices(){
 
 addParameter(serviceId:number){
   alert(serviceId);
+  this.router.navigate(['main/parameter'],{ state: { id: serviceId } }) ;
 }
  
 

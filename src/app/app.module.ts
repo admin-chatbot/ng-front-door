@@ -17,7 +17,8 @@ import { BillingComponent } from './component/rest/billing/billing.component';
 import { SignupSuccessComponent } from './component/auth/signup-success/signup-success.component';
 import { ServiceComponent } from './component/rest/service/service.component';
 import { ViewServiceComponent } from './component/rest/view-service/view-service.component'; 
-import { AutoDiscoverComponent } from './component/rest/auto-discover/auto-discover.component'; 
+import { AutoDiscoverComponent } from './component/rest/auto-discover/auto-discover.component';
+import { ServiceParameterComponent } from './component/rest/service-parameter/service-parameter.component'; 
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { AutoDiscoverComponent } from './component/rest/auto-discover/auto-disco
     SignupSuccessComponent,
     ServiceComponent,
     ViewServiceComponent,
-    AutoDiscoverComponent 
+    AutoDiscoverComponent,
+    ServiceParameterComponent 
   ],
   imports: [
     BrowserModule,
