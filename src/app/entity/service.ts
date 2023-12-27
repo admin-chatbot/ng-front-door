@@ -7,7 +7,7 @@ import { ServiceParameter } from "./serviceParameters";
 export class Service {
     createdTimestamp!: string;
     modifiedTimestamp!: string;
-    id!: string;
+    id!: number;
     endpoint!: string;
     keyword!: string;
     method!: string;

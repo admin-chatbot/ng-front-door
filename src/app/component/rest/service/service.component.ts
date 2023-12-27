@@ -110,6 +110,10 @@ getServices(){
         }
     });
 }
+
+addParameter(serviceId:number){
+  alert(serviceId);
+}
  
 
 
