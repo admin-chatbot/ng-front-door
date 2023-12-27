@@ -11,10 +11,13 @@ import { DashboardComponent } from './component/rest/dashboard/dashboard.compone
 import { ApplicationComponent } from './component/rest/application/application.component';
 import { PageNotFoundComponent } from './component/rest/page-not-found/page-not-found.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
 import { ViewApplicationComponent } from './component/rest/view-application/view-application.component';
-import { BillingComponent } from './component/rest/billing/billing.component';
-import { AutoDiscoverComponent } from './component/rest/auto-discover/auto-discover.component';
+import { BillingComponent } from './component/rest/billing/billing.component'; 
+import { SignupSuccessComponent } from './component/auth/signup-success/signup-success.component';
+import { ServiceComponent } from './component/rest/service/service.component';
+import { ViewServiceComponent } from './component/rest/view-service/view-service.component'; 
+import { AutoDiscoverComponent } from './component/rest/auto-discover/auto-discover.component'; 
 
 @NgModule({
   declarations: [
@@ -27,8 +30,11 @@ import { AutoDiscoverComponent } from './component/rest/auto-discover/auto-disco
     ApplicationComponent,
     PageNotFoundComponent,
     ViewApplicationComponent,
-    BillingComponent,
-    AutoDiscoverComponent
+    BillingComponent, 
+    SignupSuccessComponent,
+    ServiceComponent,
+    ViewServiceComponent,
+    AutoDiscoverComponent 
   ],
   imports: [
     BrowserModule,

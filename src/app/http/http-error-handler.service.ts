@@ -48,7 +48,7 @@ export class HttpErrorHandlerService {
       responce.errorMessage = error.message; 
      
       result.errorCode = error.status;
-      result.errorMessage  = error.error.message;
+      //result.errorMessage  = error.error.message;
       // Let the app keep running by returning a safe result.
       return of( result );
     };

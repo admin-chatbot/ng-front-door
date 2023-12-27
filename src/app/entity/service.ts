@@ -1,3 +1,4 @@
+
 import { ResponseForInvalidRequest } from "./responseForInvalidRequest";
 import { ServiceParameter } from "./serviceParameters";
 
@@ -21,5 +22,5 @@ export class Service {
     botResponseTemplate!: string;
     status!: string;
     responseSchema!: string;
-    serviceParameters!:ServiceParameter []
+    serviceParameters!:ServiceParameter [] 
 }
