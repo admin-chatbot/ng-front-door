@@ -7,6 +7,7 @@ import { BillingComponent } from '../component/rest/billing/billing.component';
 import { ServiceComponent } from '../component/rest/service/service.component'; 
 import { ViewServiceComponent } from '../component/rest/view-service/view-service.component';
 import { AutoDiscoverComponent } from '../component/rest/auto-discover/auto-discover.component';
+import { ServiceParameterComponent } from '../component/rest/service-parameter/service-parameter.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
       {
         path:'service',
         component:ServiceComponent
+      },
+      {
+        path:'parameter',
+        component:ServiceParameterComponent
       }, 
       {
         path:'auto/discover',
