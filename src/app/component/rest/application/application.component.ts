@@ -38,7 +38,7 @@ export class ApplicationComponent implements OnInit {
 
 
   onSubmit() {    
-    if (this.applicationForm.invalid) { 
+    if (this.applicationForm.invalid) {       
       alert('invalid input')
       return;
     }

@@ -20,6 +20,8 @@ export class ViewApplicationComponent implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute, private applicationService:ApplicationService,private formBuilder: FormBuilder,private messageService: MessageService,private dataService: DataService) {
     this.getApplications(); 
+
+     
     
     this.applicationEditForm = this.formBuilder.group({
       name: ['', [Validators.required]],
@@ -44,10 +46,9 @@ export class ViewApplicationComponent implements OnInit {
       });
   }
 
-  fetch(url:string) { 
-    alert(url)   
+  fetch(application:number,url:string) {  
     this.dataService.changeUrl(url);
-    this.router.navigate(['/main/auto/discover']) ;
+    this.router.navigate(['main/auto/discover'],{ state: { docUrl: url,applicaionId:application } }) ;
   }
 
   view(i:number){

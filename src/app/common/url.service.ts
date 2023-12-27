@@ -15,4 +15,11 @@ export class UrlService {
   public login():string {
     return environment.baseEndpoint + "auth/login/";
   }
+
+  public serviceDiscover():string {
+    return environment.baseEndpoint + "service/discover/";
+  }
+  public serviceLoad():string {
+    return environment.baseEndpoint + "service/load/";
+  }
 }

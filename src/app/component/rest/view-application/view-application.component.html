@@ -48,6 +48,7 @@
                                     <tr>
                                         <th>name</th>
                                         <th>purpose</th>
+                                        <th>Docs URL</th>
                                         <th>Date</th>
                                         <th>STATUS</th>
                                     </tr>
@@ -56,6 +57,7 @@
                                     <tr *ngFor="let application of originalApplication;index as i">
                                         <td>{{application.name}}</td>
                                         <td>{{application.purpose}}</td>
+                                        <td>{{application.serviceDocUrl}}</td>
                                         <td>{{application.registerDate}}</td>
                                         <td>{{application.status}}</td>
                                         <td>
@@ -68,7 +70,7 @@
                                                 </button>
                                                 <div class="dropdown-menu" role="menu">
                                                     <a class="dropdown-item" (click)="view(i)">View</a>
-                                                    <a class="dropdown-item" (click)="fetch(application.serviceDocUrl)">Fetch Services</a>
+                                                    <a class="dropdown-item" (click)="fetch(application.id,application.serviceDocUrl)">Fetch Services</a>
                                                     <div class="dropdown-divider"></div>
                                                     <a class="dropdown-item" href="#">Delete</a>
                                                 </div>
