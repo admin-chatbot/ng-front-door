@@ -26,39 +26,40 @@
                     <div class="card-body">
                         <table class="table table-hover text-nowrap">
                             <thead>
-                                <tr>
-                                    <th>ID</th>
+                                <tr>                
+                                  
+                                    <th>Name</th>
                                     <th>Endpoint</th>
                                     <th>Method</th>
-                                    <th>Name</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr *ngFor="let service of originalService; index as i">
-                                   
-                                    <td>{{service.endpoint}}</td>
-                                    <td>{{service.method}}</td>
-                                    <td>{{service.name}}</td>
-                                    <td>{{service.responseType}}</td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-default">Action</button>
-                                            <button type="button"
-                                                class="btn btn-default dropdown-toggle dropdown-icon"
-                                                data-toggle="dropdown">
-                                                <span class="sr-only">Toggle Dropdown</span>
-                                            </button>
-                                            <div class="dropdown-menu" role="menu">
-                                                <a class="dropdown-item" >View</a>
-                                                <a class="dropdown-item" href="#">Fetch Services</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">Delete</a>
-                                            </div>
-                                        </div>
-                                    </td>
+                                  <td>{{ service.name }}</td>  
+                                  <td>{{ service.endpoint }}</td>
+                                  <td>{{ service.method }}</td>  
+                                  
+                                 
+                                                             
+                                 
+                                  <td>
+                                    <div class="btn-group">
+                                      <button type="button" class="btn btn-default">Action</button>
+                                      <button
+                                        type="button"
+                                        class="btn btn-default dropdown-toggle dropdown-icon"
+                                        data-toggle="dropdown"
+                                      >
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                      </button>
+                                      <div class="dropdown-menu" role="menu">
+                                        <a class="dropdown-item" (click)="view(i)">View</a>                                     
+                                        <a class="dropdown-item" href="#">Delete</a>
+                                      </div>
+                                    </div>
+                                  </td>
                                 </tr>
-
-                            </tbody>
+                              </tbody>
                         </table>
                     </div>
                     <div class="card-footer"> 
@@ -69,7 +70,7 @@
                     <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Onboard New Service</h3>
+                            <h3 class="card-title">New Onboard Or Edit  Service</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -78,21 +79,22 @@
 
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="clientId">Application Id</label>
-                                     
-
-                                     <select class="form-control" id="ResponseType" formControlName="client">
-                                        <!-- Default value -->
-                                        <option value="" disabled selected>Select Request Type</option>
-                                        <option *ngFor="let application of applications" [value]="application.id" >{{ application.name }}</option> 
-                                    </select>
-
+                                    <label for="applicationId">Application Id</label>                                     
+                                    <input type="text" class="form-control" id="applicationId" placeholder="Enter Application Id" formControlName="applicationId">
+                                   
+                                 
                                 </div>    
-                                
+                                <input type="hidden" class="form-control" id="Id" placeholder="Enter Application Id" formControlName="id">
                                 <div class="form-group">
                                     <label for="name">Service Name</label>
                                     <input type="text" class="form-control" id="name" placeholder="Enter Service Name"
                                         formControlName="name">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="summary">Service Summary</label>
+                                    <input type="text" class="form-control" id="summary" placeholder="Summary"
+                                        formControlName="summary">
                                 </div>
 
                                 <div class="form-group">
@@ -102,10 +104,9 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="endpoint">Search Keyword</label>
-                                    <input type="text" class="form-control" id="txtKeyword"
-                                        placeholder="Enter Service Endpoint" formControlName="keyword">
-                                </div>
+                                    <label for="keyword">Search Keyword</label>
+                                    <input type="text" class="form-control" id="txtKeyword" placeholder="Enter keyword" formControlName="keyword">
+                                  </div>
 
                                 <div class="form-group">
                                     <label for="method">HTTP Method</label>
@@ -115,44 +116,43 @@
                                     </select>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="endpoint">Summary</label>
-                                    <input type="text" class="form-control" id="txtKeyword"
-                                        placeholder="Enter Service Endpoint" formControlName="summary">
-                                </div>
+                                
 
                                 <div class="form-group">
-                                    <label for="ResponseType">Request Type</label>
-                                    <select class="form-control" id="ResponseType" formControlName="requestTypes"  
-                                        multiple>
-                                        <!-- Default value -->
-                                        <option value="" disabled selected>Select Request Type</option>
-                                        <option *ngFor="let responseType of responseTypes" [value]="responseType" >{{ responseTypes }}</option> 
+                                    <label for="RequestType">Request Type</label>
+                                    <select class="form-control" id="RequestType" formControlName="requestTypes" multiple>
+                                      <!-- Default value -->
+                                      <option value="" disabled selected>Select Request Type</option>
+                                      <option *ngFor="let requestType of requestTypes" [value]="requestType"
+                                              [ngClass]="{'highlighted': requestType === f['requestTypes'].value}">
+                                        {{ requestType }}
+                                      </option>
                                     </select>
-                                </div>
+                                  </div>
 
                                 <div class="form-group">
                                     <label for="ResponseType">Response Type</label>
-                                    <select class="form-control" id="ResponseType" formControlName="responseTypes"  
-                                        multiple>
-                                        <!-- Default value -->
-                                        <option value="" disabled selected>Select Response Type</option>
-                                        <option *ngFor="let responseType of responseTypes" [value]="responseType"  >{{ responseType }}</option> 
+                                    <select class="form-control" id="ResponseType" formControlName="responseTypes" multiple>
+                                      <!-- Default value -->
+                                      <option value="" disabled selected>Select Response Type</option>
+                                      <option *ngFor="let responseType of responseTypes" [value]="responseType"
+                                              [ngClass]="{'highlighted': responseType === f['responseTypes'].value}">
+                                        {{ responseType }}
+                                      </option>
                                     </select>
-                                </div>
+                                  </div>                               
 
 
                                 <div class="form-group">
-                                    <label for="endpoint">response</label>
-                                    <input type="text" class="form-control" id="txtKeyword"
-                                        placeholder="Enter Service Endpoint" formControlName="response">
+                                    <label for="botResponseTemplate">Bot Response Template</label>
+                                    <input type="text" class="form-control" id="botResponseTemplate"
+                                        placeholder="Enter Bot Response Template" formControlName="botResponseTemplate">
                                 </div>
 
-
                                 <div class="form-group">
-                                    <label for="endpoint">responceTemplate</label>
-                                    <input type="text" class="form-control" id="txtKeyword"
-                                        placeholder="Enter Service Endpoint" formControlName="responseTemplate">
+                                    <label for="response Schema">Response Schema</label>
+                                    <input type="text" class="form-control" id="responseSchema"
+                                        placeholder="Enter Response Schema" formControlName="responseSchema">
                                 </div>
 
                             </div>
@@ -162,7 +162,7 @@
                             <!-- /.card-body -->
 
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary" [disabled]="submitted">Submit</button>
+                                <button type="submit" class="btn btn-primary" [disabled]="submitted">{{submitButtonName}}</button>
                                 &nbsp;&nbsp;
                                 <button type="reset" class="btn btn-danger">Cancel</button>
                             </div>

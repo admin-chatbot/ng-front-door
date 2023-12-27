@@ -33,10 +33,7 @@ const routes: Routes = [
         component:ServiceComponent
             },
 
-            {
-              path:'service/view',
-              component:ViewServiceComponent
-            }
+           
     ]
   }
 ];
