@@ -18,9 +18,11 @@ export class DashboardComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, 
     private messageService: MessageService,
     private dashboardService:DashboardService) {      
+    
+      this.fetchDashboard();
 
-  }
-
+    }
+  
   fetchDashboard() {
     this.dashboardService.fetchDashboard()
       .subscribe(res=>{
@@ -30,11 +32,16 @@ export class DashboardComponent implements OnInit {
         }
       });
   }  
+  
+
+
+  
 
   ngOnInit(): void {
-    this.fetchDashboard();
+    this.dashboardService.fetchDashboard()
   }
 
  
 
 }
+

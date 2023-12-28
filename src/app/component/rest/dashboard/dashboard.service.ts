@@ -21,8 +21,11 @@ export class DashboardService {
   }
 
   fetchDashboard() : Observable<Dashboard | any>{
-    const url = this.url.service();   
+    alert("Test service call")
+    const url = this.url.dashboard(); 
+     
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
+    alert(url);
     return this.http.get<Dashboard>(url, httpOptions)
     .pipe(
       catchError(this.handleError('dashboard'))
