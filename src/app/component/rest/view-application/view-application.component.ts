@@ -110,8 +110,7 @@ export class ViewApplicationComponent implements OnInit {
     
     if(this.isOnBoard) {
       this.applicationService.onBoard(application)
-        .subscribe(r=>{
-          console.log(JSON.stringify(r));
+        .subscribe(r=>{ 
           if (r.errorCode != undefined && r.errorCode != 200) { 
             alert('Not able to onboard. please try again in sometime')           
           } else {
@@ -132,10 +131,11 @@ export class ViewApplicationComponent implements OnInit {
         }
         this.submitted = false; 
       });
-    }
+    }    
+  }
 
-
-    
+  openService(applicationId:number) {
+    this.router.navigate(['main/service'],{ state: { appId: applicationId } }) ;
   }
 
   subString(date:string):string {
