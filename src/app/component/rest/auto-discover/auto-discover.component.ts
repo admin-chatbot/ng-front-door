@@ -25,8 +25,7 @@ export class AutoDiscoverComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute,private messageService: MessageService, private dataService: DataService,private autoDiscover:AutoDIscoverService) { 
     var dataRecived : any = this.router.getCurrentNavigation()?.extras.state;
     this.applicationId = dataRecived.applicaionId;
-    this.clientId = localStorage.getItem('id');
-    alert(this.applicationId);
+    this.clientId = localStorage.getItem('id'); 
   }
 
   load(){
