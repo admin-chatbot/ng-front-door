@@ -13,17 +13,21 @@ export class ServiceService {
 
   private handleError: HandleError;
   private token:any;
+  private id:any;
+  
   constructor(private http: HttpClient,
     private httpErrorHandler: HttpErrorHandlerService, 
     private url : UrlService) {
       this.handleError = httpErrorHandler.createHandleError('ServiceService');
+      this.token=localStorage.getItem('token');
+      this.id=localStorage.getItem('id');
   }
 
 
   onBoard(service:Service) : Observable<string | any> {
     const url = this.url.service();     
     
-    alert(JSON.stringify(service));
+ 
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':'sfsdfklksf-sfdfsf', 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.post<any>(url,service,httpOptions)
     .pipe(
@@ -32,12 +36,29 @@ export class ServiceService {
   }
 
   fetchService() : Observable<Service[] | any>{
-    const url = this.url.service();   
+    //const url = this.url.service()+'1/'; 
+
+    const url = this.url.service()+this.id+'/';   
+    alert(url);
+    
+    
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.get<Service[]>(url, httpOptions)
     .pipe(
       catchError(this.handleError('serviceList'))
     );
+  }
+
+
+  editService(service:Service) : Observable<string | any> {
+    const url = this.url.service();     
+    
+ 
+    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':'sfsdfklksf-sfdfsf', 'Content-Type': 'application/json','accept':'application/json' }) };
+    return this.http.put<any>(url,service,httpOptions)
+    .pipe(
+      catchError(this.handleError('Edit Service'))
+    )
   }
   
 

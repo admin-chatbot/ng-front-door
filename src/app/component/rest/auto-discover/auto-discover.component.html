@@ -1,0 +1,95 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>All Services</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Auto Discover</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title"></h3>
+
+                <div class="card-tools">
+                    <button type="button" class="btn btn-primary" *ngIf="services.length>0"  (click)="load()" >On-Board Services</button>   
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped projects">
+                    <thead>
+                        <tr>
+                            <th >
+                                <input type="checkbox"   (change)="toggle()" value="Select All"/>
+                            </th>
+                            <th style="width: 10%">
+                                Service Name
+                            </th>
+                            <th style="width: 20%">
+                                Request Type
+                            </th>
+                            <th style="width: 30%">
+                                Endpoint
+                            </th>
+                            <th style="width: 20%" class="text-center">
+                                Summary
+                            </th>
+                            <th style="width: 20%">
+                                Response Type
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>                        
+                        <tr *ngFor="let list of checkBoxList; index as i">
+                            <td>
+                                <input type="checkbox" [checked]="list.checked"  (change)="onChange(list.service)" value="{{list.id}}"/>
+                            </td>
+                            <td>
+                                <a>
+                                    {{list.service.name}}
+                                </a>
+                                <br />
+                                <small>
+                                    {{list.service.method}}
+                                </small>
+                            </td>
+                            <td>
+                                {{list.service.requestType}}
+                            </td>
+                            <td class="project_progress">
+                                {{list.service.endpoint}}
+                            </td>
+                            <td class="project-state">
+                                <span class="badge badge-success">{{list.service.summary}}</span>
+                            </td>
+                            <td class="project-actions">
+                                {{list.service.responseType}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer text-right">
+                <button type="button" class="btn btn-primary" *ngIf="services.length>0" (click)="load()">On-Board Services</button>                 
+            </div>
+
+        </div>
+        <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+</div>

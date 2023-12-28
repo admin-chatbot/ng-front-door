@@ -8,42 +8,53 @@ import { ApplicationService } from '../application/application.service';
 import { Application } from 'src/app/entity/application';
 
 
-
 @Component({
   selector: 'app-service',
   templateUrl: './service.component.html',
   styleUrls: ['./service.component.css']
 })
 export class ServiceComponent implements OnInit {
-  originalService: Service[]=[]
-  
+
+  private isOnboard = true;
+  submitButtonName = 'Submit';
+  originalService: Service[]=[];
+  service = {} as Service;
+  clientId:any;
+  serviceId:any;
+
   serviceForm: FormGroup;
   httpMethods: string[] = ['GET', 'POST', 'PUT', 'DELETE']; // Add more methods as needed
   responseTypes: string[] = ['application/json', 'application/xml'];
+  requestTypes: string[] = ['application/json', 'application/xml'];
   submitted = false;
   dropdownClicked = false;
-  applications:Application [] = [];
+  applications: Application[] = [];
+  //service:Service [] = [];
   responseType:string[] = [];
   requestType:string[] = [];
   constructor(private router: Router, private route: ActivatedRoute, 
     private serviceService:ServiceService,private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private applicationService:ApplicationService) { 
-      this.serviceForm = this.formBuilder.group({
-        client: ['client12', [Validators.required]],
-        applicationId: ['1', [Validators.required]], 
+    private applicationService:ApplicationService) {
+     
+      this.clientId=localStorage.getItem('id'); 
+        this.serviceForm = this.formBuilder.group({
+        id: ['0',Validators.required],
+        clientId: [this.clientId, [Validators.required]],
+        applicationId: ['', [Validators.required]],
         method:['',Validators.required],
-        endpoint:['http:/client/v1',Validators.required],
-        name:['name',Validators.required],
-        keyword:['keyword',Validators.required],
-        summary:['summary',Validators.required],
-        response:['response',Validators.required],
-        responseTemplate:['responseTemplate',Validators.required],
+        endpoint:['',Validators.required],
+        name:['',Validators.required],
+        keyword:['',Validators.required],
+        summary:['',Validators.required],
+        responseSchema:['',Validators.required],
+        botResponseTemplate:['',Validators.required],
         requestTypes: [[]],
         responseTypes: [[]],
       });
+      
 
-      this.fetchApplication();        
+      this.getServices();    
 
       this.f['responseTypes'].valueChanges.subscribe(v=>{
         this.responseType = v;
@@ -52,12 +63,33 @@ export class ServiceComponent implements OnInit {
       this.f['requestTypes'].valueChanges.subscribe(v=>{
         this.requestType = v;
       });
+      
 
     }
 
     
 
     get f() { return this.serviceForm.controls; }
+    
+    view(i:number){
+      this.isOnboard = false;
+      this.submitButtonName='Edit';      
+      this.service = this.originalService[i];  
+      //this.f[this.id].setValue(18)  
+      this.f['id'].setValue( this.service.id)
+      this.f['applicationId'].setValue( this.service.applicationId)
+      this.f['keyword'].setValue(this.service.keyword);  
+      this.f['name'].setValue( this.service.name)
+      this.f['summary'].setValue( this.service.summary);
+      this.f['endpoint'].setValue( this.service.endpoint)
+      this.f['method'].setValue( this.service.method)
+      this.f['responseTypes'].setValue(this.service.responseType); 
+      this.f['requestTypes'].setValue(this.service.requestType); 
+      this.f['responseSchema'].setValue(this.service.responseSchema);
+      this.f['botResponseTemplate'].setValue(this.service.botResponseTemplate); 
+      
+     
+  } 
 
   ngOnInit(): void {
   }
@@ -66,58 +98,81 @@ export class ServiceComponent implements OnInit {
   }
 
 
-fetchApplication() {
-  this.applicationService.fetchApplication()
-    .subscribe(res=>{
-      if (res.errorCode != undefined && res.errorCode != 200) {                  
-      } else {
-        this.applications = res;
-      }
+getServices(){
+  this.serviceService.fetchService()
+    .subscribe(r=>{ 
+       
+        if (r.errorCode != undefined && r.errorCode != 200) {
+         console.log('error')
+        } else {
+          this.originalService = r;
+        }
     });
 }
 
-
+addParameter(serviceId:number){ 
+  this.router.navigate(['main/parameter'],{ state: { id: serviceId } }) ;
+}
  
+
+
 
   onSubmit() {    
     if (this.serviceForm.invalid) { 
+      console.log('Form values:', this.serviceForm.value);
       alert('invalid input')
       return;
     }
     this.submitted = true;
-    const service: Service = {} as Service;
-
-
-    
-
-    service.id = 0
-    service.clientId = this.f['client'].value;
+    const service: Service = {} as Service;  
+    service.id = this.f['id'].value;   
+    service.clientId  = this.clientId;
     service.applicationId  = this.f['applicationId'].value;
     service.endpoint = this.f['endpoint'].value; 
     service.method = this.f['method'].value;   
     service.name = this.f['name'].value    
     service.keyword = this.f['keyword'].value;
     service.summary = this.f['summary'].value;   
-    service.responseTemplate = this.f['responseTemplate'].value;
+    service.botResponseTemplate = this.f['botResponseTemplate'].value;
     service.status = "NEW";
-    service.response = this.f['response'].value;
+    service.responseSchema = this.f['responseSchema'].value;
     service.responseType = this.responseType;
     service.requestType = this.requestType;   
     
-
-    
-    this.serviceService.onBoard(service)
-      .subscribe(r=>{ 
-        if (r.errorCode != undefined && r.errorCode != 200) { 
-          alert('Not able to onboard. please try again in sometime')           
-        } else {
-          alert('Successfully on board')
+    if(this.isOnboard){
+      this.serviceService.onBoard(service).subscribe(
+        (r) => {
+          if (r.errorCode != undefined && r.errorCode != 200) {
+            alert('Not able to onboard. Please try again later.');
+          } else {
+            alert('Successfully onboarded.');
+          }
+          this.submitted = false;
+        },
+        (error) => {
+          console.error('API Error:', error);
+          alert('An error occurred while communicating with the API.');
+          this.submitted = false;
         }
-        this.submitted = false;
-    });
+      );
+    }else{
+      this.serviceService.editService(service).subscribe(
+        (r) => {
+          if (r.errorCode != undefined && r.errorCode != 200) {
+            alert('Not able to edit. Please try again later.');
+          } else {
+            alert('Successfully edited.');
+          }
+          this.submitted = false;
+        },
+        (error) => {
+          console.error('API Error:', error);
+          alert('An error occurred while communicating with the API.');
+          this.submitted = false;
+        }
+      );
+      
+    }
     
-    this.submitted = false;
-
-  }
-
-}
+    
+  }}

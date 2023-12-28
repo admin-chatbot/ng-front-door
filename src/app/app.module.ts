@@ -13,11 +13,12 @@ import { PageNotFoundComponent } from './component/rest/page-not-found/page-not-
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
 import { ViewApplicationComponent } from './component/rest/view-application/view-application.component';
-import { BillingComponent } from './component/rest/billing/billing.component';
+import { BillingComponent } from './component/rest/billing/billing.component'; 
 import { SignupSuccessComponent } from './component/auth/signup-success/signup-success.component';
 import { ServiceComponent } from './component/rest/service/service.component';
-import { ViewServiceComponent } from './component/rest/view-service/view-service.component';
-
+import { ViewServiceComponent } from './component/rest/view-service/view-service.component'; 
+import { AutoDiscoverComponent } from './component/rest/auto-discover/auto-discover.component';
+import { ServiceParameterComponent } from './component/rest/service-parameter/service-parameter.component'; 
 
 @NgModule({
   declarations: [
@@ -30,11 +31,12 @@ import { ViewServiceComponent } from './component/rest/view-service/view-service
     ApplicationComponent,
     PageNotFoundComponent,
     ViewApplicationComponent,
-    BillingComponent,
+    BillingComponent, 
     SignupSuccessComponent,
     ServiceComponent,
-    ViewServiceComponent
-
+    ViewServiceComponent,
+    AutoDiscoverComponent,
+    ServiceParameterComponent 
   ],
   imports: [
     BrowserModule,
