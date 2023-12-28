@@ -134,6 +134,10 @@ export class ViewApplicationComponent implements OnInit {
     }    
   }
 
+  openService(applicationId:number) {
+    this.router.navigate(['main/service'],{ state: { appId: applicationId } }) ;
+  }
+
   subString(date:string):string {
     if(date!=undefined) {
       return date.substring(0,10);
