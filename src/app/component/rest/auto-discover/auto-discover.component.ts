@@ -6,6 +6,7 @@ import { AutoDIscoverService } from './auto-discover.service';
 import { Service } from 'src/app/entity/service';
 import { SelectedService } from 'src/app/entity/selectedService';
 import { AutoDiscoverServiceRequest } from 'src/app/entity/autoDiscoverServiceRequest';
+import { AutoDiscoverService } from 'src/app/entity/autoDiscoverList';
 
 @Component({
   selector: 'app-auto-discover',
@@ -19,14 +20,20 @@ export class AutoDiscoverComponent implements OnInit {
    private selectedServices: SelectedService[] = [];
    applicationId!: number;
    clientId!:any;
+   checkBoxList:AutoDiscoverService[]= [];
+   selectAll:boolean = false;
 
    
 
   constructor(private router: Router, private route: ActivatedRoute,private messageService: MessageService, private dataService: DataService,private autoDiscover:AutoDIscoverService) { 
     var dataRecived : any = this.router.getCurrentNavigation()?.extras.state;
     this.applicationId = dataRecived.applicaionId;
-    this.clientId = localStorage.getItem('id');
-    alert(this.applicationId);
+    this.clientId = localStorage.getItem('id'); 
+  }
+
+  toggle() {
+    this.checkBoxList.forEach((e)=>e.checked=!this.selectAll);
+    this.selectAll = !this.selectAll;
   }
 
   load(){
@@ -34,13 +41,28 @@ export class AutoDiscoverComponent implements OnInit {
     request.applicationId = this.applicationId;
     request.serviceId = this.clientId;
     request.url = this.url;
-    request.autoDiscoverServiceRequestBodies = this.selectedServices;
+    this.selectedServices = [];
+    this.checkBoxList.forEach((ele)=>{      
+      if(ele.checked) {
+         this.selectedServices.push({'endpoint':ele.service.endpoint,'method':ele.service.method,'name':ele.service.name})
+      }
+    }); 
+    if(this.selectedServices.length==0){
+      alert('No service is selected.');
+      return;
+    }
+
+
+    request.autoDiscoverServiceRequestBodies = this.selectedServices; 
     this.autoDiscover.loadService(request)
       .subscribe(res=>{
         if (res.errorCode != undefined && res.errorCode != 200) { 
           alert('Unable to load. Pleae try in sometime.')
         } else {
             alert('service loaded successfully.')
+            this.checkBoxList.forEach((ele)=>{
+              ele.checked = false;
+            });
         }
       })
 
@@ -53,9 +75,14 @@ export class AutoDiscoverComponent implements OnInit {
 
         } else {
             this.services = res;
+            this.services.forEach(element => {
+              this.checkBoxList.push({'id':element.id,'service':element,'checked':false});
+            });
         }
       });
   }
+
+
 
   ngOnInit(): void {
     this.dataService.currentMessage.subscribe(m => { 
@@ -64,24 +91,13 @@ export class AutoDiscoverComponent implements OnInit {
     this.discover();
   }
 
-  onChange(index: number, event: any) {  
-    var service = this.services[index];
-    var selectedService = {} as SelectedService;
-    selectedService.endpoint = service.endpoint;
-    selectedService.method = service.method;
-    selectedService.name = service.name;
-
-    if( event.target.checked) {     
-      this.selectedServices.push(selectedService);
-    } else {
-        var index = this.services.findIndex((obj)=>{
-          return (obj.endpoint === selectedService.endpoint 
-            && obj.name === selectedService.name
-            && obj.method === selectedService.method)
-        })
-
-        this.selectedServices = this.selectedServices.slice(index);
-    }    
+  onChange(service: Service) {  
+    var index = this.services.findIndex((obj)=>{
+      return (obj.endpoint === service.endpoint 
+        && obj.name === service.name
+        && obj.method === service.method)
+    })  
+    this.checkBoxList[index].checked = !this.checkBoxList[index].checked;     
   } 
 
 

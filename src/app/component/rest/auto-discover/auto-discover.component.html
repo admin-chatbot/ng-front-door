@@ -4,12 +4,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Projects</h1>
+                    <h1>All Services</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Projects</li>
+                        <li class="breadcrumb-item active">Auto Discover</li>
                     </ol>
                 </div>
             </div>
@@ -22,10 +22,10 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Projects</h3>
+                <h3 class="card-title"></h3>
 
                 <div class="card-tools">
-                    <button type="button" class="btn btn-primary" *ngIf="services.length>0"  (click)="load()" >OnBoard</button>   
+                    <button type="button" class="btn btn-primary" *ngIf="services.length>0"  (click)="load()" >On-Board Services</button>   
                 </div>
             </div>
             <div class="card-body p-0">
@@ -33,7 +33,7 @@
                     <thead>
                         <tr>
                             <th >
-                                #
+                                <input type="checkbox"   (change)="toggle()" value="Select All"/>
                             </th>
                             <th style="width: 10%">
                                 Service Name
@@ -53,30 +53,30 @@
                         </tr>
                     </thead>
                     <tbody>                        
-                        <tr *ngFor="let service of services; index as i">
+                        <tr *ngFor="let list of checkBoxList; index as i">
                             <td>
-                                <input type="checkbox"  (change)="onChange(i,$event)" value="{{i}}"/>
+                                <input type="checkbox" [checked]="list.checked"  (change)="onChange(list.service)" value="{{list.id}}"/>
                             </td>
                             <td>
                                 <a>
-                                    {{service.name}}
+                                    {{list.service.name}}
                                 </a>
                                 <br />
                                 <small>
-                                    {{service.method}}
+                                    {{list.service.method}}
                                 </small>
                             </td>
                             <td>
-                                {{service.requestType}}
+                                {{list.service.requestType}}
                             </td>
                             <td class="project_progress">
-                                {{service.endpoint}}
+                                {{list.service.endpoint}}
                             </td>
                             <td class="project-state">
-                                <span class="badge badge-success">{{service.summary}}</span>
+                                <span class="badge badge-success">{{list.service.summary}}</span>
                             </td>
                             <td class="project-actions">
-                                {{service.responseType}}
+                                {{list.service.responseType}}
                             </td>
                         </tr>
                     </tbody>
@@ -84,7 +84,7 @@
             </div>
             <!-- /.card-body -->
             <div class="card-footer text-right">
-                <button type="button" class="btn btn-primary" *ngIf="services.length>0" (click)="load()">OnBoard</button>                 
+                <button type="button" class="btn btn-primary" *ngIf="services.length>0" (click)="load()">On-Board Services</button>                 
             </div>
 
         </div>

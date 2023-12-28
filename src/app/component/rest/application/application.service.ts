@@ -32,6 +32,15 @@ export class ApplicationService {
     )
   }
 
+  edit(application:Application) : Observable<string | any> {
+    const url = this.url.application();       
+    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
+    return this.http.put<any>(url,application,httpOptions)
+    .pipe(
+      catchError(this.handleError('OnBoard Application'))
+    )
+  }
+
   fetchApplication() : Observable<Application[] | any>{
     const url = this.url.application();   
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };

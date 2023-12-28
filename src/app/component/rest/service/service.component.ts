@@ -37,8 +37,7 @@ export class ServiceComponent implements OnInit {
     private messageService: MessageService,
     private applicationService:ApplicationService) {
      
-      this.clientId=localStorage.getItem('id');
-      alert('the client id is'+this.clientId);
+      this.clientId=localStorage.getItem('id'); 
         this.serviceForm = this.formBuilder.group({
         id: ['0',Validators.required],
         clientId: [this.clientId, [Validators.required]],
@@ -111,8 +110,7 @@ getServices(){
     });
 }
 
-addParameter(serviceId:number){
-  alert(serviceId);
+addParameter(serviceId:number){ 
   this.router.navigate(['main/parameter'],{ state: { id: serviceId } }) ;
 }
  
@@ -140,7 +138,7 @@ addParameter(serviceId:number){
     service.responseSchema = this.f['responseSchema'].value;
     service.responseType = this.responseType;
     service.requestType = this.requestType;   
-    alert(this.isOnboard);
+    
     if(this.isOnboard){
       this.serviceService.onBoard(service).subscribe(
         (r) => {
