@@ -27,7 +27,7 @@ export class ServiceService {
   onBoard(service:Service) : Observable<string | any> {
     const url = this.url.service();       
  
-    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':'sfsdfklksf-sfdfsf', 'Content-Type': 'application/json','accept':'application/json' }) };
+    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.post<any>(url,service,httpOptions)
     .pipe(
       catchError(this.handleError('OnBoard Service'))
@@ -46,7 +46,7 @@ export class ServiceService {
 
   editService(service:Service) : Observable<string | any> {
     const url = this.url.service();     
-    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':'sfsdfklksf-sfdfsf', 'Content-Type': 'application/json','accept':'application/json' }) };
+    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.put<any>(url,service,httpOptions)
     .pipe(
       catchError(this.handleError('Edit Service'))
