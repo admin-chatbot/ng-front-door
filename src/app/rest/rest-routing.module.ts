@@ -9,6 +9,7 @@ import { ViewServiceComponent } from '../component/rest/view-service/view-servic
 import { AutoDiscoverComponent } from '../component/rest/auto-discover/auto-discover.component';
 import { ServiceParameterComponent } from '../component/rest/service-parameter/service-parameter.component';
 import { ClientDetailsComponent } from '../component/rest/client-details/client-details.component';
+import { UserComponent } from '../component/rest/user/user.component';
 
 const routes: Routes = [
   {
@@ -45,6 +46,10 @@ const routes: Routes = [
       {
         path:'clientDeatils',
         component:ClientDetailsComponent
+      },
+      {
+        path:'user',
+        component:UserComponent
       }
     ]
   }
