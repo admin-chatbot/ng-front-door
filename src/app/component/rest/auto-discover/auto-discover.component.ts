@@ -83,7 +83,6 @@ export class AutoDiscoverComponent implements OnInit {
   }
 
 
-
   ngOnInit(): void {
     this.dataService.currentMessage.subscribe(m => { 
       this.url = m
