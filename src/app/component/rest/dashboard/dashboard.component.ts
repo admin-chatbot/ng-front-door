@@ -26,6 +26,10 @@ export class DashboardComponent implements OnInit {
   fetchDashboard() {
     this.dashboardService.fetchDashboard()
       .subscribe(res=>{
+        alert("response code value")
+        alert(res.errorCode)
+        alert("applicationCount value")
+        alert(this.dashboard.applicationCount)
         if (res.errorCode != undefined && res.errorCode != 200) {                  
         } else {
           this.dashboard = res;
