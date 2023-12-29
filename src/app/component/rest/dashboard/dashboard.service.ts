@@ -21,24 +21,16 @@ export class DashboardService {
       this.token = localStorage.getItem('token');
   }
 
-  fetchDashboard() : Observable<Dashboard | any>{
-    alert("Test service call")
-    const url = this.url.dashboard(); 
-     
-    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
-    alert(url);
+  fetchDashboard() : Observable<Dashboard | any>{ 
+    const url = this.url.dashboard();      
+    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token,'accept':'application/json' }) };    
     return this.http.get<Dashboard>(url, httpOptions).pipe(
-      tap(data => {
-        // Display the output using an alert
-        alert('Data received: ' + JSON.stringify(data));
+      tap(data => { 
+        console.log('Data received: ' + JSON.stringify(data));
       }),
       catchError((error) => {
         // Log the complete error object to the console
-        console.error('Error fetching dashboard data:', error);
-    
-        // Display a generic error message in an alert
-        alert('Error fetching dashboard data. Please check the console for details.');
-    
+        console.error('Error fetching dashboard data:', error);     
         // Return a custom error or re-throw the original error
         return this.handleError('Error fetching dashboard data')(error);
       })

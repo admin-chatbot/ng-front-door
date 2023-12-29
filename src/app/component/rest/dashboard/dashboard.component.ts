@@ -17,32 +17,23 @@ export class DashboardComponent implements OnInit {
   dashboard: Dashboard = new Dashboard;
   constructor(private router: Router, private route: ActivatedRoute, 
     private messageService: MessageService,
-    private dashboardService:DashboardService) {      
-    
-      this.fetchDashboard();
-
-    }
+    private dashboardService:DashboardService) { 
+      this.fetchDashboard();  
+       
+  }
   
   fetchDashboard() {
     this.dashboardService.fetchDashboard()
-      .subscribe(res=>{
-        alert("response code value")
-        alert(res.errorCode)
-        alert("applicationCount value")
-        alert(this.dashboard.applicationCount)
+      .subscribe(res=>{         
         if (res.errorCode != undefined && res.errorCode != 200) {                  
         } else {
           this.dashboard = res;
         }
       });
   }  
-  
-
-
-  
 
   ngOnInit(): void {
-    this.dashboardService.fetchDashboard()
+   
   }
 
  
