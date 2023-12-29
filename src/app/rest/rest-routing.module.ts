@@ -8,6 +8,7 @@ import { ServiceComponent } from '../component/rest/service/service.component';
 import { ViewServiceComponent } from '../component/rest/view-service/view-service.component';
 import { AutoDiscoverComponent } from '../component/rest/auto-discover/auto-discover.component';
 import { ServiceParameterComponent } from '../component/rest/service-parameter/service-parameter.component';
+import { ClientDetailsComponent } from '../component/rest/client-details/client-details.component';
 
 const routes: Routes = [
   {
@@ -40,7 +41,11 @@ const routes: Routes = [
       {
         path:'auto/discover',
         component:AutoDiscoverComponent
-      } 
+      },
+      {
+        path:'clientDeatils',
+        component:ClientDetailsComponent
+      }
     ]
   }
 ];

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { SignInComponent } from '../component/auth/sign-in/sign-in.component';
 import { SignUpComponent } from '../component/auth/sign-up/sign-up.component';
 import { SignupSuccessComponent } from '../component/auth/signup-success/signup-success.component';
+import { ForgotPasswordComponent } from '../component/auth/forgot-password/forgot-password.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,10 @@ const routes: Routes = [
       {
         path:'signup-success',
         component:SignupSuccessComponent
+      },
+      {
+        path:'forgot',
+        component:ForgotPasswordComponent
       }
     ]
   }

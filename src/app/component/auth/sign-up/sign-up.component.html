@@ -3,7 +3,7 @@
     <div class="register-box" style="width: 550px">
         <div class="card card-outline card-primary">
           <div class="card-header text-center">
-            <a href="../../index2.html" class="h1"><b>VoiceBot</b> <i style="font-size: 18px;"> I.E.C.P</i></a>
+            <a routerLink="/main/dashboard"  class="h1"><b>VoiceBot</b> <i style="font-size: 18px;"> I.E.C.P</i></a>
           </div>
           <div class="card-body">
             <p class="login-box-msg">Register a new membership</p>
@@ -100,7 +100,7 @@
               </div>
             </form>
       
-            <div class="social-auth-links text-center">
+            <div class="social-auth-links text-center" [hidden]="true">
               <a href="#" class="btn btn-block btn-primary">
                 <i class="fab fa-facebook mr-2"></i>
                 Sign up using Facebook
