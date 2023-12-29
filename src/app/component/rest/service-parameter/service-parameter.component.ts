@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ServiceParameter } from '../service-parameter/service-parameter.service';
+//import { ServiceParameter } from '../service-parameter/service-parameter.service';
 import { ServiceParameterService } from '../service-parameter/service-parameter.service'
-import { Service } from 'src/app/entity/service';
+import { ServiceParameter } from 'src/app/entity/serviceParameters';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'src/app/http/message.service'; 
+import { Type } from '@angular/compiler';
 
 @Component({
   selector: 'app-service-parameter',
@@ -15,16 +16,18 @@ export class ServiceParameterComponent implements OnInit {
 
   private isOnboard = true;
   submitButtonName = 'Submit';
-  originalService: Service[]=[];
-  service = {} as Service;
-  clientId:any;
+  originalServiceParameter: ServiceParameter[]=[];
+  serviceParameter = {} as ServiceParameter;
   serviceId:any;
 
+  submitted = false;
   serviceParameterForm: FormGroup  ;
-  required: string[] = ['GET', 'POST', 'PUT', 'DELETE']; // Add more methods as needed
+  required: string[] = ['Yes', 'No'] // Add more methods as needed
   type: string[] = ['header','body']
-  paramtyp: string[] = ['string','int']
+  paramType: string[] = ['string','int']
   questionAsked: string[] = ['Yes','No']
+ 
+  dropdownClicked = false;
  
   //service:Service [] = [];
   //responseType:string[] = [];
@@ -36,26 +39,26 @@ export class ServiceParameterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     private serciceParameterService: ServiceParameterService) {
-     
-      this.clientId=localStorage.getItem('id');
-      alert('the client id is'+this.clientId);
+  
+      this.serviceId=18;
+      //this.serviceId=localStorage.getItem('id');
+      alert('the service id is'+this.serviceId);
         this.serviceParameterForm = this.formBuilder.group({
         id: ['0',Validators.required],
-        clientId: [this.clientId, [Validators.required]],
-        applicationId: ['', [Validators.required]],
-        method:['',Validators.required],
-        endpoint:['',Validators.required],
+        //clientId: [this.clientId, [Validators.required]],
+        description: ['', [Validators.required]],
+        required:['',Validators.required],
+        type:['',Validators.required],
+        paramtyp:['',Validators.required],
+        jsonFormat:['',Validators.required],
         name:['',Validators.required],
-        keyword:['',Validators.required],
-        summary:['',Validators.required],
-        responseSchema:['',Validators.required],
-        botResponseTemplate:['',Validators.required],
-        requestTypes: [[]],
-        responseTypes: [[]],
+      
+        
+        
       });
       
  
-      
+      this.getServiceParmeter();
       
 
       //this.f['responseTypes'].valueChanges.subscribe(v=>{
@@ -68,26 +71,43 @@ export class ServiceParameterComponent implements OnInit {
       
 
     }
-
+   
     
-      ngOnInit(): void {
+    ngOnInit(): void {
+      this.getServiceParmeter();
   }
 
     get f() { return this.serviceParameterForm.controls; }
     
+    view(i: number) {
+      this.isOnboard = false;
+      this.submitButtonName = 'Edit';   
+      const selectedService = this.originalServiceParameter[i];   
     
-
+      this.f['id'].setValue(selectedService.id);
+      this.f['description'].setValue(selectedService.description);
+      this.f['required'].setValue(selectedService.required);
+      this.f['type'].setValue(selectedService.type);
+      this.f['paramType'].setValue(selectedService.paramType);
+      this.f['jsonFormat'].setValue(selectedService.jsonFormat);
+      this.f['name'].setValue(selectedService.name);
+    
+    
+      // Log the form values after setting them
+      console.log('Form Values After:', this.serviceParameterForm.value);
+    }
   
 
 
 
 addParameter(serviceId:number){
-  alert(serviceId);
+  alert(serviceId);  
   this.router.navigate(['main/parameter'],{ state: { id: serviceId } }) ;
 }
  
-
-
+onDropdownClick() {
+  this.dropdownClicked = true;
+}
 onSubmit() {    
   if (this.serviceParameterForm.invalid) { 
     console.log('Form values:', this.serviceParameterForm.value);
@@ -102,6 +122,18 @@ onSubmit() {
     }, error => {
       // Handle the error here
       console.error('Error on onBoard service:', error);
+    });
+}
+
+getServiceParmeter(){
+  this.serciceParameterService.fetchServiceParameter()
+    .subscribe(r=>{ 
+       
+        if (r.errorCode != undefined && r.errorCode != 200) {
+         console.log('error')
+        } else {
+          this.originalServiceParameter = r;
+        }
     });
 }
 
