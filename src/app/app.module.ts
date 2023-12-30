@@ -18,7 +18,10 @@ import { SignupSuccessComponent } from './component/auth/signup-success/signup-s
 import { ServiceComponent } from './component/rest/service/service.component';
 import { ViewServiceComponent } from './component/rest/view-service/view-service.component'; 
 import { AutoDiscoverComponent } from './component/rest/auto-discover/auto-discover.component';
-import { ServiceParameterComponent } from './component/rest/service-parameter/service-parameter.component'; 
+import { ServiceParameterComponent } from './component/rest/service-parameter/service-parameter.component';
+import { UserComponent } from './component/rest/user/user.component';
+import { ClientDetailsComponent } from './component/rest/client-details/client-details.component';
+import { ForgotPasswordComponent } from './component/auth/forgot-password/forgot-password.component'; 
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { ServiceParameterComponent } from './component/rest/service-parameter/se
     ServiceComponent,
     ViewServiceComponent,
     AutoDiscoverComponent,
-    ServiceParameterComponent 
+    ServiceParameterComponent,
+    UserComponent,
+    ClientDetailsComponent,
+    ForgotPasswordComponent 
   ],
   imports: [
     BrowserModule,
