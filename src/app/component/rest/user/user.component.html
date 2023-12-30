@@ -5,12 +5,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Application</h1>
+                    <h1>User</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Application</li>
+                        <li class="breadcrumb-item active">User</li>
                     </ol>
                 </div>
             </div>
@@ -46,20 +46,22 @@
                             <table class="table table-hover text-nowrap">
                                 <thead>
                                     <tr>
-                                        <th>name</th>
-                                        <th>purpose</th>
-                                        <th>Docs URL</th>
-                                        <th>Date</th>
-                                        <th>STATUS</th>
+                                        <th>Emp ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Mobile</th>
+                                        <th>Access</th> 
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr *ngFor="let application of originalApplication;index as i">
-                                        <td>{{application.name}}</td>
-                                        <td>{{application.purpose}}</td>
-                                        <td>{{application.serviceDocUrl}}</td>
-                                        <td>{{subString(application.registerDate)}}</td>
-                                        <td>{{application.status}}</td>
+                                    <tr *ngFor="let user of users;index as i">
+                                        <td>{{user.empId}}</td>
+                                        <td>{{user.name}}</td>
+                                        <td>{{user.email}}</td>
+                                        <td>{{user.mobileNumber}}</td>
+                                        <td>{{user.accessType}}</td>                                        
+                                        <td>{{user.status}}</td>
                                         <td>
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-default">Action</button>
@@ -69,9 +71,7 @@
                                                     <span class="sr-only">Toggle Dropdown</span>
                                                 </button>
                                                 <div class="dropdown-menu" role="menu">
-                                                    <a class="dropdown-item" (click)="view(i)">View</a>
-                                                    <a class="dropdown-item" (click)="openService(application.id)">Services</a>
-                                                    <a class="dropdown-item" (click)="fetch(application.id,application.serviceDocUrl)">DIscover Services</a>                                                    
+                                                    <a class="dropdown-item" (click)="view(i)">View</a>                                                     
                                                     <div class="dropdown-divider"></div>
                                                     <a class="dropdown-item" href="#">Delete</a>
                                                 </div>
@@ -101,41 +101,47 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body table-responsive p-0">
-                            <form [formGroup]='applicationForm' (ngSubmit)="onSubmit()">
+                            <form [formGroup]='userForm' (ngSubmit)="onSubmit()">
 
                                 <div class="card-body">
+
+                                    <div class="form-group">
+                                        <label for="txtName">Emp Id*</label>
+                                        <input type="text" class="form-control" id="txtName" placeholder="Enter Emp Id"
+                                            formControlName="empId">
+                                    </div>
                                     <div class="form-group">
                                         <label for="txtName">Name*</label>
                                         <input type="text" class="form-control" id="txtName" placeholder="Enter name"
                                             formControlName="name">
                                     </div>
-                                    <input type="hidden" id="applicationID" formControlName="id"/>
+                                    <input type="hidden" id="userId" formControlName="id"/>
 
                                     <div class="form-group">
-                                        <label for="txtPurpose">Purpose*</label>
+                                        <label for="txtPurpose">Email*</label>
                                         <input type="text" class="form-control" id="txtPurpose"
-                                            placeholder="Enter purpose" formControlName="purpose">
+                                            placeholder="Enter Email" formControlName="email">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="txtSourceUrl">Source Url*</label>
-                                        <input type="text" class="form-control" id="txtSourceUrl"
-                                            placeholder="Enter sourceUrl" formControlName="sourceUrl">
+                                        <label for="txtSourceUrl">Mobile*</label>
+                                        <input type="tel" class="form-control" id="txtSourceUrl"
+                                            placeholder="Enter mobile number" formControlName="mobileNumber">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="txtServiceDocUrl">Service Doc Url*</label>
-                                        <input type="text" class="form-control" id="txtServiceDocUrl"
-                                            placeholder="Enter service Doc Url" formControlName="serviceDocUrl">
-                                    </div>
+                                        <label for="txtServiceDocUrl">Access Type</label>
+                                            <select class="form-control" id="method" formControlName="accessType"   > 
+                                                <option value="" selected>PLEASE SELECT</option>
+                                                <option *ngFor="let accessType of accesTypes" [value]="accessType"  [disabled] ="isOnBoard" [ngClass]="{'highlighted': accessType === f['accessType'].value}">                                                {{
+                                                    accessType }}</option>
+                                        </select>
+                                        
+                                    </div>                             
+                                     
+                                       
 
-                                    <div class="form-group" *ngIf="!isOnBoard">
-                                        <label for="txtServiceDocUrl">Date</label>
-                                        <input type="text" class="form-control" id="txtServiceDocUrl"
-                                              formControlName="date" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask />
-                                    </div>   
-
-                                    <div class="form-group">
+                                    <!--div class="form-group">
                                         <label for="txtServiceDocUrl">Status</label>
                                             <select class="form-control" id="method" formControlName="status"   > 
                                                 <option value="" selected>PLEASE SELECT</option>
@@ -143,7 +149,7 @@
                                                     httpMethod }}</option>
                                         </select>
                                         
-                                    </div>
+                                    </div-->
 
                                 </div>
                                 <!-- /.card-body -->

@@ -3,7 +3,7 @@
     <!-- /.login-logo -->
     <div class="card card-outline card-primary">
       <div class="card-header text-center">
-        <a href="../../index2.html" class="h1"><b>VoiceBot</b> <i style="font-size: 18px;"> I.E.C.P</i></a>
+        <a routerLink="/main/dashboard" class="h1"><b>VoiceBot</b> <i style="font-size: 18px;"> I.E.C.P</i></a>
       </div>
       <div class="card-body">
         <p class="login-box-msg">Sign in to start your session</p>
@@ -42,7 +42,7 @@
           </div>
         </form>
 
-        <div class="social-auth-links text-center mt-2 mb-3">
+        <div class="social-auth-links text-center mt-2 mb-3" [hidden]="true">
           <a href="#" class="btn btn-block btn-primary">
             <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
           </a>
@@ -53,7 +53,7 @@
         <!-- /.social-auth-links -->
 
         <p class="mb-1">
-          <a href="forgot-password.html">I forgot my password</a>
+          <a routerLink="/auth/forgot">I forgot my password</a>
         </p>
         <p class="mb-0">
           <a routerLink="/auth/signup" class="text-center">Register a new membership</a>
