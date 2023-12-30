@@ -21,15 +21,18 @@ export class ServiceParameterService {
 
 
   onBoard(serviceParameter:ServiceParameter) : Observable<string | any> {
-    const url = this.url.service();     
+    const url = this.url.serviceParametrer();     
     
  
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':'sfsdfklksf-sfdfsf', 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.post<any>(url,serviceParameter,httpOptions)
     .pipe(
-      catchError(this.handleError('OnBoard Service'))
-    )
-  }
+      catchError((error) => {
+        console.error('API Error:', error);
+        return this.handleError('OnBoard Service Parameter')(error);
+      })
+    );
+}
 
   fetchServiceParameter() : Observable<ServiceParameter[] | any>{
     //const url = this.url.service()+'1/'; 
@@ -45,6 +48,16 @@ export class ServiceParameterService {
     );
   }
 
+  editServiceParameter(serviceParameter:ServiceParameter) : Observable<string | any> {
+    const url = this.url.service();     
+    
+ 
+    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':'sfsdfklksf-sfdfsf', 'Content-Type': 'application/json','accept':'application/json' }) };
+    return this.http.put<any>(url,serviceParameter,httpOptions)
+    .pipe(
+      catchError(this.handleError('Edit Service Parameter'))
+    )
+  }
 
   
 

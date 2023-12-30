@@ -29,7 +29,9 @@ export class UrlService {
     return environment.baseEndpoint + "service/parameter/";
   }
 
- 
+  public dashboard():string {
+    return environment.baseEndpoint + "dashboard/";
+  }
 
   public serviceDiscover():string {
     return environment.baseEndpoint + "service/discover/";
