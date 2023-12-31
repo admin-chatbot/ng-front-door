@@ -27,15 +27,17 @@ export class UrlService {
 
   public dashboard():string {
     return environment.baseEndpoint + "dashboard/";
-  }
-
- 
+  } 
 
   public serviceDiscover():string {
     return environment.baseEndpoint + "service/discover/";
   }
   public serviceLoad():string {
     return environment.baseEndpoint + "service/load/";
+  }
+
+  public user():string {
+    return environment.baseEndpoint + "user/";
   }
 
 }
