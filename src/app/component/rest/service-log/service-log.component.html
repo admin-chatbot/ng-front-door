@@ -1,1 +1,104 @@
-<p>service-log works!</p>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Service Log</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Log</li>
+                    </ol>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-12" id="accordion">
+                <div class="card card-primary card-outline" *ngFor="let service of services;index as i">
+                    <a class="d-block w-100" data-toggle="collapse" href="#collapse{{service.id}}">
+                        <div class="card-header">
+                            <h4 class="card-title w-100">
+                                {{i+1}}. {{service.serviceEndpoint}}
+                                <p class="float-sm-right" style="color: black;">{{service.createdTimestamp}}</p>
+                            </h4>
+                        </div>
+                    </a>
+                    <div id="collapse{{service.id}}" class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+                            <div >
+                                <!-- /.card-header -->
+                                <div class="card-body p-0">
+                                    <table class="table  table-hover">
+                                         
+                                        <tbody>
+                                            <tr data-widget="expandable-table" aria-expanded="false">
+
+                                                <td>{{service.method| uppercase}}</td>
+                                                <td>{{service.serviceName }}</td>
+                                                <td>{{service.status | uppercase}}</td>
+                                                <td>Responce - {{service.response}}.</td>
+                                            </tr>
+                                            <tr class="expandable-body">
+                                                <td colspan="5">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                          <div >                                                             
+                                                            <!-- /.card-header -->
+                                                            <div class="card-body table-responsive p-0">
+                                                              <table class="table table-hover text-nowrap">
+                                                                <thead>
+                                                                  <tr>
+                                                                    <th>Name</th>
+                                                                    <th>Description</th>
+                                                                    <th>Required</th>
+                                                                    <th>ParamType</th>
+                                                                    <th>Value</th>
+                                                                   
+                                                                  </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                  <tr *ngFor="let param of service.parameters;index as j">
+                                                                    <td>{{param.name}}</td>
+                                                                    <td>{{param.description}}</td>
+                                                                    <td>
+                                                                        <input type="checkbox" [checked]="param.required"/>
+                                                                    </td>
+                                                                    <td>{{param.id}}</td>
+                                                                    <td>{{param.value}}</td>
+                                                                  </tr>                                                                   
+                                                                </tbody>
+                                                              </table>
+                                                            </div>
+                                                            <!-- /.card-body -->
+                                                          </div>
+                                                          <!-- /.card -->
+                                                        </div>
+                                                      </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.card-body -->
+                            </div>
+                        </div>
+                    </div>
+                </div>   
+                
+                
+
+
+            </div>
+        </div>
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->

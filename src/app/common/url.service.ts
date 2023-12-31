@@ -40,4 +40,8 @@ export class UrlService {
     return environment.baseEndpoint + "user/";
   }
 
+  public serviceLog():string {
+    return environment.baseEndpoint + "service/log/";
+  }
+
 }
