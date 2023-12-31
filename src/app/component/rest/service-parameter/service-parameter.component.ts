@@ -25,9 +25,9 @@ export class ServiceParameterComponent implements OnInit {
   
   serviceParameterForm: FormGroup  ;
   required: boolean[] = [true, false]; // Add more methods as needed
-  type: string[] = ['header','body']
-  paramType: string[] = ['string','int']
-  questionAsked: string[] = ['Yes','No']
+  type: string[] = ['header','body'];
+  paramType: string[] = ['string','int'];
+  questionToGetInput: string[] = [];
   submitted = false;
   dropdownClicked = false;
  
@@ -46,14 +46,16 @@ export class ServiceParameterComponent implements OnInit {
       //this.serviceId=localStorage.getItem('id');
       alert('the service id is'+this.serviceId);
       this.serviceParameterForm = this.formBuilder.group({
-        id: ['0', Validators.required],
+        id: ['0'],
+        serviceId: [this.serviceId, Validators.required],
         description: ['', [Validators.required]],
         required: ['', Validators.required],
         type: ['', Validators.required],
+        in: [''],
         paramType: ['', Validators.required],
         jsonFormat: ['', Validators.required],
         name: ['', Validators.required],
-        questionToGetInput:['', Validators.required]
+        questionToGetInput: [[]],
     });
       
         
@@ -61,7 +63,7 @@ export class ServiceParameterComponent implements OnInit {
       
       
  
-      this.getServiceParmeter();
+      this.getServiceParmeter(this.serviceId);
       
 
       //this.f['responseTypes'].valueChanges.subscribe(v=>{
@@ -77,8 +79,10 @@ export class ServiceParameterComponent implements OnInit {
    
     
     ngOnInit(): void {
-      this.getServiceParmeter();
-  }
+      var dataRecived: any = this.router.getCurrentNavigation()?.extras.state;
+      this.serviceId = dataRecived.id;
+      this.getServiceParmeter(this.serviceId);
+    }
 
     get f() { return this.serviceParameterForm.controls; }
     
@@ -86,15 +90,17 @@ export class ServiceParameterComponent implements OnInit {
       this.isOnboard = false;
       this.submitButtonName = 'Edit';   
       const selectedService = this.originalServiceParameter[i];   
-    
       this.f['id'].setValue(selectedService.id);
+      this.f['serviceId'].setValue(selectedService.serviceId);
       this.f['description'].setValue(selectedService.description);
       this.f['required'].setValue(selectedService.required);
-      this.f['type'].setValue(selectedService.type);
+      this.f['type'].setValue(selectedService.type);     
+      
       this.f['paramType'].setValue(selectedService.paramType);
       this.f['jsonFormat'].setValue(selectedService.jsonFormat);
       this.f['name'].setValue(selectedService.name);
       this.f['questionToGetInput'].setValue(selectedService.questionToGetInput);
+      this.f['in'].setValue(selectedService.type);
     
     
     
@@ -110,8 +116,8 @@ onDropdownClick() {
   this.dropdownClicked = true;
 }
 
-getServiceParmeter(){
-  this.serciceParameterService.fetchServiceParameter()
+getServiceParmeter(serviceId: number){
+  this.serciceParameterService.fetchServiceParameter(serviceId)
     .subscribe(r=>{ 
        
         if (r.errorCode != undefined && r.errorCode != 200) {
@@ -129,14 +135,18 @@ onSubmit() {
     return;
   }
   this.submitted = true;
-  const serviceParameter: ServiceParameter = {} as ServiceParameter;  
+  const serviceParameter: ServiceParameter = {} as ServiceParameter; 
+    var question = this.f['questionToGetInput'].value;  
+    serviceParameter.serviceId = this.f['serviceId'].value;
     serviceParameter.description = this.f['description'].value; 
     serviceParameter.jsonFormat = this.f['jsonFormat'].value; 
     serviceParameter.required = this.f['required'].value; 
     serviceParameter.type= this.f['type'].value; 
-    serviceParameter.paramType = this.f['parmType'].value; 
+    serviceParameter.in= this.f['type'].value; 
+    serviceParameter.paramType = this.f['paramType'].value;
     serviceParameter.name = this.f['name'].value; 
-    serviceParameter.questionToGetInput = this.f['questionToGetInput'].value; 
+    serviceParameter.questionToGetInput =   question.split(',');
+
 
    
 if(this.isOnboard){
@@ -146,6 +156,7 @@ if(this.isOnboard){
         alert('Not able to onboard. Please try again later.');
       } else {
         alert('Successfully onboarded.');
+        this.originalServiceParameter.push(r);
       }
       this.submitted = false;
     },
@@ -162,6 +173,7 @@ if(this.isOnboard){
         alert('Not able to edit. Please try again later.');
       } else {
         alert('Successfully edited.');
+       // this.originalServiceParameter.push(r);
       }
       this.submitted = false;
     },

@@ -11,6 +11,6 @@ export class ServiceParameter {
     in!: string;
     value!: string;
     jsonFormat!: string;
-    questionToGetInput!: string;
+    questionToGetInput!: string [];
     questionAsked!:boolean;
 }

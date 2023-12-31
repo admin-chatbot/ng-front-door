@@ -10,18 +10,20 @@ import { ServiceParameter } from 'src/app/entity/serviceParameters';
 export class ServiceParameterService {
   private handleError: HandleError;
   private token:any;
-  private id:any;
+  private serviceId:any;
   constructor(private http: HttpClient,
     private httpErrorHandler: HttpErrorHandlerService, 
     private url : UrlService) {
       this.handleError = httpErrorHandler.createHandleError('ServiceParameter');
       this.token=localStorage.getItem('token');
-      this.id=localStorage.getItem('id');
+    
   }
 
 
   onBoard(serviceParameter:ServiceParameter) : Observable<string | any> {
-    const url = this.url.serviceParametrer();     
+    
+    const url = this.url.serviceParametrer();   
+    ;     
     
  
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':'sfsdfklksf-sfdfsf', 'Content-Type': 'application/json','accept':'application/json' }) };
@@ -34,12 +36,10 @@ export class ServiceParameterService {
     );
 }
 
-  fetchServiceParameter() : Observable<ServiceParameter[] | any>{
+fetchServiceParameter(serviceId: number): Observable<ServiceParameter[] | any> {
     //const url = this.url.service()+'1/'; 
 
-    //const url = this.url.serviceParametrer()+this.id+'/';   
-    const url = this.url.serviceParametrer()+18+'/';   
-        alert("service parameter url" + url);   
+    const url = this.url.serviceParametrer() + serviceId + '/';   
     
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.get<ServiceParameter[]>(url, httpOptions)
