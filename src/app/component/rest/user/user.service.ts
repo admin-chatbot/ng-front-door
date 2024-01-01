@@ -29,12 +29,22 @@ export class UserService {
     )
   }
 
+  edit(user:User):Observable<User|any>{
+    const url = this.url.user();    
+    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
+    return this.http.put<any>(url,user,httpOptions)
+    .pipe(
+      catchError(this.handleError('Edit User.'))
+    )
+  }
+
+
   list():Observable<User[]|any> {
     const url = this.url.user();   
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.get<User[]>(url, httpOptions)
     .pipe(
-      catchError(this.handleError('list users'))
+      catchError(this.handleError('list users.'))
     );
   }
 
@@ -43,7 +53,7 @@ export class UserService {
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.get<User[]>(url, httpOptions)
     .pipe(
-      catchError(this.handleError('list users'))
+      catchError(this.handleError('list users.'))
     );
   }
   

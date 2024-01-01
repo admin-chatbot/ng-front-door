@@ -73,14 +73,27 @@ export class UserComponent implements OnInit {
           if (res.errorCode != undefined && res.errorCode != 200) { 
             alert('Not able to register. please try again in sometime')           
           } else {
-            alert(res.message)
             if(res.data!=undefined)
               this.users.push(res.data);
           }
           this.submitted = false;
           this.userForm.reset();
         });
-    } else {}
+    } else {
+
+      this.userService.edit(user)
+        .subscribe((res)=>{
+          if (res.errorCode != undefined && res.errorCode != 200) { 
+            alert('Not able to edit. please try again in sometime')           
+          } else {
+            alert('Successfully Edited..');
+            this.fetchByClient(this.clientId);
+          }
+        });
+
+      this.submitted = false;
+      this.userForm.reset();
+    }
 
   }
 

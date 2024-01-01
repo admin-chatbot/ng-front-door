@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError } from 'rxjs';
 import { UrlService } from 'src/app/common/url.service';
-import { Service } from 'src/app/entity/service';
 import { ServiceLog } from 'src/app/entity/serviceLog';
 import { HandleError, HttpErrorHandlerService } from 'src/app/http/http-error-handler.service';
 
