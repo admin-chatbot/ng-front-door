@@ -51,11 +51,12 @@ export class ServiceParameterComponent implements OnInit {
         description: ['', [Validators.required]],
         required: ['', Validators.required],
         type: ['', Validators.required],
-        in: [''],
         paramType: ['', Validators.required],
         jsonFormat: ['', Validators.required],
         name: ['', Validators.required],
         questionToGetInput: [[]],
+        in: ['']
+       
     });
       
         
@@ -94,7 +95,7 @@ export class ServiceParameterComponent implements OnInit {
       this.f['serviceId'].setValue(selectedService.serviceId);
       this.f['description'].setValue(selectedService.description);
       this.f['required'].setValue(selectedService.required);
-      this.f['type'].setValue(selectedService.type);     
+      this.f['type'].setValue(selectedService.type);   
       
       this.f['paramType'].setValue(selectedService.paramType);
       this.f['jsonFormat'].setValue(selectedService.jsonFormat);
@@ -136,7 +137,8 @@ onSubmit() {
   }
   this.submitted = true;
   const serviceParameter: ServiceParameter = {} as ServiceParameter; 
-    var question = this.f['questionToGetInput'].value;  
+    var question = this.f['questionToGetInput'].value; 
+    alert(question) ;    
     serviceParameter.serviceId = this.f['serviceId'].value;
     serviceParameter.description = this.f['description'].value; 
     serviceParameter.jsonFormat = this.f['jsonFormat'].value; 
