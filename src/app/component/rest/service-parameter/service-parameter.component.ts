@@ -42,9 +42,8 @@ export class ServiceParameterComponent implements OnInit {
     private messageService: MessageService,
     private serciceParameterService: ServiceParameterService) {
     var dataRecived : any = this.router.getCurrentNavigation()?.extras.state;
-      this.serviceId=dataRecived.id;
-      //this.serviceId=localStorage.getItem('id');
-      alert('the service id is'+this.serviceId);
+      this.serviceId=dataRecived.id; 
+     
       this.serviceParameterForm = this.formBuilder.group({
         id: ['0'],
         serviceId: [this.serviceId, Validators.required],
@@ -58,23 +57,11 @@ export class ServiceParameterComponent implements OnInit {
         in: ['']
        
     });
-      
-        
-        
-      
-      
  
       this.getServiceParmeter(this.serviceId);
       
 
-      //this.f['responseTypes'].valueChanges.subscribe(v=>{
-       // this.responseType = v;
-      //});
-
-      //this.f['requestTypes'].valueChanges.subscribe(v=>{
-      //  this.requestType = v;
-      //});
-      
+       
 
     }
    
@@ -117,10 +104,11 @@ onDropdownClick() {
   this.dropdownClicked = true;
 }
 
-getServiceParmeter(serviceId: number){
-  this.serciceParameterService.fetchServiceParameter(serviceId)
-    .subscribe(r=>{ 
-       
+
+getServiceParmeter(){
+  this.serciceParameterService.fetchServiceParameter(this.serviceId)
+    .subscribe(r=>{        
+
         if (r.errorCode != undefined && r.errorCode != 200) {
          console.log('error')
         } else {

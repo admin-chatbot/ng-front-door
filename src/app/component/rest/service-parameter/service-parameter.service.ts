@@ -36,10 +36,13 @@ export class ServiceParameterService {
     );
 }
 
-fetchServiceParameter(serviceId: number): Observable<ServiceParameter[] | any> {
+
+  fetchServiceParameter(serviceId:number) : Observable<ServiceParameter[] | any>{
     //const url = this.url.service()+'1/'; 
 
-    const url = this.url.serviceParametrer() + serviceId + '/';   
+    //const url = this.url.serviceParametrer()+this.id+'/';   
+    const url = this.url.serviceParametrer()+serviceId+'/';            
+
     
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.get<ServiceParameter[]>(url, httpOptions)
