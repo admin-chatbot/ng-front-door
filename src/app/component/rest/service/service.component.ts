@@ -4,8 +4,9 @@ import { ServiceService } from './service.service';
 import { MessageService } from 'src/app/http/message.service'; 
 import { ActivatedRoute, Router } from '@angular/router';
 import { Service } from 'src/app/entity/service';
-import { ApplicationService } from '../application/application.service';
-import { Application } from 'src/app/entity/application';
+//import { ApplicationService } from '../application/application.service';
+
+//import { Application } from 'src/app/entity/application';
 
 
 @Component({
@@ -28,14 +29,15 @@ export class ServiceComponent implements OnInit {
   requestTypes: string[] = ['application/json', 'application/xml'];
   submitted = false;
   dropdownClicked = false;
-  applications: Application[] = [];
+  //applications: Application[] = [];
   //service:Service [] = [];
   responseType:string[] = [];
   requestType:string[] = [];
   constructor(private router: Router, private route: ActivatedRoute, 
     private serviceService:ServiceService,private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private applicationService:ApplicationService) {
+    //private ApplicationService:ApplicationService
+    ) {
      
       this.clientId=localStorage.getItem('id'); 
         this.serviceForm = this.formBuilder.group({
