@@ -33,11 +33,20 @@ export class UrlService {
     return environment.baseEndpoint + "dashboard/";
   }
 
+
   public serviceDiscover():string {
     return environment.baseEndpoint + "service/discover/";
   }
   public serviceLoad():string {
     return environment.baseEndpoint + "service/load/";
+  }
+
+  public user():string {
+    return environment.baseEndpoint + "user/";
+  }
+
+  public serviceLog():string {
+    return environment.baseEndpoint + "service/log/";
   }
 
 }
