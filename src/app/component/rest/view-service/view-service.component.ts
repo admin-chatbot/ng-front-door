@@ -4,6 +4,7 @@ import { MessageService } from 'src/app/http/message.service';
 import { ServiceService } from '../service/service.service';
 import {Service} from 'src/app/entity/service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-view-service',
@@ -19,9 +20,12 @@ export class ViewServiceComponent implements OnInit {
   httpMethods: string[] = ['GET', 'POST', 'PUT', 'DELETE']; // Add more methods as needed
   responseTypes: string[] = ['application/json', 'application/xml'];
 
-  constructor(private router: Router, private route: ActivatedRoute, private serviceService:ServiceService,private formBuilder: FormBuilder,private messageService: MessageService) {
+  private notifier: NotifierService;
+
+  constructor(private router: Router, private route: ActivatedRoute, private serviceService:ServiceService,private formBuilder: FormBuilder,
+    private messageService: MessageService,notifier: NotifierService) {
     this.getServices();
-    
+    this.notifier = notifier;
     this.serviceEditForm = this.formBuilder.group({
       method:['',Validators.required],
         endpoint:['http:/client/v1',Validators.required],
@@ -34,6 +38,10 @@ export class ViewServiceComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  public showNotification( type: string, message: string ): void {
+		this.notifier.notify( type, message );
+	}
 
   onSubmit() {}
   getServices(){
