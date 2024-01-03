@@ -59,9 +59,6 @@ export class ServiceParameterComponent implements OnInit {
     });
  
       this.getServiceParmeter(this.serviceId);
-      
-
-       
 
     }
    
@@ -105,8 +102,8 @@ onDropdownClick() {
 }
 
 
-getServiceParmeter(){
-  this.serciceParameterService.fetchServiceParameter(this.serviceId)
+getServiceParmeter(id:number){
+  this.serciceParameterService.fetchServiceParameter(id)
     .subscribe(r=>{        
 
         if (r.errorCode != undefined && r.errorCode != 200) {
