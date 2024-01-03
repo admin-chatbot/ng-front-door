@@ -20,9 +20,10 @@ import { ViewServiceComponent } from './component/rest/view-service/view-service
 import { AutoDiscoverComponent } from './component/rest/auto-discover/auto-discover.component';
 import { ServiceParameterComponent } from './component/rest/service-parameter/service-parameter.component';
 import { UserComponent } from './component/rest/user/user.component';
-import { ClientDetailsComponent } from './component/rest/client-details/client-details.component';
+import { ClientComponent } from './component/rest/client-details/client-details.component';
 import { ForgotPasswordComponent } from './component/auth/forgot-password/forgot-password.component';
 import { ServiceLogComponent } from './component/rest/service-log/service-log.component'; 
+
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import { ServiceLogComponent } from './component/rest/service-log/service-log.co
     AutoDiscoverComponent,
     ServiceParameterComponent,
     UserComponent,
-    ClientDetailsComponent,
+    ClientComponent,
     ForgotPasswordComponent,
     ServiceLogComponent 
   ],
