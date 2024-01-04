@@ -93,6 +93,8 @@ export class UserComponent implements OnInit {
 
       this.submitted = false;
       this.userForm.reset();
+      this.f['status'].setValue( "NEW");
+      this.f['accessType'].setValue( "USER");
     }
 
   }
