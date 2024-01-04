@@ -79,12 +79,16 @@
 
 
                             <div class="card-body">
+                                
+                                
                                 <div class="form-group">
-                                    <label for="applicationId">Application Id</label>                                     
-                                    <input type="text" class="form-control" id="applicationId" placeholder="Enter Application Id" formControlName="applicationId">
-                                   
-                                 
-                                </div>    
+                                    <label for="method">Application Name</label>
+                                    <select class="form-control" id="applicationName" formControlName="applicationName">
+                                        <option *ngFor="let applicationName of applicationNames" [value]="applicationName">{{
+                                            applicationName }}</option>
+                                    </select>
+                                </div>
+
                                 <input type="hidden" class="form-control" id="Id" placeholder="Enter Application Id" formControlName="id">
                                 <div class="form-group">
                                     <label for="name">Service Name</label>
