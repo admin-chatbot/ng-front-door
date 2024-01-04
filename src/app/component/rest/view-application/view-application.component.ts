@@ -25,6 +25,7 @@ export class ViewApplicationComponent implements OnInit {
   clientId:any;
   cancelButtonName = "Clear";
   statusDisabled = "disabled";
+  isDateFieldDisabled: boolean = true;
 
   private notifier: NotifierService;
 
