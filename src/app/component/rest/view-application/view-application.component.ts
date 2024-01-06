@@ -131,7 +131,7 @@ export class ViewApplicationComponent implements OnInit {
         if (r.errorCode != undefined && r.errorCode != 200) { 
           alert('Not able to update. please try again in sometime')           
         } else {
-          alert('Successfully Update Application')
+          this.notifier.notify('success','Successfully Update Application')
           this.getApplications();
         }
         this.submitted = false; 
