@@ -5,6 +5,7 @@ import { DataService } from 'src/app/common/data.service';
 import { User } from 'src/app/entity/user';
 import { MessageService } from 'src/app/http/message.service';
 import { UserService } from './user.service';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-user',
@@ -28,7 +29,8 @@ export class UserComponent implements OnInit {
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     private userService:UserService,
-    private dataService: DataService) { 
+    private dataService: DataService,
+    private notifire:NotifierService) { 
 
       this.clientId = localStorage.getItem('id');
       this.fetchByClient(this.clientId);
@@ -52,7 +54,7 @@ export class UserComponent implements OnInit {
   onSubmit() { 
 
     if (this.userForm.invalid) {       
-      alert('invalid input')
+      this.notifire.notify('error','invalid input')
       return;
     }
     this.submitted = true;
@@ -71,7 +73,7 @@ export class UserComponent implements OnInit {
       this.userService.register(user)
         .subscribe(res=>{
           if (res.errorCode != undefined && res.errorCode != 200) { 
-            alert('Not able to register. please try again in sometime')           
+            this.notifire.notify('error','Not able to register. please try again in sometime')           
           } else {
             if(res.data!=undefined)
               this.users.push(res.data);
@@ -84,9 +86,9 @@ export class UserComponent implements OnInit {
       this.userService.edit(user)
         .subscribe((res)=>{
           if (res.errorCode != undefined && res.errorCode != 200) { 
-            alert('Not able to edit. please try again in sometime')           
+            this.notifire.notify('error','Not able to edit. please try again in sometime')           
           } else {
-            alert('Successfully Edited..');
+            this.notifire.notify('success','Successfully Edited..');
             this.fetchByClient(this.clientId);
           }
         });

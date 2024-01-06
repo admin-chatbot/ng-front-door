@@ -8,6 +8,7 @@ import { MessageService } from 'src/app/http/message.service';
 import { Type } from '@angular/compiler';
 import { SelectedService } from 'src/app/entity/selectedService';
 import { Service } from 'src/app/entity/service';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-service-parameter',
@@ -40,7 +41,8 @@ export class ServiceParameterComponent implements OnInit {
     private serviceParameterService: ServiceParameterService,  // Make sure this is included
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private serciceParameterService: ServiceParameterService) {
+    private serciceParameterService: ServiceParameterService,
+    private notifire:NotifierService) {
     var dataRecived : any = this.router.getCurrentNavigation()?.extras.state;
       this.serviceId=dataRecived.id; 
      
@@ -90,7 +92,7 @@ export class ServiceParameterComponent implements OnInit {
     
     
       // Log the form values after setting them
-      console.log('Form Values After:', this.serviceParameterForm.value);
+      //console.log('Form Values After:', this.serviceParameterForm.value);
     }
   
 
@@ -109,7 +111,7 @@ getServiceParmeter(id:number){
     .subscribe(r=>{        
 
         if (r.errorCode != undefined && r.errorCode != 200) {
-         console.log('error')
+          this.notifire.notify('error','Something went wrong. please try again in sometime') ;  
         } else {
           this.originalServiceParameter = r;
         }
@@ -117,15 +119,14 @@ getServiceParmeter(id:number){
 }
 onSubmit() {  
   alert('submitted');
-  if (this.serviceParameterForm.invalid) { 
-    console.log('Form values:', this.serviceParameterForm.value);
-    alert('invalid input');
+  if (this.serviceParameterForm.invalid) {     
+    this.notifire.notify('error','invalid input');
     return;
   }
   this.submitted = true;
   const serviceParameter: ServiceParameter = {} as ServiceParameter; 
     var question = this.f['questionToGetInput'].value; 
-    alert(question) ;    
+     
     serviceParameter.serviceId = this.f['serviceId'].value;
     serviceParameter.description = this.f['description'].value; 
     serviceParameter.jsonFormat = this.f['jsonFormat'].value; 
@@ -142,16 +143,15 @@ if(this.isOnboard){
   this.serviceParameterService.onBoard(serviceParameter)
     .subscribe((r) => {
       if (r.errorCode != undefined && r.errorCode != 200) {
-        alert('Not able to onboard. Please try again later.');
+        this.notifire.notify('error','Not able to onboard. Please try again later.');
       } else {
-        alert('Successfully onboarded.');
+        this.notifire.notify('success','Successfully onboarded.');
         this.originalServiceParameter.push(r);
       }
       this.submitted = false;
     },
-    (error) => {
-      console.error('API Error:', error);
-      alert('An error occurred while communicating with the API.');
+    (error) => {       
+      this.notifire.notify('error','An error occurred while communicating with the API.');
       this.submitted = false;
     }
   );
@@ -159,16 +159,15 @@ if(this.isOnboard){
   this.serciceParameterService.editServiceParameter(serviceParameter).subscribe(
     (r) => {
       if (r.errorCode != undefined && r.errorCode != 200) {
-        alert('Not able to edit. Please try again later.');
+        this.notifire.notify('error','Not able to edit. Please try again later.');
       } else {
-        alert('Successfully edited.');
+        this.notifire.notify('success','Successfully edited.');
        // this.originalServiceParameter.push(r);
       }
       this.submitted = false;
     },
-    (error) => {
-      console.error('API Error:', error);
-      alert('An error occurred while communicating with the API.');
+    (error) => {       
+      this.notifire.notify('error','An error occurred while communicating with the API.');
       this.submitted = false;
     }
   );

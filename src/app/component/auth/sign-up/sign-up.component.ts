@@ -5,6 +5,7 @@ import { AuthService } from '../auth.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Signup } from 'src/app/entity/signup';
 import { MessageService } from 'src/app/http/message.service';
+import { NotifierService } from 'angular-notifier';
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
@@ -17,17 +18,17 @@ export class SignUpComponent implements OnInit {
   submitted = false;
 
   constructor(private router: Router, private route: ActivatedRoute,private formBuilder: FormBuilder, private messageService: MessageService
-    ,private authService: AuthService) { 
+    ,private authService: AuthService,private notifier:NotifierService) { 
     this.signupForm = this.formBuilder.group({
-        name: ['client32', [Validators.required]],
-        email: ['client32@gmail.com', [Validators.required]], 
-        password:['client@123',Validators.required],
-        retypePassword:['client@123',Validators.required],
-        address: ['mumbai', [Validators.required]],
-        contactNumber: ['9999999999', [Validators.required]], 
-        turnover:['12',Validators.required],
-        employeeCount:['12',Validators.required],
-        gstNumber:['GST1234',Validators.required]
+        name: ['', [Validators.required]],
+        email: ['', [Validators.required]], 
+        password:['',Validators.required],
+        retypePassword:['',Validators.required],
+        address: ['', [Validators.required]],
+        contactNumber: ['', [Validators.required]], 
+        turnover:['',Validators.required],
+        employeeCount:['',Validators.required],
+        gstNumber:['',Validators.required]
       });
   }
 
@@ -37,9 +38,9 @@ export class SignUpComponent implements OnInit {
   }
 
   onSubmit() {
-    alert("clicked")
+    
     if (this.signupForm.invalid) { 
-      alert('All field are mandotery.')
+      this.notifier.notify('error','All field are mandotery.')
       return;
     }
     this.submitted = true;
@@ -55,16 +56,15 @@ export class SignUpComponent implements OnInit {
     signup.employeeCount = this.f['employeeCount'].value;
     signup.gstNumber = this.f['gstNumber'].value;
    
-    alert(JSON.stringify(signup))
+    
 
     this.authService.signup(signup)
     .subscribe(r=>{
       console.log(JSON.stringify(r));
       if (r.errorCode != undefined && r.errorCode != 200) { 
-        alert('Not able to onboard. please try again in sometime')           
+        this.notifier.notify('error','Not able to onboard. please try again in sometime')           
       } else {
-        localStorage.setItem('email',signup.email)
-        
+        localStorage.setItem('email',signup.email)        
         this.router.navigate(['auth/signup-success'])
       }
       this.submitted = false;

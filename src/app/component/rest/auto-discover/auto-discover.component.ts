@@ -7,6 +7,7 @@ import { Service } from 'src/app/entity/service';
 import { SelectedService } from 'src/app/entity/selectedService';
 import { AutoDiscoverServiceRequest } from 'src/app/entity/autoDiscoverServiceRequest';
 import { AutoDiscoverService } from 'src/app/entity/autoDiscoverList';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-auto-discover',
@@ -25,7 +26,7 @@ export class AutoDiscoverComponent implements OnInit {
 
    
 
-  constructor(private router: Router, private route: ActivatedRoute,private messageService: MessageService, private dataService: DataService,private autoDiscover:AutoDIscoverService) { 
+  constructor(private router: Router, private route: ActivatedRoute,private messageService: MessageService, private dataService: DataService,private autoDiscover:AutoDIscoverService,private notification:NotifierService) { 
     var dataRecived : any = this.router.getCurrentNavigation()?.extras.state;
     this.applicationId = dataRecived.applicaionId;
     this.clientId = localStorage.getItem('id'); 
@@ -48,7 +49,7 @@ export class AutoDiscoverComponent implements OnInit {
       }
     }); 
     if(this.selectedServices.length==0){
-      alert('No service is selected.');
+      this.notification.notify('error','No service is selected.');
       return;
     }
 
@@ -57,9 +58,9 @@ export class AutoDiscoverComponent implements OnInit {
     this.autoDiscover.loadService(request)
       .subscribe(res=>{
         if (res.errorCode != undefined && res.errorCode != 200) { 
-          alert('Unable to load. Pleae try in sometime.')
+          this.notification.notify('error','Unable to load. Pleae try in sometime.')
         } else {
-            alert('service loaded successfully.')
+          this.notification.notify('success','service loaded successfully.')
             this.checkBoxList.forEach((ele)=>{
               ele.checked = false;
             });
