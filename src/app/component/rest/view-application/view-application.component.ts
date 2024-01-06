@@ -117,9 +117,9 @@ export class ViewApplicationComponent implements OnInit {
       this.applicationService.onBoard(application)
         .subscribe(r=>{ 
           if (r.errorCode != undefined && r.errorCode != 200) { 
-            alert('Not able to onboard. please try again in sometime')           
-          } else {
-            alert('Successfully on board')
+            this.notifier.notify('error','Not able to onboard. please try again in sometime')           
+          } else {            
+            this.notifier.notify('success','Successfully on board')
             this.originalApplication.push(r);
           }
           this.submitted = false;
@@ -129,7 +129,7 @@ export class ViewApplicationComponent implements OnInit {
       this.applicationService.edit(application)
       .subscribe(r=>{ 
         if (r.errorCode != undefined && r.errorCode != 200) { 
-          alert('Not able to update. please try again in sometime')           
+          this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
         } else {
           this.notifier.notify('success','Successfully Update Application')
           this.getApplications();

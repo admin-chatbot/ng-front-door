@@ -4,6 +4,7 @@ import { ServiceService } from './service.service';
 import { MessageService } from 'src/app/http/message.service'; 
 import { ActivatedRoute, Router } from '@angular/router';
 import { Service } from 'src/app/entity/service';
+import { NotifierService } from 'angular-notifier';
 //import { ApplicationService } from '../application/application.service';
 
 //import { Application } from 'src/app/entity/application';
@@ -37,6 +38,7 @@ export class ServiceComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, 
     private serviceService:ServiceService,private formBuilder: FormBuilder,
     private messageService: MessageService,
+    private notifier:NotifierService
     //private ApplicationService:ApplicationService
     ) {
      
@@ -105,10 +107,9 @@ export class ServiceComponent implements OnInit {
 
 getServices(){
   this.serviceService.fetchService()
-    .subscribe(r=>{ 
-       
+    .subscribe(r=>{        
         if (r.errorCode != undefined && r.errorCode != 200) {
-         console.log('error')
+          this.notifier.notify('error','Error')
         } else {
           this.originalService = r;
         }
@@ -123,9 +124,8 @@ addParameter(serviceId:number){
 
 
   onSubmit() {    
-    if (this.serviceForm.invalid) { 
-      console.log('Form values:', this.serviceForm.value);
-      alert('invalid input')
+    if (this.serviceForm.invalid) {  
+      this.notifier.notify('error','invalid input')
       return;
     }
     this.submitted = true;
@@ -148,15 +148,14 @@ addParameter(serviceId:number){
       this.serviceService.onBoard(service).subscribe(
         (r) => {
           if (r.errorCode != undefined && r.errorCode != 200) {
-            alert('Not able to onboard. Please try again later.');
+            this.notifier.notify('error','Not able to onboard. Please try again later.');
           } else {
-            alert('Successfully onboarded.');
+            this.notifier.notify('success','Successfully onboarded.');
           }
           this.submitted = false;
         },
-        (error) => {
-          console.error('API Error:', error);
-          alert('An error occurred while communicating with the API.');
+        (error) => {           
+          this.notifier.notify('error','An error occurred while communicating with the API.');
           this.submitted = false;
         }
       );
@@ -164,15 +163,14 @@ addParameter(serviceId:number){
       this.serviceService.editService(service).subscribe(
         (r) => {
           if (r.errorCode != undefined && r.errorCode != 200) {
-            alert('Not able to edit. Please try again later.');
+            this.notifier.notify('error','Not able to edit. Please try again later.');
           } else {
-            alert('Successfully edited.');
+            this.notifier.notify('success','Successfully edited.');
           }
           this.submitted = false;
         },
-        (error) => {
-          console.error('API Error:', error);
-          alert('An error occurred while communicating with the API.');
+        (error) => { 
+          this.notifier.notify('error','An error occurred while communicating with the API.');
           this.submitted = false;
         }
       ),()=>{

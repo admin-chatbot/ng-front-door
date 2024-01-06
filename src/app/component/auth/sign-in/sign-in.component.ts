@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Login } from 'src/app/entity/login';
 import { MessageService } from 'src/app/http/message.service';
 import { AuthService } from '../auth.service';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-sign-in',
@@ -17,10 +18,10 @@ export class SignInComponent implements OnInit {
   submitted = false;
 
   constructor(private router: Router, private route: ActivatedRoute,private formBuilder: FormBuilder, private messageService: MessageService
-    ,private authService: AuthService) { 
+    ,private authService: AuthService,private notifier:NotifierService) { 
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required,Validators.email]],
-      password: ['', [Validators.required]]
+      email: ['jitendra.sagoriya@gmail.com', [Validators.required,Validators.email]],
+      password: ['J1tendr@12', [Validators.required]]
     });
   }
 
@@ -31,7 +32,7 @@ export class SignInComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.invalid) { 
-      alert('All field are mandotery.')
+      this.notifier.notify('error','All field are mandotery.')
       return;
     }
     this.submitted = true;
@@ -43,7 +44,7 @@ export class SignInComponent implements OnInit {
     this.authService.login(login)
       .subscribe(r=>{
         if (r.errorCode != undefined && r.errorCode != 200) { 
-          alert("Invalid Username and Password.")           
+          this.notifier.notify('error',"Invalid Username and Password.")           
         } else {          
           localStorage.setItem('isLoggedIn', "true")
           localStorage.setItem('token', r.data.token)  
