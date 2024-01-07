@@ -5,8 +5,6 @@ import { Service } from 'src/app/entity/service';
 import { DashboardService } from '../dashboard/dashboard.service';
 import { Dashboard } from 'src/app/entity/dashboard';
 
-
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -35,10 +33,7 @@ export class DashboardComponent implements OnInit {
   }  
 
   ngOnInit(): void {
-   
+    console.log(this.dashboard);
   }
-
- 
-
 }
 
