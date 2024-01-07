@@ -12,17 +12,20 @@ import { Dashboard } from 'src/app/entity/dashboard';
 export class DashboardService {
 
   private handleError: HandleError;
-  private token:any;  
+  private token:any;
+  private id:any;  
 
   constructor(private http: HttpClient,
     private httpErrorHandler: HttpErrorHandlerService, 
     private url : UrlService) {
       this.handleError = httpErrorHandler.createHandleError('DashboardService');
       this.token = localStorage.getItem('token');
+      this.id=localStorage.getItem('id');
   }
 
   fetchDashboard() : Observable<Dashboard | any>{ 
-    const url = this.url.dashboard();      
+    const url = this.url.dashboard() +this.id+'/';  
+    //const url = this.url.dashboard();
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token,'accept':'application/json' }) };    
     return this.http.get<Dashboard>(url, httpOptions).pipe(
       tap(data => { 

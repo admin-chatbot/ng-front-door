@@ -14,10 +14,12 @@ import { Dashboard } from 'src/app/entity/dashboard';
 })
 export class DashboardComponent implements OnInit {
 
+  clientId:any;
   dashboard: Dashboard = new Dashboard;
   constructor(private router: Router, private route: ActivatedRoute, 
     private messageService: MessageService,
     private dashboardService:DashboardService) { 
+      this.clientId=localStorage.getItem('id'); 
       this.fetchDashboard();  
        
   }
