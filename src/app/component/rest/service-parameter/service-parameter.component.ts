@@ -105,8 +105,8 @@ onDropdownClick() {
 }
 
 
-getServiceParmeter(){
-  this.serciceParameterService.fetchServiceParameter(this.serviceId)
+getServiceParmeter(serviceId:number){
+  this.serciceParameterService.fetchServiceParameter(serviceId)
     .subscribe(r=>{        
 
         if (r.errorCode != undefined && r.errorCode != 200) {
