@@ -20,9 +20,52 @@ import { ViewServiceComponent } from './component/rest/view-service/view-service
 import { AutoDiscoverComponent } from './component/rest/auto-discover/auto-discover.component';
 import { ServiceParameterComponent } from './component/rest/service-parameter/service-parameter.component';
 import { UserComponent } from './component/rest/user/user.component';
-import { ClientDetailsComponent } from './component/rest/client-details/client-details.component';
+import { ClientComponent } from './component/rest/client-details/client-details.component';
 import { ForgotPasswordComponent } from './component/auth/forgot-password/forgot-password.component';
 import { ServiceLogComponent } from './component/rest/service-log/service-log.component'; 
+import { NotifierModule, NotifierOptions } from 'angular-notifier';
+
+const customNotifierOptions: NotifierOptions = {
+  position: {
+		horizontal: {
+			position: 'right',
+			distance: 12
+		},
+		vertical: {
+			position: 'top',
+			distance: 12,
+			gap: 10
+		}
+	},
+  theme: 'material',
+  behaviour: {
+    autoHide: 5000,
+    onClick: 'hide',
+    onMouseover: 'pauseAutoHide',
+    showDismissButton: true,
+    stacking: 4
+  },
+  animations: {
+    enabled: true,
+    show: {
+      preset: 'slide',
+      speed: 300,
+      easing: 'ease'
+    },
+    hide: {
+      preset: 'fade',
+      speed: 300,
+      easing: 'ease',
+      offset: 50
+    },
+    shift: {
+      speed: 300,
+      easing: 'ease'
+    },
+    overlap: 150
+  }
+};
+
 
 @NgModule({
   declarations: [
@@ -42,7 +85,7 @@ import { ServiceLogComponent } from './component/rest/service-log/service-log.co
     AutoDiscoverComponent,
     ServiceParameterComponent,
     UserComponent,
-    ClientDetailsComponent,
+    ClientComponent,
     ForgotPasswordComponent,
     ServiceLogComponent 
   ],
@@ -52,7 +95,7 @@ import { ServiceLogComponent } from './component/rest/service-log/service-log.co
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-
+    NotifierModule.withConfig(customNotifierOptions)
   ],
   providers: [],
   bootstrap: [AppComponent]

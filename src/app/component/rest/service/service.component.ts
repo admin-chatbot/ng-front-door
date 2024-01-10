@@ -25,6 +25,7 @@ export class ServiceComponent implements OnInit {
 
   serviceForm: FormGroup;
   httpMethods: string[] = ['GET', 'POST', 'PUT', 'DELETE']; // Add more methods as needed
+  applicationNames: string[] = ['CST', 'CST1']; 
   responseTypes: string[] = ['application/json', 'application/xml'];
   requestTypes: string[] = ['application/json', 'application/xml'];
   submitted = false;
@@ -40,10 +41,11 @@ export class ServiceComponent implements OnInit {
     ) {
      
       this.clientId=localStorage.getItem('id'); 
+      alert(this.clientId);
         this.serviceForm = this.formBuilder.group({
         id: ['0',Validators.required],
         clientId: [this.clientId, [Validators.required]],
-        applicationId: ['', [Validators.required]],
+        applicationName: ['', [Validators.required]],
         method:['',Validators.required],
         endpoint:['',Validators.required],
         name:['',Validators.required],
@@ -79,7 +81,8 @@ export class ServiceComponent implements OnInit {
       this.service = this.originalService[i];  
       //this.f[this.id].setValue(18)  
       this.f['id'].setValue( this.service.id)
-      this.f['applicationId'].setValue( this.service.applicationId)
+       
+      //this.f['applicationId'].setValue( this.service.applicationId)
       this.f['keyword'].setValue(this.service.keyword);  
       this.f['name'].setValue( this.service.name)
       this.f['summary'].setValue( this.service.summary);
@@ -129,7 +132,7 @@ addParameter(serviceId:number){
     const service: Service = {} as Service;  
     service.id = this.f['id'].value;   
     service.clientId  = this.clientId;
-    service.applicationId  = this.f['applicationId'].value;
+    //service.applicationId  = this.f['applicationId'].value;
     service.endpoint = this.f['endpoint'].value; 
     service.method = this.f['method'].value;   
     service.name = this.f['name'].value    

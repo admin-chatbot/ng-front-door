@@ -93,6 +93,8 @@ export class UserComponent implements OnInit {
 
       this.submitted = false;
       this.userForm.reset();
+      this.f['status'].setValue( "NEW");
+      this.f['accessType'].setValue( "USER");
     }
 
   }
@@ -103,8 +105,7 @@ export class UserComponent implements OnInit {
     this.cancelButtonName = "Cancel";
     this.heading = "EDIT USER";
 
-    var user : User = {} as User;
-    user = this.users[id]
+    var user : User = {} as User; 
     this.f['id'].setValue(user.id );
     this.f['name'].setValue(user.name );
     this.f['accessType'].setValue(user.accessType );

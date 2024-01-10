@@ -5,6 +5,7 @@ import { ApplicationService } from '../application/application.service';
 import { Application } from 'src/app/entity/application';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from 'src/app/common/data.service';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-view-application',
@@ -24,14 +25,18 @@ export class ViewApplicationComponent implements OnInit {
   clientId:any;
   cancelButtonName = "Clear";
   statusDisabled = "disabled";
+  isDateFieldDisabled: boolean = true;
 
-  status: string[] = ['NEW', 'REVIEW', 'ACTIVE','HOLD', 'INACTIVE']; // Add more methods as needed
+  private notifier: NotifierService;
+
+  status: string[] = ['NEW', 'REVIEW', 'ACTIVE','HOLD', 'INACTIVE']; 
 
 
-  constructor(private router: Router, private route: ActivatedRoute, private applicationService:ApplicationService,private formBuilder: FormBuilder,private messageService: MessageService,private dataService: DataService) {
+  constructor(private router: Router, private route: ActivatedRoute, private applicationService:ApplicationService,
+    private formBuilder: FormBuilder,private messageService: MessageService,private dataService: DataService,notifier: NotifierService) {
    
     this.getApplications();      
-    
+    this.notifier = notifier;
     this.applicationForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
       name: ['', [Validators.required]],
@@ -92,8 +97,8 @@ export class ViewApplicationComponent implements OnInit {
   }
 
   onSubmit() {    
-    if (this.applicationForm.invalid) {           
-      alert("All field are required.")
+    if (this.applicationForm.invalid) {   
+      this.notifier.notify( "error", "All field are required." );
       return;
     }
     this.submitted = true;
