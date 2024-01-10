@@ -12,6 +12,10 @@ export class UrlService {
     return environment.baseEndpoint + "application/";
   }
 
+  public client():string {
+    return environment.baseEndpoint + "client/";
+  }
+
   public login():string {
     return environment.baseEndpoint + "auth/login/";
   }
