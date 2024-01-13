@@ -100,12 +100,14 @@ export class UserComponent implements OnInit {
   }
 
   view(id:number) {
+    alert(id)
     this.submitButtonName = "Edit";
     this.isOnBoard = false;
     this.cancelButtonName = "Cancel";
     this.heading = "EDIT USER";
 
-    var user : User = {} as User; 
+    var user : User = {} as User;
+    user = this.users[id] ;
     this.f['id'].setValue(user.id );
     this.f['name'].setValue(user.name );
     this.f['accessType'].setValue(user.accessType );
