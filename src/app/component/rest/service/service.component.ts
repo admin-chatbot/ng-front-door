@@ -126,7 +126,7 @@ getServices(){
         if (r.errorCode != undefined && r.errorCode != 200) {
           this.notifier.notify('error','Error')
         } else {
-          this.originalService = r;
+          this.originalService = r.data;
         }
     });
 }
