@@ -60,7 +60,7 @@ export class ViewApplicationComponent implements OnInit {
   getApplications(){
     this.applicationService.fetchApplication()
       .subscribe(r=>{ 
-          this.originalApplication = r;
+          this.originalApplication = r.data;
       });
   }
 
