@@ -59,8 +59,7 @@ export class SignUpComponent implements OnInit {
     
 
     this.authService.signup(signup)
-    .subscribe(r=>{
-      console.log(JSON.stringify(r));
+    .subscribe(r=>{ 
       if (r.errorCode != undefined && r.errorCode != 200) { 
         this.notifier.notify('error','Not able to onboard. please try again in sometime')           
       } else {

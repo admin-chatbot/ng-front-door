@@ -32,7 +32,7 @@ export class HttpErrorHandlerService {
 
     return (error: HttpErrorResponse): Observable<Response> => {
       // TODO: send the error to remote logging infrastructure
-      //console.error(error); // log to console instead    
+      console.error(error); // log to console instead    
 
 
       const message = (error.error instanceof ErrorEvent) ?
@@ -48,7 +48,7 @@ export class HttpErrorHandlerService {
       //responce.errorMessage = error.message; 
      
       result.errorCode = error.status;
-      //result.errorMessage  = error.error.message;
+      result.errorMessage  = error.error.message;
       // Let the app keep running by returning a safe result.
       return of( result );
     };

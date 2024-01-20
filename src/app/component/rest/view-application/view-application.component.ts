@@ -1,11 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'src/app/http/message.service';
 import { ApplicationService } from '../application/application.service';
 import { Application } from 'src/app/entity/application';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from 'src/app/common/data.service';
-import { NotifierService } from 'angular-notifier';
+import { NotifierService } from 'angular-notifier'; 
+import { ApplicationSearch } from 'src/app/entity/applicationSearch';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { map } from 'rxjs';
+
+export interface ApplicationSearchData {
+  purpose: string;
+  name: string;
+  toDate: string;
+  fromDate: string;
+  status: string;
+}
+
 
 @Component({
   selector: 'app-view-application',
@@ -26,6 +38,12 @@ export class ViewApplicationComponent implements OnInit {
   cancelButtonName = "Clear";
   statusDisabled = "disabled";
   isDateFieldDisabled: boolean = true;
+  searchKeyword: string = ""
+
+  appSearch:ApplicationSearch = {} as ApplicationSearch;
+  searchMap = new Map();
+  isSearch:boolean = false;
+
 
   private notifier: NotifierService;
 
@@ -33,7 +51,7 @@ export class ViewApplicationComponent implements OnInit {
 
 
   constructor(private router: Router, private route: ActivatedRoute, private applicationService:ApplicationService,
-    private formBuilder: FormBuilder,private messageService: MessageService,private dataService: DataService,notifier: NotifierService) {
+    private formBuilder: FormBuilder,private messageService: MessageService,private dataService: DataService,notifier: NotifierService, private dialog: MatDialog) {
    
     this.getApplications();      
     this.notifier = notifier;
@@ -50,6 +68,27 @@ export class ViewApplicationComponent implements OnInit {
     this.clientId=localStorage.getItem('id');
    }
 
+   remove(field:string){ 
+    alert(field)
+   }
+
+   openDialog(): void {
+    const dialogRef = this.dialog.open(ApplicationSearchDialog, {
+      width: '350px',
+      data: this.appSearch
+    });
+
+    dialogRef.afterClosed().subscribe(r => {
+      console.log('The dialog was closed');
+      if(r!=undefined){
+        alert(JSON.stringify(r));
+        this.appSearch = r;
+        this.searchMap = new Map(Object.entries(r));
+        this.isSearch = true;
+      }
+    });
+  }
+
    get f() { return this.applicationForm.controls; }
 
   ngOnInit(): void {
@@ -60,7 +99,7 @@ export class ViewApplicationComponent implements OnInit {
   getApplications(){
     this.applicationService.fetchApplication()
       .subscribe(r=>{ 
-          this.originalApplication = r;
+          this.originalApplication = r.data;
       });
   }
 
@@ -96,6 +135,10 @@ export class ViewApplicationComponent implements OnInit {
     this.f['status'].setValue( "NEW")
   }
 
+  search() {
+    alert(this.searchKeyword)
+  }
+
   onSubmit() {    
     if (this.applicationForm.invalid) {   
       this.notifier.notify( "error", "All field are required." );
@@ -115,15 +158,15 @@ export class ViewApplicationComponent implements OnInit {
     
     if(this.isOnBoard) {
       this.applicationService.onBoard(application)
-        .subscribe(r=>{ 
+        .subscribe(r=>{  
           if (r.errorCode != undefined && r.errorCode != 200) { 
-            this.notifier.notify('error','Not able to onboard. please try again in sometime')           
-          } else {            
-            this.notifier.notify('success','Successfully on board')
-            this.originalApplication.push(r);
-          }
-          this.submitted = false;
-          this.applicationForm.reset();
+            this.notifier.notify('error',r.errorMessage)           
+          } else {                 
+              this.notifier.notify('success',r.message);
+              this.originalApplication.push(r.data);
+              this.submitted = false;
+              this.applicationForm.reset();
+          }          
         });
     } else {
       this.applicationService.edit(application)
@@ -150,6 +193,56 @@ export class ViewApplicationComponent implements OnInit {
     return "";
   }
 
+  
 
+
+
+}
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  template:`<h2 mat-dialog-title>Search</h2>
+  <div  style="width: 100%;">
+     
+    <mat-form-field style="width: 300px;">
+      <input matInput [(ngModel)]="data.name" placeholder="Name"/>      
+    </mat-form-field>
+
+    <mat-form-field style="width: 300px;">
+      <input matInput   [(ngModel)]="data.purpose" placeholder="Purpose"/>      
+    </mat-form-field>
+
+    <mat-form-field style="width: 300px;">
+      <input matInput [(ngModel)]="data.status" placeholder="Status"/>      
+    </mat-form-field>
+
+    <mat-form-field style="width: 300px;">
+      <input matInput [matDatepicker]="pickerStart" placeholder="Choose start date">
+      <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+      <mat-datepicker #pickerStart></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field style="width: 300px;">
+      <input matInput [matDatepicker]="pickerEnd" placeholder="Choose end date">
+      <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+      <mat-datepicker #pickerEnd></mat-datepicker>
+    </mat-form-field>
+
+    
+
+  </div>
+  <div mat-dialog-actions> 
+    <button class="btn btn-primary" mat-button [mat-dialog-close]="data" cdkFocusInitial>Search</button>
+  </div>`
+})
+export class ApplicationSearchDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<ApplicationSearchDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: ApplicationSearchData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 
 }

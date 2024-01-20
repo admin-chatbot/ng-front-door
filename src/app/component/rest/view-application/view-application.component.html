@@ -26,15 +26,15 @@
                 <div class="col-8">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"></h3>
+                            <h3 class="card-title" *ngIf="isSearch">
+                                Filters -   <i *ngFor="let search of searchMap | keyvalue">  {{search.key | uppercase}} : {{search.value}}&nbsp;&nbsp;<i class="fas fa-times" style="cursor:pointer;" (click)="remove(search.key)"></i> </i> 
+                            `</h3>
 
                             <div class="card-tools">
-                                <div class="input-group input-group-sm" style="width: 150px;">
-                                    <input type="text" name="table_search" class="form-control float-right"
-                                        placeholder="Search">
-
+                                <div class="input-group input-group-sm">
+                                    
                                     <div class="input-group-append">
-                                        <button type="submit" class="btn btn-default">
+                                        <button type="submit" class="btn btn-default" (click)="openDialog()">
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </div>
@@ -46,14 +46,14 @@
                             <table class="table table-hover text-nowrap">
                                 <thead>
                                     <tr>
-                                        <th>name</th>
-                                        <th>purpose</th>
+                                        <th>Name</th>
+                                        <th>Purpose</th>
                                         <th>Docs URL</th>
                                         <th>Date</th>
-                                        <th>STATUS</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody> 
                                     <tr *ngFor="let application of originalApplication;index as i">
                                         <td>{{application.name}}</td>
                                         <td>{{application.purpose}}</td>
@@ -70,8 +70,11 @@
                                                 </button>
                                                 <div class="dropdown-menu" role="menu">
                                                     <a class="dropdown-item" (click)="view(i)">View</a>
-                                                    <a class="dropdown-item" (click)="openService(application.id)">Services</a>
-                                                    <a class="dropdown-item" (click)="fetch(application.id,application.serviceDocUrl)">DIscover Services</a>                                                    
+                                                    <a class="dropdown-item"
+                                                        (click)="openService(application.id)">Services</a>
+                                                    <a class="dropdown-item"
+                                                        (click)="fetch(application.id,application.serviceDocUrl)">DIscover
+                                                        Services</a>
                                                     <div class="dropdown-divider"></div>
                                                     <a class="dropdown-item" href="#">Delete</a>
                                                 </div>
@@ -88,6 +91,11 @@
                 </div>
 
                 <div class="col-4">
+
+
+                     
+
+
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title"> {{heading}}</h3>
@@ -109,7 +117,7 @@
                                         <input type="text" class="form-control" id="txtName" placeholder="Enter name"
                                             formControlName="name">
                                     </div>
-                                    <input type="hidden" id="applicationID" formControlName="id"/>
+                                    <input type="hidden" id="applicationID" formControlName="id" />
 
                                     <div class="form-group">
                                         <label for="txtPurpose">Purpose*</label>
@@ -132,27 +140,32 @@
                                     <div class="form-group" *ngIf="!isOnBoard">
                                         <label for="txtServiceDocUrl">Date</label>
                                         <input type="text" class="form-control" id="txtServiceDocUrl"
-                                               formControlName="date" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask
-                                               [attr.disabled]="isDateFieldDisabled ? true : null" />
-                                    </div>  
+                                            formControlName="date" data-inputmask-alias="datetime"
+                                            data-inputmask-inputformat="dd/mm/yyyy" data-mask
+                                            [attr.disabled]="isDateFieldDisabled ? true : null" />
+                                    </div>
 
                                     <div class="form-group">
                                         <label for="txtServiceDocUrl">Status*</label>
-                                            <select class="form-control" id="method" formControlName="status"   > 
-                                                <option value="" selected>PLEASE SELECT</option>
-                                                <option *ngFor="let httpMethod of status" [value]="httpMethod"  [disabled] ="isOnBoard" [ngClass]="{'highlighted': httpMethod === f['status'].value}">                                                {{
-                                                    httpMethod }}</option>
+                                        <select class="form-control" id="method" formControlName="status">
+                                            <option value="" selected>PLEASE SELECT</option>
+                                            <option *ngFor="let httpMethod of status" [value]="httpMethod"
+                                                [disabled]="isOnBoard"
+                                                [ngClass]="{'highlighted': httpMethod === f['status'].value}"> {{
+                                                httpMethod }}</option>
                                         </select>
-                                        
+
                                     </div>
 
                                 </div>
                                 <!-- /.card-body -->
 
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary" [disabled]="submitted">{{submitButtonName}}</button>
+                                    <button type="submit" class="btn btn-primary"
+                                        [disabled]="submitted">{{submitButtonName}}</button>
                                     &nbsp;&nbsp;
-                                    <button type="button" class="btn btn-danger"  (click)="clear()"> {{cancelButtonName}}</button>
+                                    <button type="button" class="btn btn-danger" (click)="clear()">
+                                        {{cancelButtonName}}</button>
                                 </div>
                             </form>
 

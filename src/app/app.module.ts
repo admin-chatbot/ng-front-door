@@ -12,7 +12,7 @@ import { ApplicationComponent } from './component/rest/application/application.c
 import { PageNotFoundComponent } from './component/rest/page-not-found/page-not-found.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
-import { ViewApplicationComponent } from './component/rest/view-application/view-application.component';
+import { ApplicationSearchDialog, ViewApplicationComponent } from './component/rest/view-application/view-application.component';
 import { BillingComponent } from './component/rest/billing/billing.component'; 
 import { SignupSuccessComponent } from './component/auth/signup-success/signup-success.component';
 import { ServiceComponent } from './component/rest/service/service.component';
@@ -24,6 +24,21 @@ import { ClientComponent } from './component/rest/client-details/client-details.
 import { ForgotPasswordComponent } from './component/auth/forgot-password/forgot-password.component';
 import { ServiceLogComponent } from './component/rest/service-log/service-log.component'; 
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatInputModule} from '@angular/material/input'; 
+import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+//import { 
+ // MatToolbarModule, 
+  //MatButtonModule,
+  //MatSidenavModule,
+  //MatIconModule,
+  //MatListModule ,
+  //MatStepperModule
+//} from '@angular/material';
+ 
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -87,7 +102,8 @@ const customNotifierOptions: NotifierOptions = {
     UserComponent,
     ClientComponent,
     ForgotPasswordComponent,
-    ServiceLogComponent 
+    ServiceLogComponent,
+    ApplicationSearchDialog
   ],
   imports: [
     BrowserModule,
@@ -95,7 +111,13 @@ const customNotifierOptions: NotifierOptions = {
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    NotifierModule.withConfig(customNotifierOptions)
+    NotifierModule.withConfig(customNotifierOptions),
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]
