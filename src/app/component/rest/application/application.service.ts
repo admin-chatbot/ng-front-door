@@ -50,6 +50,15 @@ export class ApplicationService {
     );
   }
 
+  fetchApplicationByClient(id:number) : Observable<Application[] | any>{
+      const url = this.url.application()+id+"/";   
+      const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
+      return this.http.get<Application[]>(url, httpOptions)
+      .pipe(
+        catchError(this.handleError('applicationList'))
+      );
+  }
+
 
 
   

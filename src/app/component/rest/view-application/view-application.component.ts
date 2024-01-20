@@ -27,6 +27,9 @@ export interface ApplicationSearchData {
 export class ViewApplicationComponent implements OnInit {
 
   originalApplication: Application[] = [];
+
+
+
   applicationForm: FormGroup;
   application = {} as Application;
   submitted:boolean = false;
@@ -37,8 +40,7 @@ export class ViewApplicationComponent implements OnInit {
   clientId:any;
   cancelButtonName = "Clear";
   statusDisabled = "disabled";
-  isDateFieldDisabled: boolean = true;
-  searchKeyword: string = ""
+  isDateFieldDisabled: boolean = true; 
 
   appSearch:ApplicationSearch = {} as ApplicationSearch;
   searchMap = new Map();
@@ -66,25 +68,34 @@ export class ViewApplicationComponent implements OnInit {
     });
 
     this.clientId=localStorage.getItem('id');
+
+    
    }
 
    remove(field:string){ 
-    alert(field)
+    if(this.searchMap.has(field)) {
+      this.searchMap.delete(field);
+    }
+    this.appSearch = Object.fromEntries(this.searchMap);
+    
+    if(this.searchMap.size == 0) {
+      this.isSearch = false;
+    }
    }
 
    openDialog(): void {
     const dialogRef = this.dialog.open(ApplicationSearchDialog, {
-      width: '350px',
+      width: '380px',
       data: this.appSearch
     });
 
     dialogRef.afterClosed().subscribe(r => {
       console.log('The dialog was closed');
-      if(r!=undefined){
-        alert(JSON.stringify(r));
+      if(r!=undefined){ 
         this.appSearch = r;
         this.searchMap = new Map(Object.entries(r));
         this.isSearch = true;
+        this.appSearch = {} as ApplicationSearch;
       }
     });
   }
@@ -135,9 +146,7 @@ export class ViewApplicationComponent implements OnInit {
     this.f['status'].setValue( "NEW")
   }
 
-  search() {
-    alert(this.searchKeyword)
-  }
+  
 
   onSubmit() {    
     if (this.applicationForm.invalid) {   
@@ -204,9 +213,21 @@ export class ViewApplicationComponent implements OnInit {
   template:`<h2 mat-dialog-title>Search</h2>
   <div  style="width: 100%;">
      
-    <mat-form-field style="width: 300px;">
+  <div class="example-form-fields">
+     <!--mat-form-field style="width: 40px;">
+        <mat-select >
+          <mat-option>-- None --</mat-option>
+          <mat-option value="eq">Equal</mat-option>
+          <mat-option value="like">Like</mat-option>
+          <mat-option value="like">Not Equal</mat-option>
+          <mat-option value="like">Start With</mat-option>
+        </mat-select> 
+      </mat-form-field-->
+      &nbsp;&nbsp;
+    <mat-form-field style="width: 220px;">      
       <input matInput [(ngModel)]="data.name" placeholder="Name"/>      
     </mat-form-field>
+  </div>
 
     <mat-form-field style="width: 300px;">
       <input matInput   [(ngModel)]="data.purpose" placeholder="Purpose"/>      
@@ -217,15 +238,15 @@ export class ViewApplicationComponent implements OnInit {
     </mat-form-field>
 
     <mat-form-field style="width: 300px;">
-      <input matInput [matDatepicker]="pickerStart" placeholder="Choose start date">
+      <input matInput [matDatepicker]="pickerStart" [(ngModel)]="data.toDate" placeholder="Choose start date">
       <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
       <mat-datepicker #pickerStart></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field style="width: 300px;">
-      <input matInput [matDatepicker]="pickerEnd" placeholder="Choose end date">
-      <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-      <mat-datepicker #pickerEnd></mat-datepicker>
+      <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="data.fromDate" placeholder="Choose end date">
+      <mat-datepicker-toggle matSuffix [for]="pickerEnd" ></mat-datepicker-toggle>
+      <mat-datepicker #pickerEnd ></mat-datepicker>
     </mat-form-field>
 
     
