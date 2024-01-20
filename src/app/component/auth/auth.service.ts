@@ -30,8 +30,7 @@ export class AuthService {
   }
 
   signup(signup:Signup) : Observable<string | any> {
-    const url = this.url.signup();
-    alert(JSON.stringify(signup));
+    const url = this.url.signup(); 
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.post<any>(url,signup,httpOptions)
     .pipe(

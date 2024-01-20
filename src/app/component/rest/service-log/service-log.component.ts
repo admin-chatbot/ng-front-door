@@ -32,10 +32,7 @@ export class ServiceLogComponent implements OnInit {
           alert('Something went wrong.Please try in sometime.')
          } else {
           this.services = r.data;
-          console.log(JSON.stringify(this.services));
-         }
-          
+         }          
       })
   }
-
 }
