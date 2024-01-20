@@ -1,4 +1,3 @@
-[6:33 PM] Jitendra Sagoriya
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -16,22 +15,20 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
- 
+
     <section class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-8">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title" *ngIf="isSearch">
-                                Filters -   <i *ngFor="let search of searchMap | keyvalue">  {{search.key | uppercase}} : {{search.value}}&nbsp;&nbsp;<i class="fas fa-times" style="cursor:pointer;" (click)="remove(search.key)"></i> </i> 
-                            `</h3>
- 
+                            <h3 class="card-title"></h3>
+
                             <div class="card-tools">
                                 <div class="input-group input-group-sm">
- 
+
                                     <div class="input-group-append">
-                                        <button type="submit" class="btn btn-default" (click)="openDialog()">
+                                        <button type="submit" class="btn btn-default">
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </div>
@@ -42,7 +39,7 @@
                             <table class="table table-hover text-nowrap">
                                 <thead>
                                     <tr>
- 
+
                                         <th>Name</th>
                                         <th>Endpoint</th>
                                         <th>Method</th>
@@ -53,10 +50,10 @@
                                         <td>{{ service.name }}</td>
                                         <td>{{ service.endpoint }}</td>
                                         <td>{{ service.method }}</td>
- 
- 
- 
- 
+
+
+
+
                                         <td>
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-default">Action</button>
@@ -91,11 +88,11 @@
                         <!-- /.card-header -->
                         <!-- form start -->
                         <form [formGroup]='serviceForm' (ngSubmit)="onSubmit()">
- 
- 
+
+
                             <div class="card-body">
- 
- 
+
+
                                 <div class="form-group">
                                     <label for="method">Application Name</label>
                                     <select class="form-control" id="applicationName" formControlName="applicationName">
@@ -103,7 +100,7 @@
                                             application.name }}</option>
                                     </select>
                                 </div>
- 
+
                                 <input type="hidden" class="form-control" id="Id" placeholder="Enter Application Id"
                                     formControlName="id">
                                 <div class="form-group">
@@ -111,25 +108,25 @@
                                     <input type="text" class="form-control" id="name" placeholder="Enter Service Name"
                                         formControlName="name">
                                 </div>
- 
+
                                 <div class="form-group">
                                     <label for="summary">Service Summary</label>
                                     <input type="text" class="form-control" id="summary" placeholder="Summary"
                                         formControlName="summary">
                                 </div>
- 
+
                                 <div class="form-group">
                                     <label for="endpoint">Service Endpoint</label>
                                     <input type="text" class="form-control" id="endPoint"
                                         placeholder="Enter Service Endpoint" formControlName="endpoint">
                                 </div>
- 
+
                                 <div class="form-group">
                                     <label for="keyword">Search Keyword</label>
                                     <input type="text" class="form-control" id="txtKeyword" placeholder="Enter keyword"
                                         formControlName="keyword">
                                 </div>
- 
+
                                 <div class="form-group">
                                     <label for="method">HTTP Method</label>
                                     <select class="form-control" id="method" formControlName="method">
@@ -137,9 +134,9 @@
                                             httpMethod }}</option>
                                     </select>
                                 </div>
- 
- 
- 
+
+
+
                                 <div class="form-group">
                                     <label for="RequestType">Request Type</label>
                                     <select class="form-control" id="RequestType" formControlName="requestTypes"
@@ -152,7 +149,7 @@
                                         </option>
                                     </select>
                                 </div>
- 
+
                                 <div class="form-group">
                                     <label for="ResponseType">Response Type</label>
                                     <select class="form-control" id="ResponseType" formControlName="responseTypes"
@@ -165,26 +162,26 @@
                                         </option>
                                     </select>
                                 </div>
- 
- 
+
+
                                 <div class="form-group">
                                     <label for="botResponseTemplate">Bot Response Template</label>
                                     <input type="text" class="form-control" id="botResponseTemplate"
                                         placeholder="Enter Bot Response Template" formControlName="botResponseTemplate">
                                 </div>
- 
+
                                 <div class="form-group">
                                     <label for="response Schema">Response Schema</label>
                                     <input type="text" class="form-control" id="responseSchema"
                                         placeholder="Enter Response Schema" formControlName="responseSchema">
                                 </div>
- 
+
                             </div>
- 
- 
- 
+
+
+
                             <!-- /.card-body -->
- 
+
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary"
                                     [disabled]="submitted">{{submitButtonName}}</button>
