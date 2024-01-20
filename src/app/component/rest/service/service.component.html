@@ -84,8 +84,8 @@
                                 <div class="form-group">
                                     <label for="method">Application Name</label>
                                     <select class="form-control" id="applicationName" formControlName="applicationName">
-                                        <option *ngFor="let applicationName of applicationNames" [value]="applicationName">{{
-                                            applicationName }}</option>
+                                        <option *ngFor="let application of applications" [value]="application.id">{{
+                                            application.name }}</option>
                                     </select>
                                 </div>
 

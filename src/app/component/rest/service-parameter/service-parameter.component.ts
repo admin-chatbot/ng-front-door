@@ -106,14 +106,16 @@ onDropdownClick() {
 
 
 
+
 getServiceParmeter(id:number){
   this.serciceParameterService.fetchServiceParameter(id) 
+
     .subscribe(r=>{        
 
         if (r.errorCode != undefined && r.errorCode != 200) {
           this.notifire.notify('error','Something went wrong. please try again in sometime') ;  
         } else {
-          this.originalServiceParameter = r;
+          this.originalServiceParameter = r.data;
         }
     });
 }

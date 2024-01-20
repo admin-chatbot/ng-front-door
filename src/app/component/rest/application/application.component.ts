@@ -56,7 +56,7 @@ export class ApplicationComponent implements OnInit {
 
     this.applicationService.onBoard(application)
       .subscribe(r=>{ 
-        if (r.errorCode != undefined && r.errorCode != 200) { 
+        if (r.errorCode != undefined && r.errorCode != 200) {  
           alert('Not able to onboard. please try again in sometime')           
         } else {
           alert('Successfully on board')

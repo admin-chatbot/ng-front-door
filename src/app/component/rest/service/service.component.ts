@@ -4,7 +4,10 @@ import { ServiceService } from './service.service';
 import { MessageService } from 'src/app/http/message.service'; 
 import { ActivatedRoute, Router } from '@angular/router';
 import { Service } from 'src/app/entity/service';
+import { Application } from 'src/app/entity/application';
+
 import { NotifierService } from 'angular-notifier';
+
 //import { ApplicationService } from '../application/application.service';
 
 //import { Application } from 'src/app/entity/application';
@@ -26,12 +29,12 @@ export class ServiceComponent implements OnInit {
 
   serviceForm: FormGroup;
   httpMethods: string[] = ['GET', 'POST', 'PUT', 'DELETE']; // Add more methods as needed
-  applicationNames: string[] = ['CST', 'CST1']; 
+  //applicationNames: string[] = []; 
   responseTypes: string[] = ['application/json', 'application/xml'];
   requestTypes: string[] = ['application/json', 'application/xml'];
   submitted = false;
   dropdownClicked = false;
-  //applications: Application[] = [];
+  applications: Application[] = [];
   //service:Service [] = [];
   responseType:string[] = [];
   requestType:string[] = [];
@@ -42,7 +45,9 @@ export class ServiceComponent implements OnInit {
     //private ApplicationService:ApplicationService
     ) {
      
-      this.clientId=localStorage.getItem('id');  
+ 
+      this.clientId=localStorage.getItem('id'); 
+ 
         this.serviceForm = this.formBuilder.group({
         id: ['0',Validators.required],
         clientId: [this.clientId, [Validators.required]],
@@ -83,7 +88,7 @@ export class ServiceComponent implements OnInit {
       //this.f[this.id].setValue(18)  
       this.f['id'].setValue( this.service.id)
        
-      //this.f['applicationId'].setValue( this.service.applicationId)
+      this.f['applicationName'].setValue( this.service.applicationId)
       this.f['keyword'].setValue(this.service.keyword);  
       this.f['name'].setValue( this.service.name)
       this.f['summary'].setValue( this.service.summary);
@@ -98,6 +103,18 @@ export class ServiceComponent implements OnInit {
   } 
 
   ngOnInit(): void {
+    this.fetchApplicationNames();
+  }
+  fetchApplicationNames() {
+    this.serviceService.fetchApplicationNames(this.clientId)
+      .subscribe(
+        (response) => {
+          this.applications = response.data;
+        },
+        (error) => {
+          console.error('Error fetching application names:', error);
+        }
+      );
   }
   onDropdownClick() {
     this.dropdownClicked = true;
@@ -110,7 +127,7 @@ getServices(){
         if (r.errorCode != undefined && r.errorCode != 200) {
           this.notifier.notify('error','Error')
         } else {
-          this.originalService = r;
+          this.originalService = r.data;
         }
     });
 }
@@ -131,7 +148,7 @@ addParameter(serviceId:number){
     const service: Service = {} as Service;  
     service.id = this.f['id'].value;   
     service.clientId  = this.clientId;
-    //service.applicationId  = this.f['applicationId'].value;
+    service.applicationId  = this.f['applicationName'].value;
     service.endpoint = this.f['endpoint'].value; 
     service.method = this.f['method'].value;   
     service.name = this.f['name'].value    

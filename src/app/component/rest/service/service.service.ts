@@ -53,5 +53,21 @@ export class ServiceService {
     )
   }
   
+  fetchApplicationNames(clientId: string): Observable<string[] | any> {
+    const url = this.url.application() + clientId +'/' ; // Adjust the API endpoint accordingly
+  
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'X-AUTH-LOG-HEADER': this.token,
+        'Content-Type': 'application/json',
+        'accept': 'application/json'
+      })
+    };
+  
+    return this.http.get<string[]>(url, httpOptions)
+      .pipe(
+        catchError(this.handleError('Fetch Application Names'))
+      );
+  }
 
 }
