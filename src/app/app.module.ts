@@ -15,11 +15,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApplicationSearchDialog, ViewApplicationComponent } from './component/rest/view-application/view-application.component';
 import { BillingComponent } from './component/rest/billing/billing.component'; 
 import { SignupSuccessComponent } from './component/auth/signup-success/signup-success.component';
-import { ServiceComponent } from './component/rest/service/service.component';
+import { ServiceComponent, ServiceSearchDialog } from './component/rest/service/service.component';
 import { ViewServiceComponent } from './component/rest/view-service/view-service.component'; 
 import { AutoDiscoverComponent } from './component/rest/auto-discover/auto-discover.component';
-import { ServiceParameterComponent } from './component/rest/service-parameter/service-parameter.component';
-import { UserComponent } from './component/rest/user/user.component';
+import { ServiceParameterComponent, ServiceParameterSearchDialog } from './component/rest/service-parameter/service-parameter.component';
+import { UserComponent, UserSearchDialog } from './component/rest/user/user.component';
 import { ClientComponent } from './component/rest/client-details/client-details.component';
 import { ForgotPasswordComponent } from './component/auth/forgot-password/forgot-password.component';
 import { ServiceLogComponent } from './component/rest/service-log/service-log.component'; 
@@ -103,7 +103,11 @@ const customNotifierOptions: NotifierOptions = {
     ClientComponent,
     ForgotPasswordComponent,
     ServiceLogComponent,
-    ApplicationSearchDialog
+    ApplicationSearchDialog,
+    ServiceSearchDialog,
+    UserSearchDialog,
+    ServiceParameterSearchDialog
+    
   ],
   imports: [
     BrowserModule,

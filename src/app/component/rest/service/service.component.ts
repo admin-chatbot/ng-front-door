@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, InjectionToken, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiceService } from './service.service';
 import { MessageService } from 'src/app/http/message.service'; 
 import { ActivatedRoute, Router } from '@angular/router';
 import { Service } from 'src/app/entity/service';
 import { Application } from 'src/app/entity/application';
+import { ServiceSearch } from 'src/app/entity/serviceSearch';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+
 
 import { NotifierService } from 'angular-notifier';
 
@@ -12,6 +15,11 @@ import { NotifierService } from 'angular-notifier';
 
 //import { Application } from 'src/app/entity/application';
 
+export interface ServiceSearchData { 
+  name: string;
+  endPoint: string;
+  method: string; 
+}
 
 @Component({
   selector: 'app-service',
@@ -38,10 +46,15 @@ export class ServiceComponent implements OnInit {
   //service:Service [] = [];
   responseType:string[] = [];
   requestType:string[] = [];
+  
+   servSearch:ServiceSearch = {} as ServiceSearch;
+   searchMap = new Map();
+   isSearch:boolean = false;
+
   constructor(private router: Router, private route: ActivatedRoute, 
     private serviceService:ServiceService,private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private notifier:NotifierService
+    private notifier:NotifierService,private dialog: MatDialog
     //private ApplicationService:ApplicationService
     ) {
      
@@ -62,6 +75,8 @@ export class ServiceComponent implements OnInit {
         requestTypes: [[]],
         responseTypes: [[]],
       });
+
+      
       
 
       this.getServices();    
@@ -77,7 +92,22 @@ export class ServiceComponent implements OnInit {
 
     }
 
-    
+    openDialog(): void {
+      const dialogRef = this.dialog.open(ServiceSearchDialog, {
+        width: '350px',
+        data: this.servSearch
+      });
+  
+      dialogRef.afterClosed().subscribe(r => {
+        console.log('The dialog was closed');
+        if(r!=undefined){
+          alert(JSON.stringify(r));
+          this.servSearch = r;
+          this.searchMap = new Map(Object.entries(r));
+          this.isSearch = true;
+        }
+      });
+    }
 
     get f() { return this.serviceForm.controls; }
     
@@ -136,7 +166,9 @@ addParameter(serviceId:number){
   this.router.navigate(['main/parameter'],{ state: { id: serviceId } }) ;
 }
  
-
+remove(field:string){ 
+  alert(field)
+ }
 
 
   onSubmit() {    
@@ -197,3 +229,43 @@ addParameter(serviceId:number){
     
     
   }}
+
+
+
+  
+  
+
+  @Component({
+    selector: 'dialog-overview-example-dialog',
+    template:`<h2 mat-dialog-title>Search</h2>
+    <div  style="width: 100%;">
+       
+      <mat-form-field style="width: 300px;">
+        <input matInput [(ngModel)]="data.name" placeholder="Name"/>      
+      </mat-form-field>
+  
+      <mat-form-field style="width: 300px;">
+        <input matInput   [(ngModel)]="data.method" placeholder="Method"/>      
+      </mat-form-field>
+  
+      <mat-form-field style="width: 300px;">
+        <input matInput [(ngModel)]="data.endPoint" placeholder="EndPoint"/>      
+      </mat-form-field>  
+      
+  
+    </div>
+    <div mat-dialog-actions> 
+      <button class="btn btn-primary" mat-button [mat-dialog-close]="data" cdkFocusInitial>Search</button>
+    </div>`
+  })
+  export class ServiceSearchDialog {
+
+    constructor(
+      public dialogRef: MatDialogRef<ServiceSearchDialog>,
+      @Inject(MAT_DIALOG_DATA) public data: ServiceSearchData) {}
+  
+    onNoClick(): void {
+      this.dialogRef.close();
+    }
+  
+  }
