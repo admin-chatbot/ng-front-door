@@ -9,6 +9,7 @@ import { NotifierService } from 'angular-notifier';
 import { ApplicationSearch } from 'src/app/entity/applicationSearch';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { map } from 'rxjs';
+import { CommonService } from 'src/app/services/common.service';
 
 export interface ApplicationSearchData {
   purpose: string;
@@ -49,11 +50,15 @@ export class ViewApplicationComponent implements OnInit {
 
   private notifier: NotifierService;
 
-  status: string[] = ['NEW', 'REVIEW', 'ACTIVE','HOLD', 'INACTIVE']; 
+  
 
 
   constructor(private router: Router, private route: ActivatedRoute, private applicationService:ApplicationService,
-    private formBuilder: FormBuilder,private messageService: MessageService,private dataService: DataService,notifier: NotifierService, private dialog: MatDialog) {
+    private formBuilder: FormBuilder,private messageService: MessageService,
+    private dataService: DataService,notifier: NotifierService, private dialog: MatDialog,
+    public commonService:CommonService
+    
+    ) {
    
     this.getApplications();      
     this.notifier = notifier;
@@ -214,36 +219,55 @@ export class ViewApplicationComponent implements OnInit {
   <div  style="width: 100%;">
      
   <div class="example-form-fields">
-     <!--mat-form-field style="width: 40px;">
-        <mat-select >
-          <mat-option>-- None --</mat-option>
-          <mat-option value="eq">Equal</mat-option>
-          <mat-option value="like">Like</mat-option>
-          <mat-option value="like">Not Equal</mat-option>
-          <mat-option value="like">Start With</mat-option>
+     <mat-form-field style="width: 100px;">
+        <mat-select>
+           
+          <mat-option *ngFor="let stringOperation of this.commonService.stringFilterOperations"  value="stringOperation.value">{{stringOperation.key | uppercase}}</mat-option> 
         </mat-select> 
-      </mat-form-field-->
+      </mat-form-field>
       &nbsp;&nbsp;
-    <mat-form-field style="width: 220px;">      
+    <mat-form-field style="width: 210px;">      
       <input matInput [(ngModel)]="data.name" placeholder="Name"/>      
     </mat-form-field>
   </div>
 
-    <mat-form-field style="width: 300px;">
+  <div class="example-form-fields">
+    <mat-form-field style="width: 100px;">
+        <mat-select > 
+          <mat-option *ngFor="let stringOperation of this.commonService.stringFilterOperations" value="stringOperation.value">{{stringOperation.key | uppercase}}</mat-option> 
+        </mat-select> 
+    </mat-form-field>
+      &nbsp;&nbsp;
+
+    <mat-form-field style="width: 210px;">
       <input matInput   [(ngModel)]="data.purpose" placeholder="Purpose"/>      
     </mat-form-field>
+  </div>
 
-    <mat-form-field style="width: 300px;">
-      <input matInput [(ngModel)]="data.status" placeholder="Status"/>      
+  <div class="example-form-fields">
+    <mat-form-field style="width: 100px;">
+        <mat-select > 
+          <mat-option *ngFor="let stringOperation of this.commonService.stringFilterOperations" value="stringOperation.value">{{stringOperation.key | uppercase}}</mat-option> 
+        </mat-select> 
     </mat-form-field>
+      &nbsp;&nbsp;
+    <mat-form-field style="width: 210px;">        
+       
+        <mat-select > 
+          <mat-option *ngFor="let s of this.commonService.status" value="s">{{s | uppercase}}</mat-option> 
+        </mat-select> 
+    
+      
+    </mat-form-field>
+  </div>
 
-    <mat-form-field style="width: 300px;">
+    <mat-form-field style="width: 320px;">
       <input matInput [matDatepicker]="pickerStart" [(ngModel)]="data.toDate" placeholder="Choose start date">
       <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
       <mat-datepicker #pickerStart></mat-datepicker>
     </mat-form-field>
 
-    <mat-form-field style="width: 300px;">
+    <mat-form-field style="width: 320px;">
       <input matInput [matDatepicker]="pickerEnd" [(ngModel)]="data.fromDate" placeholder="Choose end date">
       <mat-datepicker-toggle matSuffix [for]="pickerEnd" ></mat-datepicker-toggle>
       <mat-datepicker #pickerEnd ></mat-datepicker>
@@ -260,10 +284,11 @@ export class ApplicationSearchDialog {
 
   constructor(
     public dialogRef: MatDialogRef<ApplicationSearchDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: ApplicationSearchData) {}
+    @Inject(MAT_DIALOG_DATA) public data: ApplicationSearchData,public commonService:CommonService) {}
 
   onNoClick(): void {
     this.dialogRef.close();
   }
+  selectedStringOption = this.commonService.stringFilterOperations[0].value;
 
 }
