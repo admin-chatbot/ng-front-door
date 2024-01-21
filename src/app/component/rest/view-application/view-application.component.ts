@@ -59,8 +59,10 @@ export class ViewApplicationComponent implements OnInit {
     public commonService:CommonService
     
     ) {
+      this.clientId=localStorage.getItem('id');
    
-    this.getApplications();      
+    this.getApplicationsByClientIdAndStatus(this.clientId,"ACTIVE") ;
+         
     this.notifier = notifier;
     this.applicationForm = this.formBuilder.group({
       id: ['0', [Validators.required]],
@@ -72,7 +74,7 @@ export class ViewApplicationComponent implements OnInit {
       status:['NEW',Validators.required]
     });
 
-    this.clientId=localStorage.getItem('id');
+   
 
     
    }
@@ -114,6 +116,13 @@ export class ViewApplicationComponent implements OnInit {
 
   getApplications(){
     this.applicationService.fetchApplication()
+      .subscribe(r=>{ 
+          this.originalApplication = r.data;
+      });
+  }
+
+  getApplicationsByClientIdAndStatus(id:number,status:string){
+    this.applicationService.fetchApplicationByClientAndStatus(id,status)
       .subscribe(r=>{ 
           this.originalApplication = r.data;
       });
@@ -219,45 +228,23 @@ export class ViewApplicationComponent implements OnInit {
   <div  style="width: 100%;">
      
   <div class="example-form-fields">
-     <mat-form-field style="width: 100px;">
-        <mat-select>
-           
-          <mat-option *ngFor="let stringOperation of this.commonService.stringFilterOperations"  value="stringOperation.value">{{stringOperation.key | uppercase}}</mat-option> 
-        </mat-select> 
-      </mat-form-field>
-      &nbsp;&nbsp;
-    <mat-form-field style="width: 210px;">      
+      
+    <mat-form-field style="width: 320px;">      
       <input matInput [(ngModel)]="data.name" placeholder="Name"/>      
     </mat-form-field>
   </div>
 
   <div class="example-form-fields">
-    <mat-form-field style="width: 100px;">
-        <mat-select > 
-          <mat-option *ngFor="let stringOperation of this.commonService.stringFilterOperations" value="stringOperation.value">{{stringOperation.key | uppercase}}</mat-option> 
-        </mat-select> 
-    </mat-form-field>
-      &nbsp;&nbsp;
-
-    <mat-form-field style="width: 210px;">
+     <mat-form-field style="width: 320px;">
       <input matInput   [(ngModel)]="data.purpose" placeholder="Purpose"/>      
     </mat-form-field>
   </div>
 
-  <div class="example-form-fields">
-    <mat-form-field style="width: 100px;">
-        <mat-select > 
-          <mat-option *ngFor="let stringOperation of this.commonService.stringFilterOperations" value="stringOperation.value">{{stringOperation.key | uppercase}}</mat-option> 
-        </mat-select> 
-    </mat-form-field>
-      &nbsp;&nbsp;
-    <mat-form-field style="width: 210px;">        
-       
-        <mat-select > 
+  <div class="example-form-fields">     
+    <mat-form-field style="width: 320px;"> 
+        <mat-select> 
           <mat-option *ngFor="let s of this.commonService.status" value="s">{{s | uppercase}}</mat-option> 
-        </mat-select> 
-    
-      
+        </mat-select>       
     </mat-form-field>
   </div>
 
