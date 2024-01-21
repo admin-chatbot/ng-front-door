@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 //import { ServiceParameter } from '../service-parameter/service-parameter.service';
 import { ServiceParameterService } from '../service-parameter/service-parameter.service'
@@ -9,6 +9,14 @@ import { Type } from '@angular/compiler';
 import { SelectedService } from 'src/app/entity/selectedService';
 import { Service } from 'src/app/entity/service';
 import { NotifierService } from 'angular-notifier';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ServiceParameterSearch } from 'src/app/entity/serviceParameterSearch';
+
+export interface ServiceParameterSearchData { 
+  name: string;
+  description: string;
+  required: string; 
+}
 
 @Component({
   selector: 'app-service-parameter',
@@ -31,6 +39,10 @@ export class ServiceParameterComponent implements OnInit {
   questionToGetInput: string[] = [];
   submitted = false;
   dropdownClicked = false;
+
+  servParameterSearch:ServiceParameterSearch = {} as ServiceParameterSearch;
+   searchMap = new Map();
+   isSearch:boolean = false;
  
   //service:Service [] = [];
   //responseType:string[] = [];
@@ -42,7 +54,7 @@ export class ServiceParameterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     private serciceParameterService: ServiceParameterService,
-    private notifire:NotifierService) {
+    private notifire:NotifierService,private dialog: MatDialog) {
     var dataRecived : any = this.router.getCurrentNavigation()?.extras.state;
       this.serviceId=dataRecived.id; 
      
@@ -71,6 +83,23 @@ export class ServiceParameterComponent implements OnInit {
       this.getServiceParmeter(this.serviceId);
     }
 
+
+    openDialog(): void {
+      const dialogRef = this.dialog.open(ServiceParameterSearchDialog, {
+        width: '350px',
+        data: this.servParameterSearch
+      });
+  
+      dialogRef.afterClosed().subscribe(r => {
+        console.log('The dialog was closed');
+        if(r!=undefined){
+          alert(JSON.stringify(r));
+          this.servParameterSearch = r;
+          this.searchMap = new Map(Object.entries(r));
+          this.isSearch = true;
+        }
+      });
+    }
     get f() { return this.serviceParameterForm.controls; }
     
     view(i: number) {
@@ -105,7 +134,9 @@ onDropdownClick() {
 
 
 
-
+remove(field:string){ 
+  alert(field)
+ }
 
 getServiceParmeter(id:number){
   this.serciceParameterService.fetchServiceParameter(id) 
@@ -178,4 +209,41 @@ if(this.isOnboard){
 
  
     
-}}
+}
+
+}
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  template:`<h2 mat-dialog-title>Search</h2>
+  <div  style="width: 100%;">
+     
+    <mat-form-field style="width: 300px;">
+      <input matInput [(ngModel)]="data.name" placeholder="Name"/>      
+    </mat-form-field>
+
+    <mat-form-field style="width: 300px;">
+      <input matInput   [(ngModel)]="data.description" placeholder="Method"/>      
+    </mat-form-field>
+
+    <mat-form-field style="width: 300px;">
+      <input matInput [(ngModel)]="data.required" placeholder="EndPoint"/>      
+    </mat-form-field>  
+    
+
+  </div>
+  <div mat-dialog-actions> 
+    <button class="btn btn-primary" mat-button [mat-dialog-close]="data" cdkFocusInitial>Search</button>
+  </div>`
+})
+export class ServiceParameterSearchDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<ServiceParameterSearchDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: ServiceParameterSearch) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+}
