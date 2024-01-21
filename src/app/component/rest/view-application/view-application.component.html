@@ -150,7 +150,7 @@
                                         <label for="txtServiceDocUrl">Status*</label>
                                         <select class="form-control" id="method" formControlName="status">
                                             <option value="" selected>PLEASE SELECT</option>
-                                            <option *ngFor="let httpMethod of status" [value]="httpMethod"
+                                            <option *ngFor="let httpMethod of commonService.status" [value]="httpMethod"
                                                 [disabled]="isOnBoard"
                                                 [ngClass]="{'highlighted': httpMethod === f['status'].value}"> {{
                                                 httpMethod }}</option>

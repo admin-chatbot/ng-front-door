@@ -7,12 +7,8 @@ import { Service } from 'src/app/entity/service';
 import { Application } from 'src/app/entity/application';
 import { ServiceSearch } from 'src/app/entity/serviceSearch';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-
-
 import { NotifierService } from 'angular-notifier';
-
 //import { ApplicationService } from '../application/application.service';
-
 //import { Application } from 'src/app/entity/application';
 
 export interface ServiceSearchData { 
