@@ -1,11 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/common/data.service';
 import { User } from 'src/app/entity/user';
 import { MessageService } from 'src/app/http/message.service';
 import { UserService } from './user.service';
+import { UserSearch } from 'src/app/entity/userSearch';
 import { NotifierService } from 'angular-notifier';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+
+export interface UserSearchData { 
+  empId: string;
+    name: string;
+    email: string;
+    mobile: string;
+    access: string;
+    status: string;
+}
+
 
 @Component({
   selector: 'app-user',
@@ -24,13 +36,15 @@ export class UserComponent implements OnInit {
   accesTypes: string[] = ['ADMIN', 'USER']; 
   clientId!:any;
   status: string[] = ['NEW', 'REVIEW', 'ACTIVE','HOLD', 'INACTIVE']; // Add more methods as needed
-
+  usrSearch:UserSearch = {} as UserSearch;
+  searchMap = new Map();
+  isSearch:boolean = false;
   constructor(private router: Router, private route: ActivatedRoute, 
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     private userService:UserService,
     private dataService: DataService,
-    private notifire:NotifierService) { 
+    private notifire:NotifierService,private dialog: MatDialog) { 
 
       this.clientId = localStorage.getItem('id');
       this.fetchByClient(this.clientId);
@@ -45,7 +59,22 @@ export class UserComponent implements OnInit {
         empId:['',Validators.required]
       });
     }
-
+    openDialog(): void {
+      const dialogRef = this.dialog.open(UserSearchDialog, {
+        width: '350px',
+        data: this.usrSearch
+      });
+  
+      dialogRef.afterClosed().subscribe(r => {
+        console.log('The dialog was closed');
+        if(r!=undefined){
+          alert(JSON.stringify(r));
+          this.usrSearch = r;
+          this.searchMap = new Map(Object.entries(r));
+          this.isSearch = true;
+        }
+      });
+    }
 
   get f() { return this.userForm.controls; }
   ngOnInit(): void {
@@ -133,6 +162,10 @@ export class UserComponent implements OnInit {
       });
   }
 
+  remove(field:string){ 
+    alert(field)
+   }
+
   clear(){
     if(!this.isOnBoard) {
       this.submitButtonName = "On Board";
@@ -143,6 +176,53 @@ export class UserComponent implements OnInit {
     this.userForm.reset();
     this.f['status'].setValue( "NEW");
     this.f['accessType'].setValue( "USER")
+  }
+
+  
+
+}
+
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  template:`<h2 mat-dialog-title>Search</h2>
+  <div  style="width: 100%;">
+     
+   
+
+    <mat-form-field style="width: 300px;">
+      <input matInput   [(ngModel)]="data.empId" placeholder="Method"/>      
+    </mat-form-field>
+    <mat-form-field style="width: 300px;">
+      <input matInput [(ngModel)]="data.name" placeholder="Name"/>      
+    </mat-form-field>
+
+    <mat-form-field style="width: 300px;">
+      <input matInput [(ngModel)]="data.email" placeholder="Email"/>      
+    </mat-form-field>  
+    <mat-form-field style="width: 300px;">
+      <input matInput [(ngModel)]="data.mobile" placeholder="Mobile"/>      
+    </mat-form-field> 
+    <mat-form-field style="width: 300px;">
+      <input matInput [(ngModel)]="data.access" placeholder="Access"/>      
+    </mat-form-field>
+    <mat-form-field style="width: 300px;">
+      <input matInput [(ngModel)]="data.status" placeholder="Status"/>      
+    </mat-form-field>
+    
+
+  </div>
+  <div mat-dialog-actions> 
+    <button class="btn btn-primary" mat-button [mat-dialog-close]="data" cdkFocusInitial>Search</button>
+  </div>`
+})
+export class UserSearchDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<UserSearchDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: UserSearchData) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }
