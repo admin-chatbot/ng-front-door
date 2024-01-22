@@ -4,6 +4,8 @@ import { Observable, catchError } from 'rxjs';
 import { UrlService } from 'src/app/common/url.service';
 import { Application } from 'src/app/entity/application';
 import {  HandleError, HttpErrorHandlerService } from '../../../http/http-error-handler.service'
+import { ApplicationSearch } from 'src/app/entity/applicationSearch';
+import { ApiResponce } from 'src/app/entity/apiResponce';
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +61,14 @@ export class ApplicationService {
       );
   }
 
+  search(applicationSearchRequest:ApplicationSearch) :Observable<ApiResponce | any> {
+    const url = this.url.application()+"search/";   
+    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
+    return this.http.post<ApiResponce>(url,applicationSearchRequest,httpOptions)
+    .pipe(
+      catchError(this.handleError('Search'))
+    );
+  }
 
 
   
