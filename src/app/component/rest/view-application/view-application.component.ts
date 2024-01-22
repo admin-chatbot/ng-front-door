@@ -83,10 +83,22 @@ export class ViewApplicationComponent implements OnInit {
     if(this.searchMap.has(field)) {
       this.searchMap.delete(field);
     }
-    this.appSearch = Object.fromEntries(this.searchMap);
+    this.appSearch = Object.fromEntries(this.searchMap);   
+    this.appSearch.clientId = this.clientId;
+
     
     if(this.searchMap.size == 0) {
+      this.getApplicationsByClientIdAndStatus(this.clientId,"ACTIVE");
       this.isSearch = false;
+    } else {
+      this.applicationService.search(this.appSearch)
+          .subscribe(res=>{
+            if (res.errorCode != undefined && res.errorCode != 200) { 
+              this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
+            } else {
+              this.originalApplication = res.data; 
+            }           
+          }); 
     }
    }
 
@@ -100,9 +112,16 @@ export class ViewApplicationComponent implements OnInit {
       console.log('The dialog was closed');
       if(r!=undefined){ 
         this.appSearch = r;
+        this.applicationService.search(this.appSearch)
+          .subscribe(res=>{
+            if (res.errorCode != undefined && res.errorCode != 200) { 
+              this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
+            } else {
+              this.originalApplication = res.data; 
+            }           
+          });
         this.searchMap = new Map(Object.entries(r));
-        this.isSearch = true;
-        this.appSearch = {} as ApplicationSearch;
+        this.isSearch = true; 
       }
     });
   }
@@ -170,6 +189,8 @@ export class ViewApplicationComponent implements OnInit {
     this.submitted = true;
     const application: Application = {} as Application;
     
+     
+
     application.name = this.f['name'].value;
     application.purpose  = this.f['purpose'].value;
     application.sourceUrl = this.f['sourceUrl'].value;
@@ -198,11 +219,12 @@ export class ViewApplicationComponent implements OnInit {
           this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
         } else {
           this.notifier.notify('success','Successfully Update Application')
-          this.getApplications();
+          this.getApplicationsByClientIdAndStatus(this.clientId,"ACTIVE");
         }
-        this.submitted = false; 
+         
       });
     }    
+    this.submitted = false;
   }
 
   openService(applicationId:number) {
@@ -242,8 +264,8 @@ export class ViewApplicationComponent implements OnInit {
 
   <div class="example-form-fields">     
     <mat-form-field style="width: 320px;"> 
-        <mat-select> 
-          <mat-option *ngFor="let s of this.commonService.status" value="s">{{s | uppercase}}</mat-option> 
+        <mat-select [(ngModel)]="data.status"> 
+          <mat-option *ngFor="let s of this.commonService.status" value="{{s}}">{{s | uppercase}}</mat-option> 
         </mat-select>       
     </mat-form-field>
   </div>

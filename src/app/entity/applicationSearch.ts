@@ -4,4 +4,5 @@ export class ApplicationSearch {
     toDate!: string;
     fromDate!: string;
     status!: string;
+    clientId!:number;
   }
