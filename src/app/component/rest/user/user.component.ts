@@ -26,6 +26,7 @@ export interface UserSearchData {
 })
 export class UserComponent implements OnInit {
 
+  originalUser: User[] = [];
   submitted:boolean = false;
   userForm:FormGroup;
   users:User[] = []
@@ -48,6 +49,7 @@ export class UserComponent implements OnInit {
 
       this.clientId = localStorage.getItem('id');
       this.fetchByClient(this.clientId);
+      this.getUsersByClientIdAndStatus(this.clientId,"ACTIVE") ;
 
       this.userForm = this.formBuilder.group({
         id: ['0', [Validators.required]],
@@ -148,6 +150,13 @@ export class UserComponent implements OnInit {
     this.f['status'].setValue(user.status ); 
   }
 
+  getUsersByClientIdAndStatus(id:number,status:string){
+    this.userService.fetchUserByClientAndStatus(id,status)
+      .subscribe(r=>{ 
+          this.originalUser = r.data;
+      });
+  } 
+
   fetch() { 
     this.userService.list()
       .subscribe((res)=>{        
@@ -181,6 +190,8 @@ export class UserComponent implements OnInit {
   
 
 }
+
+
 
 @Component({
   selector: 'dialog-overview-example-dialog',
