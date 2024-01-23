@@ -109,6 +109,7 @@ export class ViewApplicationComponent implements OnInit {
       if(r!=undefined){ 
         this.appSearch = r;
         alert('searching');
+        alert(JSON.stringify(this.appSearch));
         this.applicationService.search(this.appSearch)
           .subscribe(res=>{
             if (res.errorCode != undefined && res.errorCode != 200) { 

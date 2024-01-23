@@ -83,6 +83,7 @@ export class UserComponent implements OnInit {
         if(r!=undefined){ 
           this.usrSearch = r;
           alert('searching');
+          alert(JSON.stringify(this.usrSearch));
           this.userService.search(this.usrSearch)
             .subscribe(res=>{
               if (res.errorCode != undefined && res.errorCode != 200) { 
