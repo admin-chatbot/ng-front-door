@@ -72,11 +72,7 @@ export class ViewApplicationComponent implements OnInit {
       serviceDocUrl:['',Validators.required],
       date:[''],
       status:['NEW',Validators.required]
-    });
-
-   
-
-    
+    });     
    }
 
    remove(field:string){ 
@@ -112,6 +108,7 @@ export class ViewApplicationComponent implements OnInit {
       console.log('The dialog was closed');
       if(r!=undefined){ 
         this.appSearch = r;
+        alert('searching');
         this.applicationService.search(this.appSearch)
           .subscribe(res=>{
             if (res.errorCode != undefined && res.errorCode != 200) { 
@@ -237,11 +234,6 @@ export class ViewApplicationComponent implements OnInit {
     }
     return "";
   }
-
-  
-
-
-
 }
 
 @Component({

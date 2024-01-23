@@ -60,7 +60,7 @@ export class UserService {
   }
 
   fetchUserByClientAndStatus(id:number,status:string) : Observable<User[] | any>{
-    const url = this.url.application()+"byClient/"+id+"/status/"+status;   
+    const url = this.url.user()+"byClient/"+id+"/status/"+status;   
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.get<User[]>(url, httpOptions)
     .pipe(
@@ -69,7 +69,8 @@ export class UserService {
 }
 
 search(userSearchRequest:UserSearch) :Observable<ApiResponce | any> {
-  const url = this.url.application()+"search/";   
+  const url = this.url.user()+"search/";   
+  alert(this.url.user()+"search/");
   const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
   return this.http.post<ApiResponce>(url,userSearchRequest,httpOptions)
   .pipe(
