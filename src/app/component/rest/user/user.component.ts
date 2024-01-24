@@ -82,9 +82,9 @@ export class UserComponent implements OnInit {
         console.log('The dialog was closed');
         if(r!=undefined){ 
           this.usrSearch = r;
-          alert('searching');
+          
           this.usrSearch.clientId = this.clientId;
-          alert(JSON.stringify(this.usrSearch));
+          
           this.userService.search(this.usrSearch)
             .subscribe(res=>{
               if (res.errorCode != undefined && res.errorCode != 200) { 

@@ -70,7 +70,6 @@ export class UserService {
 
 search(userSearchRequest:UserSearch) :Observable<ApiResponce | any> {
   const url = this.url.user()+"search/";   
-  alert(this.url.user()+"search/");
   const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
   return this.http.post<ApiResponce>(url,userSearchRequest,httpOptions)
   .pipe(
