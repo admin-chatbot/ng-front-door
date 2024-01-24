@@ -83,6 +83,7 @@ export class UserComponent implements OnInit {
         if(r!=undefined){ 
           this.usrSearch = r;
           alert('searching');
+          this.usrSearch.clientId = this.clientId;
           alert(JSON.stringify(this.usrSearch));
           this.userService.search(this.usrSearch)
             .subscribe(res=>{
