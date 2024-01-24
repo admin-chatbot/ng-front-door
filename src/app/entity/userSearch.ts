@@ -1,5 +1,6 @@
 export class UserSearch {
     
+    clientId!: string;
     empId!: string;
     name!: string;
     email!: string;
