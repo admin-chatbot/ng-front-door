@@ -10,6 +10,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { NotifierService } from 'angular-notifier';
 //import { ApplicationService } from '../application/application.service';
 //import { Application } from 'src/app/entity/application';
+import { CommonService } from 'src/app/services/common.service';
 
 export interface ServiceSearchData { 
   name: string;
@@ -50,13 +51,14 @@ export class ServiceComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, 
     private serviceService:ServiceService,private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private notifier:NotifierService,private dialog: MatDialog
+    private notifier:NotifierService,private dialog: MatDialog,public commonService:CommonService
     //private ApplicationService:ApplicationService
     ) {
      
  
       this.clientId=localStorage.getItem('id'); 
- 
+      
+      //this.getServiceByClientIdAndStatus(this.clientId,"ACTIVE");
         this.serviceForm = this.formBuilder.group({
         id: ['0',Validators.required],
         clientId: [this.clientId, [Validators.required]],
@@ -72,10 +74,9 @@ export class ServiceComponent implements OnInit {
         responseTypes: [[]],
       });
 
-      
-      
+          
 
-      this.getServices();    
+     
 
       this.f['responseTypes'].valueChanges.subscribe(v=>{
         this.responseType = v;
@@ -88,6 +89,29 @@ export class ServiceComponent implements OnInit {
 
     }
 
+    remove(field:string){ 
+      if(this.searchMap.has(field)) {
+        this.searchMap.delete(field);
+      }
+      this.servSearch = Object.fromEntries(this.searchMap);   
+      this.servSearch.clientId = this.clientId;
+    
+      
+      if(this.searchMap.size == 0) {
+        this.getServiceByClientIdAndStatus(this.clientId,"ACTIVE");
+        this.isSearch = false;
+      } else {
+        this.serviceService.search(this.servSearch)
+            .subscribe(res=>{
+              if (res.errorCode != undefined && res.errorCode != 200) { 
+                this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
+              } else {
+                this.originalService = res.data; 
+              }           
+            }); 
+      }
+     }
+    
     openDialog(): void {
       const dialogRef = this.dialog.open(ServiceSearchDialog, {
         width: '350px',
@@ -97,13 +121,20 @@ export class ServiceComponent implements OnInit {
       dialogRef.afterClosed().subscribe(r => {
         console.log('The dialog was closed');
         if(r!=undefined){
-          alert(JSON.stringify(r));
           this.servSearch = r;
-          this.searchMap = new Map(Object.entries(r));
-          this.isSearch = true;
-        }
-      });
-    }
+          this.serviceService.search(this.servSearch)
+          .subscribe(res=>{
+            if (res.errorCode != undefined && res.errorCode != 200) { 
+              this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
+            } else {
+              this.originalService = res.data; 
+            }           
+          });
+        this.searchMap = new Map(Object.entries(r));
+        this.isSearch = true; 
+      }
+    });
+  }
 
     get f() { return this.serviceForm.controls; }
     
@@ -130,6 +161,14 @@ export class ServiceComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchApplicationNames();
+  }
+
+
+  getServiceByClientIdAndStatus(id:number,status:string){
+    this.serviceService.fetchServiceByClientAndStatus(id,status)
+      .subscribe(r=>{ 
+          this.originalService = r.data;
+      });
   }
   fetchApplicationNames() {
     this.serviceService.fetchApplicationNames(this.clientId)
@@ -162,14 +201,12 @@ addParameter(serviceId:number){
   this.router.navigate(['main/parameter'],{ state: { id: serviceId } }) ;
 }
  
-remove(field:string){ 
-  alert(field)
- }
 
+ 
 
   onSubmit() {    
-    if (this.serviceForm.invalid) {  
-      this.notifier.notify('error','invalid input')
+    if (this.serviceForm.invalid) {   
+      this.notifier.notify( "error", "All field are required." );
       return;
     }
     this.submitted = true;
@@ -210,6 +247,7 @@ remove(field:string){
             this.notifier.notify('error','Not able to edit. Please try again later.');
           } else {
             this.notifier.notify('success','Successfully edited.');
+            this.getServiceByClientIdAndStatus(this.clientId,"ACTIVE");
           }
           this.submitted = false;
         },
@@ -263,5 +301,5 @@ remove(field:string){
     onNoClick(): void {
       this.dialogRef.close();
     }
-  
+    
   }
