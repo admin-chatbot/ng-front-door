@@ -46,7 +46,7 @@ export class ServiceService {
   }
 
   fetchServiceByClientAndStatus(id:number,status:string) : Observable<Application[] | any>{
-    const url = this.url.service()+'byClient'+'/'+id+'/'+'status'+'/'+status+'/';   
+    const url = this.url.service()+'byClient'+'/'+id+'/'+'status'+'/'+status;   
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.get<Application[]>(url, httpOptions)
     .pipe(
@@ -63,7 +63,7 @@ export class ServiceService {
   }
   
   fetchApplicationNames(clientId: string): Observable<string[] | any> {
-    alert(clientId);
+   
     const url = this.url.application() + clientId +'/' ; // Adjust the API endpoint accordingly
   
     const httpOptions = {

@@ -19,7 +19,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-8">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title" *ngIf="isSearch">
@@ -50,6 +50,7 @@
                                         <th>Name</th>
                                         <th>Endpoint</th>
                                         <th>Method</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,10 +58,7 @@
                                         <td>{{ service.name }}</td>
                                         <td>{{ service.endpoint }}</td>
                                         <td>{{ service.method }}</td>
-
-
-
-
+                                        <td>{{ service.status }}</td>
                                         <td>
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-default">Action</button>
@@ -81,8 +79,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="card-footer">
-                        </div>
+                       
                     </div>
                 </div>
                 <!-- left column -->

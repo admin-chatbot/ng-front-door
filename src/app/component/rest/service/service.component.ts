@@ -16,6 +16,7 @@ export interface ServiceSearchData {
   name: string;
   endPoint: string;
   method: string; 
+  status: string;
 }
 
 @Component({
@@ -58,7 +59,7 @@ export class ServiceComponent implements OnInit {
  
       this.clientId=localStorage.getItem('id'); 
       
-      //this.getServiceByClientIdAndStatus(this.clientId,"ACTIVE");
+      this.getServiceByClientIdAndStatus(this.clientId,"ACTIVE");
         this.serviceForm = this.formBuilder.group({
         id: ['0',Validators.required],
         clientId: [this.clientId, [Validators.required]],
@@ -94,7 +95,7 @@ export class ServiceComponent implements OnInit {
         this.searchMap.delete(field);
       }
       this.servSearch = Object.fromEntries(this.searchMap);   
-      this.servSearch.clientId = this.clientId;
+      //this.servSearch.clientId = this.clientId;
     
       
       if(this.searchMap.size == 0) {
@@ -144,7 +145,8 @@ export class ServiceComponent implements OnInit {
       this.service = this.originalService[i];  
       //this.f[this.id].setValue(18)  
       this.f['id'].setValue( this.service.id)
-       
+      
+      alert(this.service.applicationId) 
       this.f['applicationName'].setValue( this.service.applicationId)
       this.f['keyword'].setValue(this.service.keyword);  
       this.f['name'].setValue( this.service.name)
@@ -284,6 +286,10 @@ addParameter(serviceId:number){
   
       <mat-form-field style="width: 300px;">
         <input matInput [(ngModel)]="data.endPoint" placeholder="EndPoint"/>      
+      </mat-form-field> 
+      
+      <mat-form-field style="width: 300px;">
+        <input matInput [(ngModel)]="data.status" placeholder="Status"/>      
       </mat-form-field>  
       
   
