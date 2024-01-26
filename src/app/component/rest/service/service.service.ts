@@ -5,6 +5,8 @@ import { UrlService } from 'src/app/common/url.service';
 import { Application } from 'src/app/entity/application';
 import {  HandleError, HttpErrorHandlerService } from '../../../http/http-error-handler.service'
 import { Service } from 'src/app/entity/service';
+import { ServiceSearch } from 'src/app/entity/serviceSearch';
+import { ApiResponce } from 'src/app/entity/apiResponce';
 @Injectable({
   providedIn: 'root'
 })
@@ -43,7 +45,14 @@ export class ServiceService {
     );
   }
 
-
+  fetchServiceByClientAndStatus(id:number,status:string) : Observable<Application[] | any>{
+    const url = this.url.service()+'byClient'+'/'+id+'/'+'status'+'/'+status;   
+    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
+    return this.http.get<Application[]>(url, httpOptions)
+    .pipe(
+      catchError(this.handleError('serviceList'))
+    );
+}
   editService(service:Service) : Observable<string | any> {
     const url = this.url.service();     
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
@@ -54,6 +63,7 @@ export class ServiceService {
   }
   
   fetchApplicationNames(clientId: string): Observable<string[] | any> {
+   
     const url = this.url.application() + clientId +'/' ; // Adjust the API endpoint accordingly
   
     const httpOptions = {
@@ -68,6 +78,15 @@ export class ServiceService {
       .pipe(
         catchError(this.handleError('Fetch Application Names'))
       );
+  }
+
+  search(serviceSearchRequest:ServiceSearch) :Observable<ApiResponce | any> {
+    const url = this.url.service()+"search/";   
+    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
+    return this.http.post<ApiResponce>(url,serviceSearchRequest,httpOptions)
+    .pipe(
+      catchError(this.handleError('Search'))
+    );
   }
 
 }

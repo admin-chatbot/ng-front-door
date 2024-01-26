@@ -60,6 +60,7 @@ export class ViewApplicationComponent implements OnInit {
     
     ) {
       this.clientId=localStorage.getItem('id');
+     
    
     this.getApplicationsByClientIdAndStatus(this.clientId,"ACTIVE") ;
          
