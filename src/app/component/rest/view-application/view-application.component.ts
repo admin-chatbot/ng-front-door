@@ -7,8 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from 'src/app/common/data.service';
 import { NotifierService } from 'angular-notifier'; 
 import { ApplicationSearch } from 'src/app/entity/applicationSearch';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { map } from 'rxjs';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'; 
 import { CommonService } from 'src/app/services/common.service';
 
 export interface ApplicationSearchData {
@@ -60,6 +59,7 @@ export class ViewApplicationComponent implements OnInit {
     
     ) {
       this.clientId=localStorage.getItem('id');
+     
    
     this.getApplicationsByClientIdAndStatus(this.clientId,"ACTIVE") ;
          
@@ -80,9 +80,7 @@ export class ViewApplicationComponent implements OnInit {
       this.searchMap.delete(field);
     }
     this.appSearch = Object.fromEntries(this.searchMap);   
-    this.appSearch.clientId = this.clientId;
-
-    
+    this.appSearch.clientId = this.clientId;    
     if(this.searchMap.size == 0) {
       this.getApplicationsByClientIdAndStatus(this.clientId,"ACTIVE");
       this.isSearch = false;
@@ -94,7 +92,7 @@ export class ViewApplicationComponent implements OnInit {
             } else {
               this.originalApplication = res.data; 
             }           
-          }); 
+        }); 
     }
    }
 
@@ -131,13 +129,7 @@ export class ViewApplicationComponent implements OnInit {
   }
  
 
-  getApplications(){
-    this.applicationService.fetchApplication()
-      .subscribe(r=>{ 
-          this.originalApplication = r.data;
-      });
-  }
-
+ 
   getApplicationsByClientIdAndStatus(id:number,status:string){
     this.applicationService.fetchApplicationByClientAndStatus(id,status)
       .subscribe(r=>{ 

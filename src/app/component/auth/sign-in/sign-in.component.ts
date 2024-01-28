@@ -20,8 +20,8 @@ export class SignInComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute,private formBuilder: FormBuilder, private messageService: MessageService
     ,private authService: AuthService,private notifier:NotifierService) { 
     this.loginForm = this.formBuilder.group({
-      email: ['jitendra.sagoriya@gmail.com', [Validators.required,Validators.email]],
-      password: ['J1tendr@12', [Validators.required]]
+      email: ['', [Validators.required,Validators.email]],
+      password: ['', [Validators.required]]
     });
   }
 
@@ -51,6 +51,7 @@ export class SignInComponent implements OnInit {
           localStorage.setItem('name',r.data.clientName)
           localStorage.setItem('email',r.data.email)
           localStorage.setItem('id',r.data.id)
+          localStorage.setItem('time', new Date().getTime().toString())
           this.router.navigate(['/']).then(() => {
             window.location.reload();
           });

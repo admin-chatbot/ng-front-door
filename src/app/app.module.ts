@@ -32,6 +32,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import { ChatComponent } from './component/rest/chat/chat.component'; 
+import { NgChartsModule } from 'ng2-charts';
 
 //import { 
  // MatToolbarModule, 
@@ -126,7 +127,8 @@ const customNotifierOptions: NotifierOptions = {
     MatFormFieldModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSelectModule
+    MatSelectModule,
+    NgChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
