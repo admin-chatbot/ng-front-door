@@ -22,11 +22,15 @@ export class AuthGuard implements CanActivate {
   }
 
   public isLoggedIn(): boolean {
-    let status = false;
+    let status = false; 
+    var date = new Date();
+    date.setMinutes(date.getMinutes()+20);
     if (localStorage.getItem('isLoggedIn') == "true") {
+      if(localStorage.getItem('time')!=undefined) {
+        
+      }
         status = true;
-    }
-    else {
+    } else {
         status = false;
     }
     return status;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+
 import { MessageService } from 'src/app/http/message.service';
 import { ServiceService } from '../service/service.service';
 import {Service} from 'src/app/entity/service';
@@ -22,7 +22,7 @@ export class ViewServiceComponent implements OnInit {
 
   private notifier: NotifierService;
 
-  constructor(private router: Router, private route: ActivatedRoute, private serviceService:ServiceService,private formBuilder: FormBuilder,
+  constructor( private serviceService:ServiceService,private formBuilder: FormBuilder,
     private messageService: MessageService,notifier: NotifierService) {
     this.getServices();
     this.notifier = notifier;
