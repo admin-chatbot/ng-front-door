@@ -3,6 +3,7 @@ import { MessageService } from './message.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Response } from '../entity/responce';
+import { ActivatedRoute, Router } from '@angular/router';
 
 export type HandleError =
   <T> (operation?: string, result?: Response) => (error: HttpErrorResponse) => Observable<Response>;
@@ -12,7 +13,7 @@ export type HandleError =
 })
 export class HttpErrorHandlerService {
 
-  constructor(private messageService: MessageService ) { }
+  constructor(private messageService: MessageService,private router:Router,private route:ActivatedRoute) { }
 
   /** Create curried handleError function that already knows the service name */
   createHandleError = (serviceName = '') =>
@@ -34,6 +35,9 @@ export class HttpErrorHandlerService {
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead    
 
+      if(error.status == 401) {
+        this.router.navigate(['auth/signin']);
+      }
 
       const message = (error.error instanceof ErrorEvent) ?
         error.error.message :

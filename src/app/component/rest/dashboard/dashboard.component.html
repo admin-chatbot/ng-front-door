@@ -31,7 +31,15 @@
                     <div class="small-box ">
                         <div class="inner">
                             <h3>Service</h3>
-                            <div>kjfkdjf</div>
+                            <div> <canvas baseChart
+                                [type]="'pie'"
+                                [datasets]="pieChartDatasets"
+                                [labels]="pieChartLabels"
+                                [options]="pieChartOptions"
+                                [plugins]="pieChartPlugins"
+                                [legend]="pieChartLegend"
+                                (chartClick)="chartClicked($event)">
+                                </canvas></div>
                         </div>
                     </div>
                 </div>
@@ -84,7 +92,14 @@
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-ffsfsf
+                            <canvas baseChart
+                            [type]="'pie'"
+                            [datasets]="pieChartDatasets"
+                            [labels]="pieChartLabels"
+                            [options]="pieChartOptions"
+                            [plugins]="pieChartPlugins"
+                            [legend]="pieChartLegend">
+                            </canvas>
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer clearfix">

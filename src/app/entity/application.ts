@@ -9,4 +9,5 @@ export class Application {
     status!:string;
     registerDate!:string;
     id!:number; 
+    serviceCount!:number;
 }
