@@ -7,6 +7,7 @@ import {  HandleError, HttpErrorHandlerService } from '../../../http/http-error-
 import { Service } from 'src/app/entity/service';
 import { ServiceSearch } from 'src/app/entity/serviceSearch';
 import { ApiResponce } from 'src/app/entity/apiResponce';
+import { ServiceParameter } from '../service-parameter/service-parameter.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -52,6 +53,15 @@ export class ServiceService {
     .pipe(
       catchError(this.handleError('serviceList'))
     );
+}
+
+fetchParameterCountByServiceId(id:number) : Observable<Service[] | any>{
+  const url = this.url.serviceParametrer()+'/'+id   
+  const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
+  return this.http.get<ServiceParameter[]>(url, httpOptions)
+  .pipe(
+    catchError(this.handleError('serviceList'))
+  );
 }
   editService(service:Service) : Observable<string | any> {
     const url = this.url.service();     

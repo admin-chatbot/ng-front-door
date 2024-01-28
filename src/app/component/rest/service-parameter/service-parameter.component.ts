@@ -35,7 +35,7 @@ export class ServiceParameterComponent implements OnInit {
   serviceParameterForm: FormGroup  ;
   required: boolean[] = [true, false]; // Add more methods as needed
   type: string[] = ['header','body'];
-  paramType: string[] = ['string','int'];
+  paramType: string[] = ['string','int','boolean'];
   questionToGetInput: string[] = [];
   submitted = false;
   dropdownClicked = false;

@@ -17,6 +17,7 @@ export interface ServiceSearchData {
   endPoint: string;
   method: string; 
   status: string;
+  parameterCount: string;
 }
 
 @Component({
@@ -48,6 +49,7 @@ export class ServiceComponent implements OnInit {
    servSearch:ServiceSearch = {} as ServiceSearch;
    searchMap = new Map();
    isSearch:boolean = false;
+   serviceWithParameters: { service: Service; parameterCount: number }[] = [];
 
   constructor(private router: Router, private route: ActivatedRoute, 
     private serviceService:ServiceService,private formBuilder: FormBuilder,
@@ -56,13 +58,13 @@ export class ServiceComponent implements OnInit {
     //private ApplicationService:ApplicationService
     ) {
      
- 
+      
       this.clientId=localStorage.getItem('id'); 
       
       this.getServiceByClientIdAndStatus(this.clientId,"ACTIVE");
         this.serviceForm = this.formBuilder.group({
         id: ['0',Validators.required],
-        clientId: [this.clientId, [Validators.required]],
+        //clientId: [this.clientId, [Validators.required]],
         applicationName: ['', [Validators.required]],
         method:['',Validators.required],
         endpoint:['',Validators.required],
@@ -95,7 +97,7 @@ export class ServiceComponent implements OnInit {
         this.searchMap.delete(field);
       }
       this.servSearch = Object.fromEntries(this.searchMap);   
-      //this.servSearch.clientId = this.clientId;
+      this.servSearch.clientId = this.clientId;
     
       
       if(this.searchMap.size == 0) {
@@ -123,6 +125,7 @@ export class ServiceComponent implements OnInit {
         console.log('The dialog was closed');
         if(r!=undefined){
           this.servSearch = r;
+          this.servSearch.clientId=this.clientId;
           this.serviceService.search(this.servSearch)
           .subscribe(res=>{
             if (res.errorCode != undefined && res.errorCode != 200) { 
@@ -163,6 +166,7 @@ export class ServiceComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchApplicationNames();
+    //this.fetchServiceParametersCount();
   }
 
 
@@ -183,6 +187,19 @@ export class ServiceComponent implements OnInit {
         }
       );
   }
+
+  // fetchServiceParametersCount() {
+  //   this.serviceService.fetchParameterCountByServiceId(this.serviceId)
+  //     .subscribe(
+  //       (response) => {
+  //         this.serviceWithParameters = response.data;
+  //       },
+  //       (error) => {
+  //         console.error('Error fetching application names:', error);
+  //       }
+  //     );
+  // }
+
   onDropdownClick() {
     this.dropdownClicked = true;
   }
@@ -275,6 +292,10 @@ addParameter(serviceId:number){
     selector: 'dialog-overview-example-dialog',
     template:`<h2 mat-dialog-title>Search</h2>
     <div  style="width: 100%;">
+
+   
+
+
        
       <mat-form-field style="width: 300px;">
         <input matInput [(ngModel)]="data.name" placeholder="Name"/>      
@@ -299,6 +320,9 @@ addParameter(serviceId:number){
     </div>`
   })
   export class ServiceSearchDialog {
+    originalService: any;
+    serviceService: any;
+    serviceWithParameters: any;
 
     constructor(
       public dialogRef: MatDialogRef<ServiceSearchDialog>,
@@ -306,6 +330,16 @@ addParameter(serviceId:number){
   
     onNoClick(): void {
       this.dialogRef.close();
+    }
+
+   
+    private fetchServiceWithParametersCount() {
+      // Assume there's a method in your service to fetch service parameters count
+      this.originalService.forEach((service: { id: any; }) => {
+        this.serviceService.fetchServiceParameterCount(service.id).subscribe((count: any) => {
+          this.serviceWithParameters.push({ service, parameterCount: count });
+        });
+      });
     }
     
   }
