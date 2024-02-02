@@ -190,7 +190,12 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
     this.isOnBoard = false;
     this.cancelButtonName = "Cancel"
     this.heading = "EDIT APPLICATION"
-    this.application = this.originalApplication[i];
+     this.originalApplication.forEach(a=>{
+      if(a.id == i) {
+        this.application = a;
+        return;
+      }
+    })
     this.f['id'].setValue( this.application.id)
     this.f['name'].setValue( this.application.name)
     this.f['purpose'].setValue( this.application.purpose)
