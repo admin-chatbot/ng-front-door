@@ -95,6 +95,7 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
     public commonService:CommonService 
     ) {
       this.clientId=localStorage.getItem('id');
+     
    
     this.getApplicationsByClientIdAndStatus(this.clientId,"ACTIVE") ;
          
@@ -107,11 +108,7 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
       serviceDocUrl:['',Validators.required],
       date:[''],
       status:['NEW',Validators.required]
-    });
-
-   
-
-    
+    });     
    }
   ngAfterViewInit(): void {    
     this.dataSource.paginator = this.paginator;     
@@ -149,6 +146,8 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
       console.log('The dialog was closed');
       if(r!=undefined){ 
         this.appSearch = r;
+        alert('searching');
+        alert(JSON.stringify(this.appSearch));
         this.applicationService.search(this.appSearch)
           .subscribe(res=>{
             if (res.errorCode != undefined && res.errorCode != 200) { 

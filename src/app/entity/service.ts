@@ -23,4 +23,5 @@ export class Service {
     status!: string;
     responseSchema!: string;
     serviceParameters!:ServiceParameter [] 
+    parameterCount!: number;
 }

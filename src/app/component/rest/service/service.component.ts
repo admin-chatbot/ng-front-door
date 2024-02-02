@@ -10,11 +10,14 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { NotifierService } from 'angular-notifier';
 //import { ApplicationService } from '../application/application.service';
 //import { Application } from 'src/app/entity/application';
+import { CommonService } from 'src/app/services/common.service';
 
 export interface ServiceSearchData { 
   name: string;
   endPoint: string;
   method: string; 
+  status: string;
+  parameterCount: string;
 }
 
 @Component({
@@ -46,20 +49,22 @@ export class ServiceComponent implements OnInit {
    servSearch:ServiceSearch = {} as ServiceSearch;
    searchMap = new Map();
    isSearch:boolean = false;
+   serviceWithParameters: { service: Service; parameterCount: number }[] = [];
 
   constructor(private router: Router, private route: ActivatedRoute, 
     private serviceService:ServiceService,private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private notifier:NotifierService,private dialog: MatDialog
+    private notifier:NotifierService,private dialog: MatDialog,public commonService:CommonService
     //private ApplicationService:ApplicationService
     ) {
      
- 
+      
       this.clientId=localStorage.getItem('id'); 
- 
+      
+      this.getServiceByClientIdAndStatus(this.clientId,"ACTIVE");
         this.serviceForm = this.formBuilder.group({
         id: ['0',Validators.required],
-        clientId: [this.clientId, [Validators.required]],
+        //clientId: [this.clientId, [Validators.required]],
         applicationName: ['', [Validators.required]],
         method:['',Validators.required],
         endpoint:['',Validators.required],
@@ -72,10 +77,9 @@ export class ServiceComponent implements OnInit {
         responseTypes: [[]],
       });
 
-      
-      
+          
 
-      this.getServices();    
+     
 
       this.f['responseTypes'].valueChanges.subscribe(v=>{
         this.responseType = v;
@@ -88,6 +92,29 @@ export class ServiceComponent implements OnInit {
 
     }
 
+    remove(field:string){ 
+      if(this.searchMap.has(field)) {
+        this.searchMap.delete(field);
+      }
+      this.servSearch = Object.fromEntries(this.searchMap);   
+      this.servSearch.clientId = this.clientId;
+    
+      
+      if(this.searchMap.size == 0) {
+        this.getServiceByClientIdAndStatus(this.clientId,"ACTIVE");
+        this.isSearch = false;
+      } else {
+        this.serviceService.search(this.servSearch)
+            .subscribe(res=>{
+              if (res.errorCode != undefined && res.errorCode != 200) { 
+                this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
+              } else {
+                this.originalService = res.data; 
+              }           
+            }); 
+      }
+     }
+    
     openDialog(): void {
       const dialogRef = this.dialog.open(ServiceSearchDialog, {
         width: '350px',
@@ -97,13 +124,21 @@ export class ServiceComponent implements OnInit {
       dialogRef.afterClosed().subscribe(r => {
         console.log('The dialog was closed');
         if(r!=undefined){
-          alert(JSON.stringify(r));
           this.servSearch = r;
-          this.searchMap = new Map(Object.entries(r));
-          this.isSearch = true;
-        }
-      });
-    }
+          this.servSearch.clientId=this.clientId;
+          this.serviceService.search(this.servSearch)
+          .subscribe(res=>{
+            if (res.errorCode != undefined && res.errorCode != 200) { 
+              this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
+            } else {
+              this.originalService = res.data; 
+            }           
+          });
+        this.searchMap = new Map(Object.entries(r));
+        this.isSearch = true; 
+      }
+    });
+  }
 
     get f() { return this.serviceForm.controls; }
     
@@ -113,7 +148,8 @@ export class ServiceComponent implements OnInit {
       this.service = this.originalService[i];  
       //this.f[this.id].setValue(18)  
       this.f['id'].setValue( this.service.id)
-       
+      
+      alert(this.service.applicationId) 
       this.f['applicationName'].setValue( this.service.applicationId)
       this.f['keyword'].setValue(this.service.keyword);  
       this.f['name'].setValue( this.service.name)
@@ -130,6 +166,15 @@ export class ServiceComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchApplicationNames();
+    //this.fetchServiceParametersCount();
+  }
+
+
+  getServiceByClientIdAndStatus(id:number,status:string){
+    this.serviceService.fetchServiceByClientAndStatus(id,status)
+      .subscribe(r=>{ 
+          this.originalService = r.data;
+      });
   }
   fetchApplicationNames() {
     this.serviceService.fetchApplicationNames(this.clientId)
@@ -142,6 +187,19 @@ export class ServiceComponent implements OnInit {
         }
       );
   }
+
+  // fetchServiceParametersCount() {
+  //   this.serviceService.fetchParameterCountByServiceId(this.serviceId)
+  //     .subscribe(
+  //       (response) => {
+  //         this.serviceWithParameters = response.data;
+  //       },
+  //       (error) => {
+  //         console.error('Error fetching application names:', error);
+  //       }
+  //     );
+  // }
+
   onDropdownClick() {
     this.dropdownClicked = true;
   }
@@ -162,14 +220,12 @@ addParameter(serviceId:number){
   this.router.navigate(['main/parameter'],{ state: { id: serviceId } }) ;
 }
  
-remove(field:string){ 
-  alert(field)
- }
 
+ 
 
   onSubmit() {    
-    if (this.serviceForm.invalid) {  
-      this.notifier.notify('error','invalid input')
+    if (this.serviceForm.invalid) {   
+      this.notifier.notify( "error", "All field are required." );
       return;
     }
     this.submitted = true;
@@ -210,6 +266,7 @@ remove(field:string){
             this.notifier.notify('error','Not able to edit. Please try again later.');
           } else {
             this.notifier.notify('success','Successfully edited.');
+            this.getServiceByClientIdAndStatus(this.clientId,"ACTIVE");
           }
           this.submitted = false;
         },
@@ -235,6 +292,10 @@ remove(field:string){
     selector: 'dialog-overview-example-dialog',
     template:`<h2 mat-dialog-title>Search</h2>
     <div  style="width: 100%;">
+
+   
+
+
        
       <mat-form-field style="width: 300px;">
         <input matInput [(ngModel)]="data.name" placeholder="Name"/>      
@@ -246,6 +307,10 @@ remove(field:string){
   
       <mat-form-field style="width: 300px;">
         <input matInput [(ngModel)]="data.endPoint" placeholder="EndPoint"/>      
+      </mat-form-field> 
+      
+      <mat-form-field style="width: 300px;">
+        <input matInput [(ngModel)]="data.status" placeholder="Status"/>      
       </mat-form-field>  
       
   
@@ -255,6 +320,9 @@ remove(field:string){
     </div>`
   })
   export class ServiceSearchDialog {
+    originalService: any;
+    serviceService: any;
+    serviceWithParameters: any;
 
     constructor(
       public dialogRef: MatDialogRef<ServiceSearchDialog>,
@@ -263,5 +331,15 @@ remove(field:string){
     onNoClick(): void {
       this.dialogRef.close();
     }
-  
+
+   
+    private fetchServiceWithParametersCount() {
+      // Assume there's a method in your service to fetch service parameters count
+      this.originalService.forEach((service: { id: any; }) => {
+        this.serviceService.fetchServiceParameterCount(service.id).subscribe((count: any) => {
+          this.serviceWithParameters.push({ service, parameterCount: count });
+        });
+      });
+    }
+    
   }

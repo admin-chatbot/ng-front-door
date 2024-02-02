@@ -27,6 +27,9 @@ export class ContentLayoutComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  goBack(): void {
+    window.history.back();
+  }  
 
   logout(){ 
     localStorage.clear();

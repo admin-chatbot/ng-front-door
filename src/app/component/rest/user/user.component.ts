@@ -8,6 +8,7 @@ import { UserService } from './user.service';
 import { UserSearch } from 'src/app/entity/userSearch';
 import { NotifierService } from 'angular-notifier';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { CommonService } from 'src/app/services/common.service';
 
 export interface UserSearchData { 
   empId: string;
@@ -26,6 +27,7 @@ export interface UserSearchData {
 })
 export class UserComponent implements OnInit {
 
+  originalUser: User[] = [];
   submitted:boolean = false;
   userForm:FormGroup;
   users:User[] = []
@@ -39,15 +41,23 @@ export class UserComponent implements OnInit {
   usrSearch:UserSearch = {} as UserSearch;
   searchMap = new Map();
   isSearch:boolean = false;
+  userSearch:UserSearch = {} as UserSearch;
+  private notifier: NotifierService;
+
   constructor(private router: Router, private route: ActivatedRoute, 
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     private userService:UserService,
     private dataService: DataService,
-    private notifire:NotifierService,private dialog: MatDialog) { 
+    notifier:NotifierService,
+    private dialog: MatDialog
+    ) { 
 
       this.clientId = localStorage.getItem('id');
-      this.fetchByClient(this.clientId);
+      //this.fetchByClient(this.clientId);
+      
+      this.getUsersByClientIdAndStatus(this.clientId,"ACTIVE") ;
+      this.notifier = notifier;
 
       this.userForm = this.formBuilder.group({
         id: ['0', [Validators.required]],
@@ -59,6 +69,9 @@ export class UserComponent implements OnInit {
         empId:['',Validators.required]
       });
     }
+
+
+    
     openDialog(): void {
       const dialogRef = this.dialog.open(UserSearchDialog, {
         width: '350px',
@@ -67,11 +80,21 @@ export class UserComponent implements OnInit {
   
       dialogRef.afterClosed().subscribe(r => {
         console.log('The dialog was closed');
-        if(r!=undefined){
-          alert(JSON.stringify(r));
+        if(r!=undefined){ 
           this.usrSearch = r;
+          
+          this.usrSearch.clientId = this.clientId;
+          
+          this.userService.search(this.usrSearch)
+            .subscribe(res=>{
+              if (res.errorCode != undefined && res.errorCode != 200) { 
+                this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
+              } else {
+                this.originalUser = res.data; 
+              }           
+            });
           this.searchMap = new Map(Object.entries(r));
-          this.isSearch = true;
+          this.isSearch = true; 
         }
       });
     }
@@ -83,7 +106,7 @@ export class UserComponent implements OnInit {
   onSubmit() { 
 
     if (this.userForm.invalid) {       
-      this.notifire.notify('error','invalid input')
+      this.notifier.notify('error','invalid input')
       return;
     }
     this.submitted = true;
@@ -102,7 +125,7 @@ export class UserComponent implements OnInit {
       this.userService.register(user)
         .subscribe(res=>{
           if (res.errorCode != undefined && res.errorCode != 200) { 
-            this.notifire.notify('error','Not able to register. please try again in sometime')           
+            this.notifier.notify('error','Not able to register. please try again in sometime')           
           } else {
             if(res.data!=undefined)
               this.users.push(res.data);
@@ -115,9 +138,9 @@ export class UserComponent implements OnInit {
       this.userService.edit(user)
         .subscribe((res)=>{
           if (res.errorCode != undefined && res.errorCode != 200) { 
-            this.notifire.notify('error','Not able to edit. please try again in sometime')           
+            this.notifier.notify('error','Not able to edit. please try again in sometime')           
           } else {
-            this.notifire.notify('success','Successfully Edited..');
+            this.notifier.notify('success','Successfully Edited..');
             this.fetchByClient(this.clientId);
           }
         });
@@ -148,6 +171,13 @@ export class UserComponent implements OnInit {
     this.f['status'].setValue(user.status ); 
   }
 
+  getUsersByClientIdAndStatus(id:number,status:string){
+    this.userService.fetchUserByClientAndStatus(id,status)
+      .subscribe(r=>{ 
+          this.originalUser = r.data;
+      });
+  } 
+
   fetch() { 
     this.userService.list()
       .subscribe((res)=>{        
@@ -162,9 +192,29 @@ export class UserComponent implements OnInit {
       });
   }
 
-  remove(field:string){ 
-    alert(field)
-   }
+
+    remove(field: string) {
+    if (this.searchMap.has(field)) {
+      this.searchMap.delete(field);
+    }
+    this.userSearch = Object.fromEntries(this.searchMap);
+    this.userSearch.clientId = this.clientId;
+
+
+    if (this.searchMap.size == 0) {
+      this.getUsersByClientIdAndStatus(this.clientId, "ACTIVE");
+      this.isSearch = false;
+    } else {
+      this.userService.search(this.userSearch)
+        .subscribe(res => {
+          if (res.errorCode != undefined && res.errorCode != 200) {
+            this.notifier.notify('error', 'Not able to onboard. please try again in sometime');
+          } else {
+            this.originalUser = res.data;
+          }
+        });
+    }
+  }   
 
   clear(){
     if(!this.isOnBoard) {
@@ -182,6 +232,8 @@ export class UserComponent implements OnInit {
 
 }
 
+
+
 @Component({
   selector: 'dialog-overview-example-dialog',
   template:`<h2 mat-dialog-title>Search</h2>
@@ -190,7 +242,7 @@ export class UserComponent implements OnInit {
    
 
     <mat-form-field style="width: 300px;">
-      <input matInput   [(ngModel)]="data.empId" placeholder="Method"/>      
+      <input matInput   [(ngModel)]="data.empId" placeholder="Emp ID"/>      
     </mat-form-field>
     <mat-form-field style="width: 300px;">
       <input matInput [(ngModel)]="data.name" placeholder="Name"/>      
@@ -205,9 +257,13 @@ export class UserComponent implements OnInit {
     <mat-form-field style="width: 300px;">
       <input matInput [(ngModel)]="data.access" placeholder="Access"/>      
     </mat-form-field>
-    <mat-form-field style="width: 300px;">
-      <input matInput [(ngModel)]="data.status" placeholder="Status"/>      
-    </mat-form-field>
+    <div class="example-form-fields">     
+      <mat-form-field style="width: 320px;"> 
+          <mat-select [(ngModel)]="data.status" placeholder="Status"> 
+            <mat-option *ngFor="let s of this.commonService.status" value="{{s}}">{{s | uppercase}}</mat-option> 
+          </mat-select>       
+      </mat-form-field>
+    </div>
     
 
   </div>
@@ -219,10 +275,11 @@ export class UserSearchDialog {
 
   constructor(
     public dialogRef: MatDialogRef<UserSearchDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: UserSearchData) {}
+    @Inject(MAT_DIALOG_DATA) public data: UserSearchData,public commonService:CommonService) {}
 
   onNoClick(): void {
     this.dialogRef.close();
   }
+  selectedStringOption = this.commonService.stringFilterOperations[0].value;
 
 }
