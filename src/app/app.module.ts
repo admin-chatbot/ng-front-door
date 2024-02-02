@@ -33,6 +33,8 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import { ChatComponent } from './component/rest/chat/chat.component'; 
 import { NgChartsModule } from 'ng2-charts';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 //import { 
  // MatToolbarModule, 
@@ -128,7 +130,9 @@ const customNotifierOptions: NotifierOptions = {
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
-    NgChartsModule
+    NgChartsModule,
+    MatTableModule,
+    MatPaginatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]
