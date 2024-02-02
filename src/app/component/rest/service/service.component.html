@@ -19,16 +19,23 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-8">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title"></h3>
+                            <h4 class="card-title" *ngIf="isSearch">
+                                Filters -  
+                                 <i *ngFor="let search of searchMap | keyvalue">  {{search.key }} : {{search.key.search('Date')==-1?search.value:search.value|date:'shortDate'}} 
+                                    &nbsp;
+                                    <i class="fas fa-times" style="cursor:pointer;" (click)="remove(search.key)"></i>
+                                    &nbsp;&nbsp;
+                                 </i> 
+                            </h4>
 
                             <div class="card-tools">
                                 <div class="input-group input-group-sm">
 
                                     <div class="input-group-append">
-                                        <button type="submit" class="btn btn-default">
+                                        <button type="submit" class="btn btn-default" (click)="openDialog()">
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </div>
@@ -43,6 +50,8 @@
                                         <th>Name</th>
                                         <th>Endpoint</th>
                                         <th>Method</th>
+                                        <th>Status</th>
+                                        <th>Parameter Count</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -50,10 +59,9 @@
                                         <td>{{ service.name }}</td>
                                         <td>{{ service.endpoint }}</td>
                                         <td>{{ service.method }}</td>
-
-
-
-
+                                        <td>{{ service.status }}</td>
+                                        <td>{{ service.parameterCount }}</td>
+                                        
                                         <td>
                                             <div class="btn-group">
                                                 <button type="button" class="btn btn-default">Action</button>
@@ -74,8 +82,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="card-footer">
-                        </div>
+                       
                     </div>
                 </div>
                 <!-- left column -->

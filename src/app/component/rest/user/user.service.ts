@@ -2,7 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError } from 'rxjs';
 import { UrlService } from 'src/app/common/url.service';
+import { ApiResponce } from 'src/app/entity/apiResponce';
 import { User } from 'src/app/entity/user';
+import { UserSearch } from 'src/app/entity/userSearch';
 import { HandleError, HttpErrorHandlerService } from 'src/app/http/http-error-handler.service';
 
 @Injectable({
@@ -56,5 +58,23 @@ export class UserService {
       catchError(this.handleError('list users.'))
     );
   }
+
+  fetchUserByClientAndStatus(id:number,status:string) : Observable<User[] | any>{
+    const url = this.url.user()+"byClient/"+id+"/status/"+status;   
+    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
+    return this.http.get<User[]>(url, httpOptions)
+    .pipe(
+      catchError(this.handleError('userList'))
+    );
+}
+
+search(userSearchRequest:UserSearch) :Observable<ApiResponce | any> {
+  const url = this.url.user()+"search/";   
+  const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
+  return this.http.post<ApiResponce>(url,userSearchRequest,httpOptions)
+  .pipe(
+    catchError(this.handleError('Search'))
+  );
+}
   
 }
