@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'src/app/http/message.service';
 import { ApplicationService } from '../application/application.service';
@@ -9,6 +9,8 @@ import { NotifierService } from 'angular-notifier';
 import { ApplicationSearch } from 'src/app/entity/applicationSearch';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog'; 
 import { CommonService } from 'src/app/services/common.service';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 
 export interface ApplicationSearchData {
   purpose: string;
@@ -18,13 +20,48 @@ export interface ApplicationSearchData {
   status: string;
 }
 
+export interface PeriodicElement {
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+  id:number
+} 
+
+const ELEMENT_DATA: PeriodicElement[] = [
+  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H',id:1},
+  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He',id:1},
+  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li',id:1},
+  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be',id:1},
+  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B',id:1},
+  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C',id:1},
+  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N',id:1},
+  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O',id:1},
+  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F',id:1},
+  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne',id:1},
+  {position: 11, name: 'Sodium', weight: 22.9897, symbol: 'Na',id:1},
+  {position: 12, name: 'Magnesium', weight: 24.305, symbol: 'Mg',id:1},
+  {position: 13, name: 'Aluminum', weight: 26.9815, symbol: 'Al',id:1},
+  {position: 14, name: 'Silicon', weight: 28.0855, symbol: 'Si',id:1},
+  {position: 15, name: 'Phosphorus', weight: 30.9738, symbol: 'P',id:1},
+  {position: 16, name: 'Sulfur', weight: 32.065, symbol: 'S',id:1},
+  {position: 17, name: 'Chlorine', weight: 35.453, symbol: 'Cl',id:1},
+  {position: 18, name: 'Argon', weight: 39.948, symbol: 'Ar',id:1},
+  {position: 19, name: 'Potassium', weight: 39.0983, symbol: 'K',id:1},
+  {position: 20, name: 'Calcium', weight: 40.078, symbol: 'Ca',id:1},
+];
 
 @Component({
   selector: 'app-view-application',
   templateUrl: './view-application.component.html',
-  styleUrls: ['./view-application.component.css']
+  styleUrls: ['./view-application.component.css'],  
 })
-export class ViewApplicationComponent implements OnInit {
+export class ViewApplicationComponent implements OnInit ,AfterViewInit{
+
+  displayedColumns: string[] = ['name', 'purpose', 'sourceUrl', 'registerDate',"status","serviceCount","id"];
+  dataSource = new MatTableDataSource<Application>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   originalApplication: Application[] = [];
 
@@ -55,8 +92,7 @@ export class ViewApplicationComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, private applicationService:ApplicationService,
     private formBuilder: FormBuilder,private messageService: MessageService,
     private dataService: DataService,notifier: NotifierService, private dialog: MatDialog,
-    public commonService:CommonService
-    
+    public commonService:CommonService 
     ) {
       this.clientId=localStorage.getItem('id');
      
@@ -74,6 +110,9 @@ export class ViewApplicationComponent implements OnInit {
       status:['NEW',Validators.required]
     });     
    }
+  ngAfterViewInit(): void {    
+    this.dataSource.paginator = this.paginator;     
+  }
 
    remove(field:string){ 
     if(this.searchMap.has(field)) {
@@ -91,6 +130,7 @@ export class ViewApplicationComponent implements OnInit {
               this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
             } else {
               this.originalApplication = res.data; 
+              this.dataSource.data = res.data;
             }           
         }); 
     }
@@ -114,6 +154,7 @@ export class ViewApplicationComponent implements OnInit {
               this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
             } else {
               this.originalApplication = res.data; 
+              this.dataSource.data = r.data;
             }           
           });
         this.searchMap = new Map(Object.entries(r));
@@ -134,6 +175,7 @@ export class ViewApplicationComponent implements OnInit {
     this.applicationService.fetchApplicationByClientAndStatus(id,status)
       .subscribe(r=>{ 
           this.originalApplication = r.data;
+          this.dataSource.data = r.data;
       });
   }
 
@@ -148,7 +190,12 @@ export class ViewApplicationComponent implements OnInit {
     this.isOnBoard = false;
     this.cancelButtonName = "Cancel"
     this.heading = "EDIT APPLICATION"
-    this.application = this.originalApplication[i];
+     this.originalApplication.forEach(a=>{
+      if(a.id == i) {
+        this.application = a;
+        return;
+      }
+    })
     this.f['id'].setValue( this.application.id)
     this.f['name'].setValue( this.application.name)
     this.f['purpose'].setValue( this.application.purpose)
