@@ -1,11 +1,12 @@
 import { ClientCount } from './clientcount';
 import { ServiceCount } from './servicecount';
+import { ServiceLog } from './serviceLog';
 
 export class Dashboard {
-    applicationCount!:number;
-    serviceCount!:number;    
-    topUsed10Services!: ServiceCount[];
-    leastUsed10Services!: ServiceCount[];
-    mostActiveClient!: ClientCount[];
-    leastActiveClient!: ClientCount[];
+
+    serviceLogList!: ServiceLog[];
+    serviceCallsByStatus !:Map<String, number>;
+    serviceCallsByApplication !:Map<String, number>;
+    serviceCallsByServiceOrUser !: Map<String, number>;
+    
 }
