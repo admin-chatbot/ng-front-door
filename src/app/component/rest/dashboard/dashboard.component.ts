@@ -74,7 +74,7 @@ export class DashboardComponent implements OnInit {
       this.dashboardSearch.clientId = this.clientId;
       this.dashboardSearch.serviceUserOption = "SERVICE";
       this.dashboardSearch.timeFrame = "currentDay";
-      //alert("In constructor");
+      
       
        
   }
@@ -82,14 +82,13 @@ export class DashboardComponent implements OnInit {
   chartClicked(event: any) {
     if (event.event.type == "click") {
       const clickedIndex = event.active[0]?.index;
-      alert("Clicked index=" + clickedIndex);
+      
       const statusClicked = this.pieChartLabels[clickedIndex]; 
-      alert("Clicked Value=" + statusClicked);
-
+      
       
       this.dashboardSearch.status = statusClicked;
       
-      alert(JSON.stringify( this.dashboardSearch));
+      
       this.fetchDashboard( this.dashboardSearch);
     }
     
