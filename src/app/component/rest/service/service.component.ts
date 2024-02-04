@@ -1,4 +1,4 @@
-import { Component, Inject, InjectionToken, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ServiceService } from './service.service';
 import { MessageService } from 'src/app/http/message.service'; 
@@ -11,6 +11,8 @@ import { NotifierService } from 'angular-notifier';
 //import { ApplicationService } from '../application/application.service';
 //import { Application } from 'src/app/entity/application';
 import { CommonService } from 'src/app/services/common.service';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 
 export interface ServiceSearchData { 
   name: string;
@@ -25,7 +27,11 @@ export interface ServiceSearchData {
   templateUrl: './service.component.html',
   styleUrls: ['./service.component.css']
 })
-export class ServiceComponent implements OnInit {
+export class ServiceComponent implements OnInit,AfterViewInit {
+  displayedColumns: string[] = ['name', 'endpoint', 'method', "status","parameterCount","id"];
+  dataSource = new MatTableDataSource<Service>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   private isOnboard = true;
   submitButtonName = 'Submit';
@@ -91,6 +97,9 @@ export class ServiceComponent implements OnInit {
       
 
     }
+    ngAfterViewInit(): void {    
+      this.dataSource.paginator = this.paginator;     
+    }
 
     remove(field:string){ 
       if(this.searchMap.has(field)) {
@@ -142,14 +151,14 @@ export class ServiceComponent implements OnInit {
 
     get f() { return this.serviceForm.controls; }
     
-    view(i:number){
+    view(i:Service){
       this.isOnboard = false;
       this.submitButtonName='Edit';      
-      this.service = this.originalService[i];  
+      this.service = i;  
       //this.f[this.id].setValue(18)  
       this.f['id'].setValue( this.service.id)
       
-      alert(this.service.applicationId) 
+      //alert(this.service.applicationId) 
       this.f['applicationName'].setValue( this.service.applicationId)
       this.f['keyword'].setValue(this.service.keyword);  
       this.f['name'].setValue( this.service.name)
@@ -174,6 +183,7 @@ export class ServiceComponent implements OnInit {
     this.serviceService.fetchServiceByClientAndStatus(id,status)
       .subscribe(r=>{ 
           this.originalService = r.data;
+          this.dataSource.data = r.data;
       });
   }
   fetchApplicationNames() {

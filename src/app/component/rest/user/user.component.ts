@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/common/data.service';
@@ -9,6 +9,11 @@ import { UserSearch } from 'src/app/entity/userSearch';
 import { NotifierService } from 'angular-notifier';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommonService } from 'src/app/services/common.service';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 export interface UserSearchData { 
   empId: string;
@@ -25,7 +30,11 @@ export interface UserSearchData {
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserComponent implements OnInit {
+export class UserComponent implements OnInit,AfterViewInit {
+  displayedColumns: string[] = ["empId", "name", "email", "mobileNumber","accessType","status","id"];
+  dataSource = new MatTableDataSource<User>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   originalUser: User[] = [];
   submitted:boolean = false;
@@ -50,7 +59,8 @@ export class UserComponent implements OnInit {
     private userService:UserService,
     private dataService: DataService,
     notifier:NotifierService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public commonService:CommonService
     ) { 
 
       this.clientId = localStorage.getItem('id');
@@ -68,6 +78,9 @@ export class UserComponent implements OnInit {
         status:['ACTIVE',Validators.required], 
         empId:['',Validators.required]
       });
+    }
+    ngAfterViewInit(): void {    
+      this.dataSource.paginator = this.paginator;     
     }
 
 
@@ -153,15 +166,15 @@ export class UserComponent implements OnInit {
 
   }
 
-  view(id:number) {
-    alert(id)
+  view(id:User) {
+   
     this.submitButtonName = "Edit";
     this.isOnBoard = false;
     this.cancelButtonName = "Cancel";
     this.heading = "EDIT USER";
 
     var user : User = {} as User;
-    user = this.users[id] ;
+    user = id ;
     this.f['id'].setValue(user.id );
     this.f['name'].setValue(user.name );
     this.f['accessType'].setValue(user.accessType );
@@ -175,6 +188,7 @@ export class UserComponent implements OnInit {
     this.userService.fetchUserByClientAndStatus(id,status)
       .subscribe(r=>{ 
           this.originalUser = r.data;
+          this.dataSource.data = r.data;
       });
   } 
 
