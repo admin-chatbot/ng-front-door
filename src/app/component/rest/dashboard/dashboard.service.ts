@@ -24,10 +24,10 @@ export class DashboardService {
 
   fetchDashboard(dashboardSearch: DashboardSearch) : Observable<Dashboard | any>{ 
     
-    //alert(JSON.stringify(dashboardSearch));
+    
 
     const url = this.url.dashboard() + "search";      
-    //alert(url);
+
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token,'accept':'application/json' }) };    
     return this.http.post<Dashboard>(url, dashboardSearch, httpOptions).pipe(
       tap(data => { 
