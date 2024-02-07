@@ -29,7 +29,9 @@ export class AutoDiscoverComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute,private messageService: MessageService, private dataService: DataService,private autoDiscover:AutoDIscoverService,private notification:NotifierService) { 
     var dataRecived : any = this.router.getCurrentNavigation()?.extras.state;
     this.applicationId = dataRecived.applicaionId;
-    this.clientId = localStorage.getItem('id'); 
+    this.url = dataRecived.docUrl
+    this.clientId = localStorage.getItem('id');  
+    this.discover();
   }
 
   toggle() {
@@ -70,7 +72,7 @@ export class AutoDiscoverComponent implements OnInit {
   }  
 
   discover() {
-    this.autoDiscover.discoverService(this.url)
+    this.autoDiscover.discoverService(this.applicationId)
       .subscribe(res=>{
         if (res.errorCode != undefined && res.errorCode != 200) { 
 
@@ -85,10 +87,7 @@ export class AutoDiscoverComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.dataService.currentMessage.subscribe(m => { 
-      this.url = m
-    });      
-    this.discover();
+   
   }
 
   onChange(service: Service) {  

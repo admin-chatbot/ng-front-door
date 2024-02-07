@@ -105,8 +105,7 @@ export class ServiceParameterComponent implements OnInit,AfterViewInit {
   
       dialogRef.afterClosed().subscribe(r => {
         console.log('The dialog was closed');
-        if(r!=undefined){
-          alert(JSON.stringify(r));
+        if(r!=undefined){ 
           this.servParameterSearch = r;
           this.searchMap = new Map(Object.entries(r));
           this.isSearch = true;

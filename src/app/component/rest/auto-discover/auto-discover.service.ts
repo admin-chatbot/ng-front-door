@@ -32,12 +32,12 @@ export class AutoDIscoverService {
   }
 
 
-  discoverService(serviceDocsUrl:string) : Observable<Service[] |any> {
-    const url = this.url.serviceDiscover()+"?url="+serviceDocsUrl;    
+  discoverService(serviceDocsUrl:number) : Observable<Service[] |any> {
+    const url = this.url.serviceDiscover()+serviceDocsUrl+"/";     
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
-    return this.http.post<Service[]>(url, httpOptions)
+    return this.http.post<Service[]>(url,"", httpOptions)
     .pipe(
-      catchError(this.handleError('applicationList'))
+      catchError(this.handleError('discoverService'))
     );
   }
 
