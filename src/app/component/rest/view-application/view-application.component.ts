@@ -101,7 +101,7 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
               this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
             } else {
               this.originalApplication = res.data; 
-              this.dataSource.data = res.data;
+              //this.dataSource.data = res.data;
             }           
         }); 
     }
@@ -116,9 +116,7 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
     dialogRef.afterClosed().subscribe(r => {
       console.log('The dialog was closed');
       if(r!=undefined){ 
-        this.appSearch = r;
-        alert('searching');
-        alert(JSON.stringify(this.appSearch));
+        this.appSearch = r; 
         this.applicationService.search(this.appSearch)
           .subscribe(res=>{
             if (res.errorCode != undefined && res.errorCode != 200) { 

@@ -5,6 +5,7 @@ import { UrlService } from 'src/app/common/url.service';
 import { Application } from 'src/app/entity/application';
 import {  HandleError, HttpErrorHandlerService } from '../../../http/http-error-handler.service'
 import { Dashboard } from 'src/app/entity/dashboard';
+import { DashboardSearch } from 'src/app/entity/dashboardsearch';
 
 @Injectable({
   providedIn: 'root'
@@ -21,10 +22,14 @@ export class DashboardService {
       this.token = localStorage.getItem('token');
   }
 
-  fetchDashboard() : Observable<Dashboard | any>{ 
-    const url = this.url.dashboard();      
+  fetchDashboard(dashboardSearch: DashboardSearch) : Observable<Dashboard | any>{ 
+    
+    
+
+    const url = this.url.dashboard() + "search";      
+
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token,'accept':'application/json' }) };    
-    return this.http.get<Dashboard>(url, httpOptions).pipe(
+    return this.http.post<Dashboard>(url, dashboardSearch, httpOptions).pipe(
       tap(data => { 
         console.log('Data received: ' + JSON.stringify(data));
       }),
