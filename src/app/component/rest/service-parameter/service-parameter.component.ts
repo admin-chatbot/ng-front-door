@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 //import { ServiceParameter } from '../service-parameter/service-parameter.service';
 import { ServiceParameterService } from '../service-parameter/service-parameter.service'
@@ -11,6 +11,9 @@ import { Service } from 'src/app/entity/service';
 import { NotifierService } from 'angular-notifier';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ServiceParameterSearch } from 'src/app/entity/serviceParameterSearch';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { CommonService } from 'src/app/services/common.service';
 
 export interface ServiceParameterSearchData { 
   name: string;
@@ -23,7 +26,11 @@ export interface ServiceParameterSearchData {
   templateUrl: './service-parameter.component.html',
   styleUrls: ['./service-parameter.component.css']
 })
-export class ServiceParameterComponent implements OnInit {
+export class ServiceParameterComponent implements OnInit,AfterViewInit {
+  displayedColumns: string[] = ['name', 'description', 'required',"id"];
+  dataSource = new MatTableDataSource<ServiceParameter>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   private isOnboard = true;
   submitButtonName = 'Submit';
@@ -54,7 +61,7 @@ export class ServiceParameterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private messageService: MessageService,
     private serciceParameterService: ServiceParameterService,
-    private notifire:NotifierService,private dialog: MatDialog) {
+    private notifire:NotifierService,private dialog: MatDialog,public commonService:CommonService) {
     var dataRecived : any = this.router.getCurrentNavigation()?.extras.state;
       this.serviceId=dataRecived.id; 
      
@@ -65,7 +72,7 @@ export class ServiceParameterComponent implements OnInit {
         required: ['', Validators.required],
         type: ['', Validators.required],
         paramType: ['', Validators.required],
-        jsonFormat: ['', Validators.required],
+        jsonFormat: ['' ],
         name: ['', Validators.required],
         questionToGetInput: [[]],
         in: ['']
@@ -75,12 +82,18 @@ export class ServiceParameterComponent implements OnInit {
       this.getServiceParmeter(this.serviceId);
 
     }
+    ngAfterViewInit(): void {    
+      this.dataSource.paginator = this.paginator;     
+    }
    
     
     ngOnInit(): void {
       var dataRecived: any = this.router.getCurrentNavigation()?.extras.state;
-      this.serviceId = dataRecived.id;
-      this.getServiceParmeter(this.serviceId);
+      this.serviceId = dataRecived?.id;
+  
+      if (this.serviceId) {
+        this.getServiceParmeter(this.serviceId);
+      }
     }
 
 
@@ -92,8 +105,12 @@ export class ServiceParameterComponent implements OnInit {
   
       dialogRef.afterClosed().subscribe(r => {
         console.log('The dialog was closed');
+ ajit-pagination-otherpages
         if(r!=undefined){
-          alert(JSON.stringify(r));
+         
+
+        if(r!=undefined){ 
+ release-v0.0.2
           this.servParameterSearch = r;
           this.searchMap = new Map(Object.entries(r));
           this.isSearch = true;
@@ -102,10 +119,10 @@ export class ServiceParameterComponent implements OnInit {
     }
     get f() { return this.serviceParameterForm.controls; }
     
-    view(i: number) {
+    view(i: ServiceParameter) {
       this.isOnboard = false;
       this.submitButtonName = 'Edit';   
-      const selectedService = this.originalServiceParameter[i];   
+      const selectedService = i;   
       this.f['id'].setValue(selectedService.id);
       this.f['serviceId'].setValue(selectedService.serviceId);
       this.f['description'].setValue(selectedService.description);
@@ -135,7 +152,7 @@ onDropdownClick() {
 
 
 remove(field:string){ 
-  alert(field)
+ 
  }
 
 getServiceParmeter(id:number){
@@ -147,11 +164,13 @@ getServiceParmeter(id:number){
           this.notifire.notify('error','Something went wrong. please try again in sometime') ;  
         } else {
           this.originalServiceParameter = r.data;
+          this.dataSource.data=r.data;
+          this
         }
     });
 }
 onSubmit() {  
-  alert('submitted');
+  
   if (this.serviceParameterForm.invalid) {     
     this.notifire.notify('error','invalid input');
     return;

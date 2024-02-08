@@ -20,8 +20,8 @@ export class SignInComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute,private formBuilder: FormBuilder, private messageService: MessageService
     ,private authService: AuthService,private notifier:NotifierService) { 
     this.loginForm = this.formBuilder.group({
-      email: ['', [Validators.required,Validators.email]],
-      password: ['', [Validators.required]]
+      email: ['jitendrasagoriya@yahoo.co.in', [Validators.required,Validators.email]],
+      password: ['J1tendr@12', [Validators.required]]
     });
   }
 

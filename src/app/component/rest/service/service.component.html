@@ -43,65 +43,87 @@
                             </div>
                         </div>
                         <div class="card-body table-responsive p-0">
-                            <table class="table table-hover text-nowrap">
-                                <thead>
-                                    <tr>
 
-                                        <th>Name</th>
-                                        <th>Endpoint</th>
-                                        <th>Method</th>
-                                        <th>Status</th>
-                                        <th>Parameter Count</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let service of originalService; index as i">
-                                        <td>{{ service.name }}</td>
-                                        <td>{{ service.endpoint }}</td>
-                                        <td>{{ service.method }}</td>
-                                        <td>{{ service.status }}</td>
-                                        <td>{{ service.parameterCount }}</td>
-                                        
-                                        <td>
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default">Action</button>
-                                                <button type="button"
-                                                    class="btn btn-default dropdown-toggle dropdown-icon"
-                                                    data-toggle="dropdown">
-                                                    <span class="sr-only">Toggle Dropdown</span>
-                                                </button>
-                                                <div class="dropdown-menu" role="menu">
-                                                    <a class="dropdown-item" (click)="view(i)">View</a>
-                                                    <a class="dropdown-item" (click)="addParameter(service.id)">Add
-                                                        Parameter</a>
-                                                    <a class="dropdown-item" href="#">Delete</a>
-                                                </div>
+                            <table mat-table [dataSource]="dataSource" style="width: 100%;">
+                          
+                                <ng-container matColumnDef="name">
+                                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="endpoint">
+                                    <th mat-header-cell *matHeaderCellDef> Endpoint </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.endPoint}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="method">
+                                    <th mat-header-cell *matHeaderCellDef> Method </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.method}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="status">
+                                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+                                </ng-container>
+                                <ng-container matColumnDef="parameterCount">
+                                    <th mat-header-cell *matHeaderCellDef> Parameter Count </th>
+                                    <td mat-cell *matCellDef="let element"> {{element.parameterCount}} </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="id">
+                                    <th mat-header-cell *matHeaderCellDef> Action </th>
+                                    <td mat-cell *matCellDef="let element" style="width: 50px;"> 
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default">Action</button>
+                                            <button type="button"
+                                                class="btn btn-default dropdown-toggle dropdown-icon"
+                                                data-toggle="dropdown">
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                            </button>
+                                            <div class="dropdown-menu" role="menu">
+                                                <a class="dropdown-item" (click)="view(element)">View</a>
+                                               
+                                                <a class="dropdown-item"
+                                                    (click)="addParameter(element.id)">Add Parameter
+                                                    </a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" href="#">Delete</a>
                                             </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                        </div>
+                                    </td>
+                                </ng-container>
+                                
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                             </table>
+
+                            <mat-paginator [pageSizeOptions]="[ 10, 20]" showFirstLastButtons
+                                aria-label="Select page of periodic elements">
+                            </mat-paginator> 
                         </div>
-                       
+                        
+                        <!-- /.card-body -->
                     </div>
+                    <!-- /.card -->
                 </div>
-                <!-- left column -->
                 <div class="col-md-4">
                     <!-- general form elements -->
-                    <div class="card card-primary">
+                    <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">New Onboard Or Edit Service</h3>
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 150px;">
+                                    <div class="input-group-append">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
+                        <div class="card-body table-responsive p-0">
                         <form [formGroup]='serviceForm' (ngSubmit)="onSubmit()">
 
 
                             <div class="card-body">
-
-
                                 <div class="form-group">
-                                    <label for="method">Application Name</label>
+                                    <label for="method">Application Name <span style="color: red;">*</span></label>
                                     <select class="form-control" id="applicationName" formControlName="applicationName">
                                         <option *ngFor="let application of applications" [value]="application.id">{{
                                             application.name }}</option>
@@ -109,33 +131,32 @@
                                 </div>
 
                                 <input type="hidden" class="form-control" id="Id" placeholder="Enter Application Id"
-                                    formControlName="id">
+                                    formControlName="id" required>
                                 <div class="form-group">
-                                    <label for="name">Service Name</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Enter Service Name"
-                                        formControlName="name">
+                                    <label for="name">Service Name<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control" id="name" placeholder="Enter Service Name" formControlName="name" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="summary">Service Summary</label>
+                                    <label for="summary">Service Summary<span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="summary" placeholder="Summary"
-                                        formControlName="summary">
+                                        formControlName="summary" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="endpoint">Service Endpoint</label>
+                                    <label for="endpoint">Service Endpoint<span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="endPoint"
-                                        placeholder="Enter Service Endpoint" formControlName="endpoint">
+                                        placeholder="Enter Service Endpoint" formControlName="endpoint" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="keyword">Search Keyword</label>
+                                    <label for="keyword">Search Keyword <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="txtKeyword" placeholder="Enter keyword"
-                                        formControlName="keyword">
+                                        formControlName="keyword" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="method">HTTP Method</label>
+                                    <label for="method">HTTP Method <span style="color: red;">*</span></label>
                                     <select class="form-control" id="method" formControlName="method">
                                         <option *ngFor="let httpMethod of httpMethods" [value]="httpMethod">{{
                                             httpMethod }}</option>
@@ -145,7 +166,7 @@
 
 
                                 <div class="form-group">
-                                    <label for="RequestType">Request Type</label>
+                                    <label for="RequestType">Request Type <span style="color: red;">*</span></label>
                                     <select class="form-control" id="RequestType" formControlName="requestTypes"
                                         multiple>
                                         <!-- Default value -->
@@ -158,7 +179,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="ResponseType">Response Type</label>
+                                    <label for="ResponseType">Response Type <span style="color: red;">*</span></label>
                                     <select class="form-control" id="ResponseType" formControlName="responseTypes"
                                         multiple>
                                         <!-- Default value -->
@@ -172,13 +193,13 @@
 
 
                                 <div class="form-group">
-                                    <label for="botResponseTemplate">Bot Response Template</label>
+                                    <label for="botResponseTemplate">Bot Response Template <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="botResponseTemplate"
                                         placeholder="Enter Bot Response Template" formControlName="botResponseTemplate">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="response Schema">Response Schema</label>
+                                    <label for="response Schema">Response Schema <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="responseSchema"
                                         placeholder="Enter Response Schema" formControlName="responseSchema">
                                 </div>
@@ -200,6 +221,7 @@
                     <!-- /.card -->
                 </div>
             </div>
+        </div>
         </div>
     </section>
 </div>

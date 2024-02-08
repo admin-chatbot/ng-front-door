@@ -46,6 +46,7 @@ export class ApplicationService {
   fetchApplication() : Observable<Application[] | any>{
     const url = this.url.application();   
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
+   
     return this.http.get<Application[]>(url, httpOptions)
     .pipe(
       catchError(this.handleError('applicationList'))
@@ -55,6 +56,7 @@ export class ApplicationService {
   fetchApplicationByClientAndStatus(id:number,status:string) : Observable<Application[] | any>{
       const url = this.url.application()+"byClient/"+id+"/status/"+status;   
       const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
+      
       return this.http.get<Application[]>(url, httpOptions)
       .pipe(
         catchError(this.handleError('applicationList'))
