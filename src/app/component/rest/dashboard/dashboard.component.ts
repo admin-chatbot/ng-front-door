@@ -8,6 +8,8 @@ import { ChartOptions,ChartEvent,ChartData,ChartType,ChartConfiguration } from '
 import { DashboardSearch } from 'src/app/entity/dashboardsearch'; 
 import { BaseChartDirective } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import { ServiceLog } from 'src/app/entity/serviceLog';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,6 +17,9 @@ import * as pluginDataLabels from 'chartjs-plugin-datalabels';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+
+  displayedColumns: string[] = ['serviceEndpoint', 'serviceName', 'response',"status","logDate"];
+  dataSource = new MatTableDataSource<ServiceLog>();
 
 
   public pieChartOptions: ChartOptions<'pie'> = {
@@ -64,6 +69,7 @@ export class DashboardComponent implements OnInit {
 
   dashboardSearch: DashboardSearch = {} as DashboardSearch;  
   clientId:any;
+  serviceLogs: ServiceLog[] = [];
 
   dashboard: Dashboard = new Dashboard;
   constructor(private router: Router, private route: ActivatedRoute, 
@@ -101,8 +107,14 @@ export class DashboardComponent implements OnInit {
         } else {
           if (res) { 
             this.dashboard = res.data;
-           
-            console.log(JSON.stringify(this.dashboard));  
+            this.dataSource.data = res.data.serviceLogs;
+            //alert(JSON.stringify(res));
+
+            
+            //alert(JSON.stringify(this.dashboard));
+            //alert(JSON.stringify(this.serviceLogs));
+            console.log("before displaying on UI");
+            console.log(JSON.stringify(this.dataSource.data));  
             const keys = Object.keys(this.dashboard.serviceCallsByStatus);
             const values = Object.values(this.dashboard.serviceCallsByStatus);
             const keys1 = Object.keys(this.dashboard.serviceCallsByApplication);
