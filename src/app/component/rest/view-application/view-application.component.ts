@@ -101,7 +101,7 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
               this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
             } else {
               this.originalApplication = res.data; 
-              this.dataSource.data = res.data;
+              //this.dataSource.data = res.data;
             }           
         }); 
     }
