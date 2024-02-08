@@ -123,7 +123,7 @@
 
                             <div class="card-body">
                                 <div class="form-group">
-                                    <label for="method">Application Name</label>
+                                    <label for="method">Application Name <span style="color: red;">*</span></label>
                                     <select class="form-control" id="applicationName" formControlName="applicationName">
                                         <option *ngFor="let application of applications" [value]="application.id">{{
                                             application.name }}</option>
@@ -131,33 +131,32 @@
                                 </div>
 
                                 <input type="hidden" class="form-control" id="Id" placeholder="Enter Application Id"
-                                    formControlName="id">
+                                    formControlName="id" required>
                                 <div class="form-group">
-                                    <label for="name">Service Name</label>
-                                    <input type="text" class="form-control" id="name" placeholder="Enter Service Name"
-                                        formControlName="name">
+                                    <label for="name">Service Name<span style="color: red;">*</span></label>
+                                    <input type="text" class="form-control" id="name" placeholder="Enter Service Name" formControlName="name" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="summary">Service Summary</label>
+                                    <label for="summary">Service Summary<span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="summary" placeholder="Summary"
-                                        formControlName="summary">
+                                        formControlName="summary" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="endpoint">Service Endpoint</label>
+                                    <label for="endpoint">Service Endpoint<span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="endPoint"
-                                        placeholder="Enter Service Endpoint" formControlName="endpoint">
+                                        placeholder="Enter Service Endpoint" formControlName="endpoint" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="keyword">Search Keyword</label>
+                                    <label for="keyword">Search Keyword <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="txtKeyword" placeholder="Enter keyword"
-                                        formControlName="keyword">
+                                        formControlName="keyword" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="method">HTTP Method</label>
+                                    <label for="method">HTTP Method <span style="color: red;">*</span></label>
                                     <select class="form-control" id="method" formControlName="method">
                                         <option *ngFor="let httpMethod of httpMethods" [value]="httpMethod">{{
                                             httpMethod }}</option>
@@ -167,7 +166,7 @@
 
 
                                 <div class="form-group">
-                                    <label for="RequestType">Request Type</label>
+                                    <label for="RequestType">Request Type <span style="color: red;">*</span></label>
                                     <select class="form-control" id="RequestType" formControlName="requestTypes"
                                         multiple>
                                         <!-- Default value -->
@@ -180,7 +179,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="ResponseType">Response Type</label>
+                                    <label for="ResponseType">Response Type <span style="color: red;">*</span></label>
                                     <select class="form-control" id="ResponseType" formControlName="responseTypes"
                                         multiple>
                                         <!-- Default value -->
@@ -194,13 +193,13 @@
 
 
                                 <div class="form-group">
-                                    <label for="botResponseTemplate">Bot Response Template</label>
+                                    <label for="botResponseTemplate">Bot Response Template <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="botResponseTemplate"
                                         placeholder="Enter Bot Response Template" formControlName="botResponseTemplate">
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="response Schema">Response Schema</label>
+                                    <label for="response Schema">Response Schema <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="responseSchema"
                                         placeholder="Enter Response Schema" formControlName="responseSchema">
                                 </div>

@@ -147,6 +147,7 @@ export class ServiceComponent implements OnInit,AfterViewInit {
         this.isSearch = true; 
       }
     });
+    
   }
 
     get f() { return this.serviceForm.controls; }
