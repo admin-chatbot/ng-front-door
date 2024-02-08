@@ -72,7 +72,7 @@ export class ServiceParameterComponent implements OnInit,AfterViewInit {
         required: ['', Validators.required],
         type: ['', Validators.required],
         paramType: ['', Validators.required],
-        jsonFormat: ['', Validators.required],
+        jsonFormat: ['' ],
         name: ['', Validators.required],
         questionToGetInput: [[]],
         in: ['']
@@ -105,7 +105,12 @@ export class ServiceParameterComponent implements OnInit,AfterViewInit {
   
       dialogRef.afterClosed().subscribe(r => {
         console.log('The dialog was closed');
+ ajit-pagination-otherpages
+        if(r!=undefined){
+         
+
         if(r!=undefined){ 
+ release-v0.0.2
           this.servParameterSearch = r;
           this.searchMap = new Map(Object.entries(r));
           this.isSearch = true;
@@ -147,7 +152,7 @@ onDropdownClick() {
 
 
 remove(field:string){ 
-  alert(field)
+ 
  }
 
 getServiceParmeter(id:number){
@@ -165,7 +170,7 @@ getServiceParmeter(id:number){
     });
 }
 onSubmit() {  
-  alert('submitted');
+  
   if (this.serviceParameterForm.invalid) {     
     this.notifire.notify('error','invalid input');
     return;
