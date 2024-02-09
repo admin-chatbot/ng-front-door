@@ -46,7 +46,7 @@
                                 [options]="pieChartOptions"
                                 [plugins]="pieChartPlugins"
                                 [legend]="pieChartLegend"
-                                (chartClick)="chartClicked($event)">
+                                (chartClick)="chartClickedStatus($event)">
                                 </canvas></div>
                         </div>
                     </div>  
@@ -63,7 +63,7 @@
                                 [options]="pieChartOptions"
                                 [plugins]="pieChartPlugins"
                                 [legend]="pieChartLegend"
-                                (chartClick)="chartClicked($event)">
+                                (chartClick)="chartClickedApplication($event)">
                                 </canvas></div>    
                         </div>
                     </div>
@@ -80,7 +80,7 @@
                                 [options]="pieChartOptions"
                                 [plugins]="pieChartPlugins"
                                 [legend]="pieChartLegend"
-                                (chartClick)="chartClicked($event)">
+                                (chartClick)="chartClickedServiceOrUser($event)">
                                 </canvas></div>    
                         </div>
                     </div>
@@ -106,7 +106,7 @@
                                     [options]="barChartOptions"
                                  
                                     [type]="barChartType"                                   
-                                    (chartClick)="chartClicked($event)"></canvas>
+                                    (chartClick)="chartClickedBar($event)"></canvas>
                                                 
                         </div>
                         <!-- /.card-header -->

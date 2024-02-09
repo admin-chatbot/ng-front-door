@@ -20,7 +20,8 @@ export class DashboardComponent implements OnInit {
 
   displayedColumns: string[] = ['serviceEndpoint', 'serviceName', 'response',"status","logDate"];
   dataSource = new MatTableDataSource<ServiceLog>();
-
+  selectedStatus: string = '';
+  selectedApplication: number = 0;
 
   public pieChartOptions: ChartOptions<'pie'> = {
     responsive: false,
@@ -79,27 +80,78 @@ export class DashboardComponent implements OnInit {
       this.dashboardSearch.status = "ALL";
       this.dashboardSearch.clientId = this.clientId;
       this.dashboardSearch.serviceUserOption = "SERVICE";
-      this.dashboardSearch.timeFrame = "currentDay";
-      
-      
-       
+      this.dashboardSearch.timeFrame = "currentDay";             
   }
 
-  chartClicked(event: any) {
+  chartClickedStatus(event: any) {
+    if (event.event.type == "click") {
+      const clickedIndex = event.active[0]?.index;
+      const statusClicked = this.pieChartLabels[clickedIndex]; 
+      this.selectedStatus = statusClicked;
+      this.dashboardSearch.status = statusClicked;
+      
+      console.log(this.selectedStatus);
+ 
+      this.fetchDashboard( this.dashboardSearch);
+    }
+    
+  }
+
+  chartClickedApplication(event: any) {
+    if (event.event.type == "click") {
+      
+      if (this.selectedStatus) {
+        this.dashboardSearch.status = this.selectedStatus;
+      }
+
+      const clickedIndex = event.active[0]?.index;
+      console.log(clickedIndex);
+      console.log(this.pieChartLabels1[clickedIndex]);
+
+      const applicationClicked = parseInt(this.pieChartLabels1[clickedIndex]); 
+      this.selectedApplication = applicationClicked;
+      this.dashboardSearch.application = applicationClicked;
+
+      console.log(this.selectedStatus);
+      console.log(this.selectedApplication);
+
+      this.fetchDashboard( this.dashboardSearch);
+    }
+    
+  }
+  
+  chartClickedServiceOrUser(event: any) {
     if (event.event.type == "click") {
       const clickedIndex = event.active[0]?.index;
       
-      const statusClicked = this.pieChartLabels[clickedIndex]; 
+      const applicationClicked = this.pieChartLabels2[clickedIndex]; 
       
       
-      this.dashboardSearch.status = statusClicked;
+      this.dashboardSearch.application = Number(applicationClicked);
+      console.log("Service or User selected");
+      console.log(this.dashboardSearch.application);      
+      
+      this.fetchDashboard( this.dashboardSearch);
+    }
+    
+  }
+
+  chartClickedBar(event: any) {
+    if (event.event.type == "click") {
+      const clickedIndex = event.active[0]?.index;
+      
+      const applicationClicked = this.pieChartLabels[clickedIndex]; 
+      
+      
+      this.dashboardSearch.application = Number(applicationClicked);
       
       
       this.fetchDashboard( this.dashboardSearch);
     }
     
   }
-  
+
+
   fetchDashboard(dashboardSearch: DashboardSearch) {
     this.dashboardService.fetchDashboard(dashboardSearch)
       .subscribe(res=>{         
