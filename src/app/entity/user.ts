@@ -10,4 +10,5 @@ export class User {
     services!:number[];
     clientId!:string;
     status!:string;
+    applicationId!: number;
 }
