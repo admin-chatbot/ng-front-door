@@ -160,7 +160,7 @@ export class ServiceComponent implements OnInit,AfterViewInit {
       this.service = i;  
       //this.f[this.id].setValue(18)  
       this.f['id'].setValue( this.service.id)   
-            this.f['applicationName'].setValue( this.service.applicationId)
+      this.f['applicationName'].setValue( this.service.applicationId)
       this.f['keyword'].setValue(this.service.keyword);  
       this.f['name'].setValue( this.service.name)
       this.f['summary'].setValue( this.service.summary);
