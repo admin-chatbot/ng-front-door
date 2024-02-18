@@ -144,8 +144,7 @@ export class DashboardComponent implements OnInit {
 
    ngOnInit() {
     setTimeout(() => {
-      this.fetchDashboard(this.dashboardSearch);
-      // comment this
+      this.fetchDashboard(this.dashboardSearch); 
     
     }, 3000);
     // this.chart.update();
