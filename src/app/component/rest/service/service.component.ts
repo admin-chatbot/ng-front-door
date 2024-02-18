@@ -143,6 +143,7 @@ export class ServiceComponent implements OnInit,AfterViewInit {
               this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
             } else {
               this.originalService = res.data; 
+              this.dataSource.data = res.data;
             }           
           });
         this.searchMap = new Map(Object.entries(r));
