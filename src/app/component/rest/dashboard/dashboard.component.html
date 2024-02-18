@@ -42,7 +42,7 @@
                             <div> <canvas baseChart [type]="'pie'" [datasets]="pieChartDatasets"
                                     [labels]="pieChartLabels" [options]="pieChartOptions" [plugins]="pieChartPlugins"
                                     [legend]="pieChartLegend" (chartClick)="chartClicked($event)">
-                                </canvas></div>
+ 
                         </div>
                     </div>
                 </div>
@@ -51,10 +51,22 @@
                     <div class="small-box ">
                         <div class="inner al">
                             <h3>By Application</h3>
+ 
                             <div> <canvas baseChart [type]="'pie'" [datasets]="pieChartDatasets1"
                                     [labels]="pieChartLabels1" [options]="pieChartOptions" [plugins]="pieChartPlugins"
                                     [legend]="pieChartLegend" (chartClick)="chartClicked($event)">
                                 </canvas></div>
+
+                            <div> <canvas baseChart
+                                [type]="'pie'"
+                                [datasets]="pieChartDatasets1"
+                                [labels]="pieChartLabels1"
+                                [options]="pieChartOptions"
+                                [plugins]="pieChartPlugins"
+                                [legend]="pieChartLegend"
+                                (chartClick)="chartClickedApplication($event)">
+                                </canvas></div>    
+
                         </div>
                     </div>
                 </div>
@@ -63,6 +75,7 @@
                     <div class="small-box ">
                         <div class="inner al">
                             <h3>By Service</h3>
+
                             <div>
 
                                 <canvas baseChart [type]="'pie'" [datasets]="pieChartDatasets2"
@@ -70,6 +83,9 @@
                                     [legend]="pieChartLegend" (chartClick)="chartClicked($event)">
                                 </canvas>
                             </div>
+
+                              
+
                         </div>
                     </div>
                 </div>
@@ -88,11 +104,14 @@
                                 <i class="ion ion-stats-bars mr-1"></i>
                                 Most Used Services
                             </h3>
+
                             <canvas baseChart class="chart" [data]="barChartData" [plugins]="barChartPlugins"
                                 [options]="barChartOptions" [type]="barChartType" [legend]="true"
                                 (chartClick)="chartClicked($event)">
                             </canvas>
 
+
+                             
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">

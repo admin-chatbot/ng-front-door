@@ -143,6 +143,7 @@ export class ServiceComponent implements OnInit,AfterViewInit {
               this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
             } else {
               this.originalService = res.data; 
+              this.dataSource.data = res.data;
             }           
           });
         this.searchMap = new Map(Object.entries(r));
@@ -160,7 +161,7 @@ export class ServiceComponent implements OnInit,AfterViewInit {
       this.service = i;  
       //this.f[this.id].setValue(18)  
       this.f['id'].setValue( this.service.id)   
-            this.f['applicationName'].setValue( this.service.applicationId)
+      this.f['applicationName'].setValue( this.service.applicationId)
       this.f['keyword'].setValue(this.service.keyword);  
       this.f['name'].setValue( this.service.name)
       this.f['summary'].setValue( this.service.summary);

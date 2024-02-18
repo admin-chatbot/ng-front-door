@@ -14,6 +14,7 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { Application } from 'src/app/entity/application';
 
 export interface UserSearchData { 
   empId: string;
@@ -35,11 +36,12 @@ export class UserComponent implements OnInit,AfterViewInit {
   dataSource = new MatTableDataSource<User>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
+  applications: Application[] = [];
   originalUser: User[] = [];
   submitted:boolean = false;
   userForm:FormGroup;
   users:User[] = []
+  user ={} as User
   heading:string = "Register New User";
   isOnBoard:boolean = true;
   submitButtonName:string = "Register";
@@ -104,6 +106,7 @@ export class UserComponent implements OnInit,AfterViewInit {
                 this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
               } else {
                 this.originalUser = res.data; 
+                this.dataSource.data = res.data;
               }           
             });
           this.searchMap = new Map(Object.entries(r));
@@ -114,8 +117,21 @@ export class UserComponent implements OnInit,AfterViewInit {
 
   get f() { return this.userForm.controls; }
   ngOnInit(): void {
+    this.fetchApplicationNames1();
   }
 
+  fetchApplicationNames1() {
+    this.userService.fetchApplicationNames1(this.clientId)
+      .subscribe(
+        (response) => {
+          this.applications = response.data;
+        },
+        (error) => {
+          console.error('Error fetching application names:', error);
+        }
+      );
+  }
+  
   onSubmit() { 
 
     if (this.userForm.invalid) {       
@@ -127,6 +143,7 @@ export class UserComponent implements OnInit,AfterViewInit {
     const user: User = {} as User;
     user.id = this.f['id'].value;
     user.name = this.f['name'].value;
+    user.applications=this.f['applicationName'].value;
     user.accessType = this.f['accessType'].value;
     user.clientId = this.clientId;
     user.email = this.f['email'].value;
@@ -140,6 +157,7 @@ export class UserComponent implements OnInit,AfterViewInit {
           if (res.errorCode != undefined && res.errorCode != 200) { 
             this.notifier.notify('error','Not able to register. please try again in sometime')           
           } else {
+            this.notifier.notify('success','Successfully onboarded.');
             if(res.data!=undefined)
               this.users.push(res.data);
           }
@@ -181,6 +199,7 @@ export class UserComponent implements OnInit,AfterViewInit {
     this.f['email'].setValue(user.email );
     this.f['empId'].setValue(user.empId );
     this.f['mobileNumber'].setValue(user.mobileNumber );
+    this.f['applicationName'].setValue( this.user.applicationId)
     this.f['status'].setValue(user.status ); 
   }
 
