@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'src/app/http/message.service'; 
 import { ActivatedRoute, Router } from '@angular/router';
 import { Service } from 'src/app/entity/service';
@@ -10,6 +10,8 @@ import { BaseChartDirective } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { ServiceLog } from 'src/app/entity/serviceLog';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { ServiceLogs } from 'src/app/entity/serviceLogs';
+import { DashboardChartService } from './dashboard-chart.service'; 
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +22,13 @@ export class DashboardComponent implements OnInit {
 
   displayedColumns: string[] = ['serviceEndpoint', 'serviceName', 'response',"status","logDate"];
   dataSource = new MatTableDataSource<ServiceLog>();
+ 
 
+  @ViewChild(BaseChartDirective , { static: true }) chart: BaseChartDirective | undefined;
+ 
+  selectedStatus: string = '';
+  selectedApplication: number = 0;
+ 
 
   public pieChartOptions: ChartOptions<'pie'> = {
     responsive: false,
@@ -36,102 +44,145 @@ export class DashboardComponent implements OnInit {
   public pieChartLabels2: string[] = []; // Updated to empty array
   public pieChartDatasets2: { data: number[] }[] = [{ data: [] }]; // Explicit typing
 
-  public barChartOptions: ChartConfiguration['options'] = {
-    // We use these empty structures as placeholders for dynamic theming.
-    scales: {
-      x: {},
-      y: {
-        min: 10,
-      },
-    },
-    plugins: {
-      legend: {
-        display: true,
-      },
-      datalabels: {
-        anchor: 'end',
-        align: 'end',
-      },
-    },
-  };
+  public labels : any;
+  public datasets: any;
 
-  public barChartType: ChartType = 'bar';
-  //public barChartPlugins = [DataLabelsPlugin];
+  public barChartOptions: ChartConfiguration['options'] = { 
+    responsive: true,
+  };
+  public barChartPlugins = [];
+
+  public barChartType: ChartType = 'bar'; 
 
   public barChartData: ChartData<'bar'> = {
-    labels: ['2006', '2007', '2008', '2009', '2010', '2011', '2012'],
+    labels: ['1', '2', '3', '4', '5', '6', '7','8', '9', '10', '11', '12', '13', '14','15', '16', '17', '18', '19','20','21', '22','23'],
     datasets: [
-      { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
-      { data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B' },
-    ],
+      { data: [], label: 'Success' },
+      { data: [], label: 'Fail' },
+    ],    
   };
+
+ 
 
 
   dashboardSearch: DashboardSearch = {} as DashboardSearch;  
   clientId:any;
   serviceLogs: ServiceLog[] = [];
+  
+  logs:ServiceLogs = {} as ServiceLogs;
 
   dashboard: Dashboard = new Dashboard;
   constructor(private router: Router, private route: ActivatedRoute, 
     private messageService: MessageService,
-    private dashboardService:DashboardService) { 
-      this.clientId=localStorage.getItem('id'); 
-      this.dashboardSearch.status = "ALL";
+ 
+    private dashboardService:DashboardService,
+    private chartService:DashboardChartService) { 
+      this.clientId=localStorage.getItem('id');  
+      this.dashboardSearch.clientId = this.clientId;  
       this.dashboardSearch.clientId = this.clientId;
       this.dashboardSearch.serviceUserOption = "SERVICE";
-      this.dashboardSearch.timeFrame = "currentDay";
-      
-      
-       
-  }
+      this.dashboardSearch.timeFrame = "currentDay";             
+  
 
-  chartClicked(event: any) {
+  chartClickedStatus(event: any) {
     if (event.event.type == "click") {
       const clickedIndex = event.active[0]?.index;
-      
       const statusClicked = this.pieChartLabels[clickedIndex]; 
-      
-      
+      this.selectedStatus = statusClicked;
       this.dashboardSearch.status = statusClicked;
+ 
       
+      console.log(this.selectedStatus);
+ 
+      this.fetchDashboard( this.dashboardSearch);
+    }
+    
+  }
+
+  chartClickedApplication(event: any) {
+    if (event.event.type == "click") {
       
+      if (this.selectedStatus) {
+        this.dashboardSearch.status = this.selectedStatus;
+      }
+
+      const clickedIndex = event.active[0]?.index;
+      console.log(clickedIndex);
+      console.log(this.pieChartLabels1[clickedIndex]);
+
+      const applicationClicked = parseInt(this.pieChartLabels1[clickedIndex]); 
+      this.selectedApplication = applicationClicked;
+      this.dashboardSearch.application = applicationClicked;
+
+      console.log(this.selectedStatus);
+      console.log(this.selectedApplication);
+
       this.fetchDashboard( this.dashboardSearch);
     }
     
   }
   
+  chartClickedServiceOrUser(event: any) {
+    if (event.event.type == "click") {
+      const clickedIndex = event.active[0]?.index;
+      
+      const applicationClicked = this.pieChartLabels2[clickedIndex]; 
+      
+      
+      this.dashboardSearch.application = Number(applicationClicked);
+      console.log("Service or User selected");
+      console.log(this.dashboardSearch.application);      
+      
+      this.fetchDashboard( this.dashboardSearch);
+    }
+    
+  }
+
+  chartClickedBar(event: any) {
+    if (event.event.type == "click") { 
+      const clickedIndex = event.active[0]?.index;      
+      const statusClicked = this.pieChartLabels[clickedIndex];  
+      this.dashboardSearch.status = statusClicked;   
+      const clickedIndex = event.active[0]?.index;      
+      const applicationClicked = this.pieChartLabels[clickedIndex];       
+      
+      this.dashboardSearch.application = Number(applicationClicked);     
+ 
+      this.fetchDashboard( this.dashboardSearch);
+    }
+    
+  }
+
+
   fetchDashboard(dashboardSearch: DashboardSearch) {
     this.dashboardService.fetchDashboard(dashboardSearch)
       .subscribe(res=>{         
         if (res.errorCode != undefined && res.errorCode != 200) {              
         } else {
           if (res) { 
-            this.dashboard = res.data;
-            this.dataSource.data = res.data.serviceLogs;
-            //alert(JSON.stringify(res));
+            this.logs = res.data;   
+            this.chartService.setLogs(res.data); 
+            this.pieChartLabels = ["SUCCESS","FAIL"];
+            this.pieChartDatasets[0].data = this.chartService.getTotalDailyData();
 
-            
-            //alert(JSON.stringify(this.dashboard));
-            //alert(JSON.stringify(this.serviceLogs));
-            console.log("before displaying on UI");
-            console.log(JSON.stringify(this.dataSource.data));  
-            const keys = Object.keys(this.dashboard.serviceCallsByStatus);
-            const values = Object.values(this.dashboard.serviceCallsByStatus);
-            const keys1 = Object.keys(this.dashboard.serviceCallsByApplication);
-            const values1 = Object.values(this.dashboard.serviceCallsByApplication);
-            const keys2 = Object.keys(this.dashboard.serviceCallsByServiceOrUser);
-            const values2 = Object.values(this.dashboard.serviceCallsByServiceOrUser);
+           
 
+            var aplicationData = this.chartService.getApplicationDailyData();
             
-            // Assign keys to pieChartLabels
-            this.pieChartLabels = keys;
-            this.pieChartLabels1 = keys1;
-            this.pieChartLabels2 = keys2;
-      
-            // Assign values to pieChartDatasets
-            this.pieChartDatasets[0].data = values;
-            this.pieChartDatasets1[0].data = values1;
-            this.pieChartDatasets2[0].data = values2;
+            this.pieChartLabels1 = aplicationData[0];
+            this.pieChartDatasets1[0].data = aplicationData[1];
+
+            var serviceData = this.chartService.getServiceDailyData();
+
+            this.pieChartLabels2 = serviceData[0];
+            this.pieChartDatasets2[0].data = serviceData[1];
+
+           
+            var dailyBarData = this.chartService.get24HorsBarChart() 
+            this.barChartData.datasets[0].data = dailyBarData[0];
+            this.barChartData.datasets[1].data = dailyBarData[1] 
+            this.chart?.update(); 
+            
 
           } else {
             // Handle case where res is undefined or null
@@ -152,11 +203,18 @@ export class DashboardComponent implements OnInit {
       this.dashboardSearch.timeFrame = 'lastMonth';
     }
     
-    this.fetchDashboard(this.dashboardSearch);
+   
   }
 
-  ngOnInit(): void {
-    this.fetchDashboard(this.dashboardSearch);  
+   
+
+   ngOnInit() {
+    setTimeout(() => {
+      this.fetchDashboard(this.dashboardSearch);
+      // comment this
+    
+    }, 3000);
+    // this.chart.update();
   }
 
 
