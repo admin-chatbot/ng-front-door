@@ -22,17 +22,16 @@ export class DashboardComponent implements OnInit {
 
   displayedColumns: string[] = ['serviceEndpoint', 'serviceName', 'response',"status","logDate"];
   dataSource = new MatTableDataSource<ServiceLog>();
- 
 
   @ViewChild(BaseChartDirective , { static: true }) chart: BaseChartDirective | undefined;
- 
+
   selectedStatus: string = '';
   selectedApplication: number = 0;
- 
 
   public pieChartOptions: ChartOptions<'pie'> = {
     responsive: false,
   };
+
   public pieChartLabels: string[] = []; // Updated to empty array
   public pieChartDatasets: { data: number[] }[] = [{ data: [] }]; // Explicit typing
   public pieChartLegend = true;
@@ -62,9 +61,6 @@ export class DashboardComponent implements OnInit {
     ],    
   };
 
- 
-
-
   dashboardSearch: DashboardSearch = {} as DashboardSearch;  
   clientId:any;
   serviceLogs: ServiceLog[] = [];
@@ -72,56 +68,31 @@ export class DashboardComponent implements OnInit {
   logs:ServiceLogs = {} as ServiceLogs;
 
   dashboard: Dashboard = new Dashboard;
+
   constructor(private router: Router, private route: ActivatedRoute, 
-    private messageService: MessageService,
- 
+    private messageService: MessageService, 
     private dashboardService:DashboardService,
     private chartService:DashboardChartService) { 
       this.clientId=localStorage.getItem('id');  
       this.dashboardSearch.clientId = this.clientId;  
       this.dashboardSearch.clientId = this.clientId;
       this.dashboardSearch.serviceUserOption = "SERVICE";
-      this.dashboardSearch.timeFrame = "currentDay";             
+      this.dashboardSearch.timeFrame = "currentDay";
+	}	 
   
-
   chartClickedStatus(event: any) {
     if (event.event.type == "click") {
       const clickedIndex = event.active[0]?.index;
       const statusClicked = this.pieChartLabels[clickedIndex]; 
       this.selectedStatus = statusClicked;
-      this.dashboardSearch.status = statusClicked;
- 
-      
-      console.log(this.selectedStatus);
+      this.dashboardSearch.status = statusClicked; 
  
       this.fetchDashboard( this.dashboardSearch);
     }
     
   }
 
-  chartClickedApplication(event: any) {
-    if (event.event.type == "click") {
-      
-      if (this.selectedStatus) {
-        this.dashboardSearch.status = this.selectedStatus;
-      }
 
-      const clickedIndex = event.active[0]?.index;
-      console.log(clickedIndex);
-      console.log(this.pieChartLabels1[clickedIndex]);
-
-      const applicationClicked = parseInt(this.pieChartLabels1[clickedIndex]); 
-      this.selectedApplication = applicationClicked;
-      this.dashboardSearch.application = applicationClicked;
-
-      console.log(this.selectedStatus);
-      console.log(this.selectedApplication);
-
-      this.fetchDashboard( this.dashboardSearch);
-    }
-    
-  }
-  
   chartClickedServiceOrUser(event: any) {
     if (event.event.type == "click") {
       const clickedIndex = event.active[0]?.index;
@@ -140,19 +111,10 @@ export class DashboardComponent implements OnInit {
 
   chartClickedBar(event: any) {
     if (event.event.type == "click") { 
-      const clickedIndex = event.active[0]?.index;      
-      const statusClicked = this.pieChartLabels[clickedIndex];  
-      this.dashboardSearch.status = statusClicked;   
-      const clickedIndex = event.active[0]?.index;      
-      const applicationClicked = this.pieChartLabels[clickedIndex];       
       
-      this.dashboardSearch.application = Number(applicationClicked);     
- 
-      this.fetchDashboard( this.dashboardSearch);
     }
     
   }
-
 
   fetchDashboard(dashboardSearch: DashboardSearch) {
     this.dashboardService.fetchDashboard(dashboardSearch)
@@ -184,13 +146,14 @@ export class DashboardComponent implements OnInit {
             this.chart?.update(); 
             
 
-          } else {
-            // Handle case where res is undefined or null
+          } else { 
             console.error('Response is undefined or null');
           }
         }
       });
-  }  
+  } 
+  
+  chartClicked(event: any) {}
 
   selectTimeFrame(timeFrame: string, event: Event) {
     event.preventDefault();
@@ -206,16 +169,10 @@ export class DashboardComponent implements OnInit {
    
   }
 
-   
-
    ngOnInit() {
-    setTimeout(() => {
-      this.fetchDashboard(this.dashboardSearch); 
     
-    }, 3000);
-    // this.chart.update();
   }
 
-
 }
+
 

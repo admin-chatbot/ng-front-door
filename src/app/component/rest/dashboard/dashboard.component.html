@@ -42,6 +42,8 @@
                             <div> <canvas baseChart [type]="'pie'" [datasets]="pieChartDatasets"
                                     [labels]="pieChartLabels" [options]="pieChartOptions" [plugins]="pieChartPlugins"
                                     [legend]="pieChartLegend" (chartClick)="chartClicked($event)">
+                                    </canvas>
+                                </div>
  
                         </div>
                     </div>
@@ -57,16 +59,7 @@
                                     [legend]="pieChartLegend" (chartClick)="chartClicked($event)">
                                 </canvas></div>
 
-                            <div> <canvas baseChart
-                                [type]="'pie'"
-                                [datasets]="pieChartDatasets1"
-                                [labels]="pieChartLabels1"
-                                [options]="pieChartOptions"
-                                [plugins]="pieChartPlugins"
-                                [legend]="pieChartLegend"
-                                (chartClick)="chartClickedApplication($event)">
-                                </canvas></div>    
-
+                            
                         </div>
                     </div>
                 </div>
