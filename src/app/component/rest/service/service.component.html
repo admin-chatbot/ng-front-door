@@ -47,29 +47,36 @@
                             <table mat-table [dataSource]="dataSource" style="width: 100%;">
                           
                                 <ng-container matColumnDef="name">
-                                    <th mat-header-cell *matHeaderCellDef> Name </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                                    <th mat-header-cell *matHeaderCellDef style="font-size: 16px;"> Name </th>
+                                    <td mat-cell *matCellDef="let element" style="font-size: 14px;"> {{element.name}} </td>
                                 </ng-container>
+                        
+                                <!-- Endpoint Column -->
                                 <ng-container matColumnDef="endpoint">
-                                    <th mat-header-cell *matHeaderCellDef> Endpoint </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.endPoint}} </td>
+                                    <th mat-header-cell *matHeaderCellDef style="font-size: 16px;"> Endpoint </th>
+                                    <td mat-cell *matCellDef="let element" style="font-size: 14px;"> {{element.endPoint}} </td>
                                 </ng-container>
                                 <ng-container matColumnDef="method">
-                                    <th mat-header-cell *matHeaderCellDef> Method </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.method}} </td>
+                                    <th mat-header-cell *matHeaderCellDef style="font-size: 16px;"> Method </th>
+                                    <td mat-cell *matCellDef="let element" style="font-size: 14px;"> {{element.method}} </td>
                                 </ng-container>
+                        
+                                <!-- Status Column -->
                                 <ng-container matColumnDef="status">
-                                    <th mat-header-cell *matHeaderCellDef> Status </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+                                    <th mat-header-cell *matHeaderCellDef style="font-size: 16px;"> Status </th>
+                                    <td mat-cell *matCellDef="let element" style="font-size: 14px;"> {{element.status}} </td>
                                 </ng-container>
+                        
+                                <!-- Parameter Count Column -->
                                 <ng-container matColumnDef="parameterCount">
-                                    <th mat-header-cell *matHeaderCellDef> Parameter Count </th>
-                                    <td mat-cell *matCellDef="let element"> {{element.parameterCount}} </td>
+                                    <th mat-header-cell *matHeaderCellDef style="font-size: 16px;"> ParameterCount </th>
+                                    <td mat-cell *matCellDef="let element" style="font-size: 14px;"> {{element.parameterCount}} </td>
                                 </ng-container>
+                        
 
                                 <ng-container matColumnDef="id">
-                                    <th mat-header-cell *matHeaderCellDef> Action </th>
-                                    <td mat-cell *matCellDef="let element" style="width: 50px;"> 
+                                    <th mat-header-cell *matHeaderCellDef style="font-size: 16px;"> Action </th>
+                                    <td mat-cell *matCellDef="let element" style="width: 50px; font-size: 14px;"> 
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-default">Action</button>
                                             <button type="button"
@@ -213,7 +220,10 @@
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary" [disabled]="submitted">{{ submitButtonName }}</button>
                                 &nbsp;&nbsp;
-                                <button type="reset" class="btn btn-danger">Cancel</button>
+                                <button type="button" class="btn btn-danger" (click)="clear()">
+                                    {{cancelButtonName}}</button>
+
+                                
                             </div>
                         </form>
                     </div>
