@@ -34,13 +34,13 @@ export class ServiceComponent implements OnInit,AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  private isOnboard = true;
-  submitButtonName = 'Submit';
+  isOnBoard: boolean = true;
+  submitButtonName:string = "On Board";
   originalService: Service[]=[];
   service = {} as Service;
   clientId:any;
   serviceId:any;
-  
+  cancelButtonName = "Clear";
   disableSubmitButton: boolean = false;
   serviceForm: FormGroup;
   httpMethods: string[] = ['GET', 'POST', 'PUT', 'DELETE']; // Add more methods as needed
@@ -58,6 +58,7 @@ export class ServiceComponent implements OnInit,AfterViewInit {
    searchMap = new Map();
    isSearch:boolean = false;
    serviceWithParameters: { service: Service; parameterCount: number }[] = [];
+  originalStatus: string = ''; 
 
   constructor(private router: Router, private route: ActivatedRoute, 
     private serviceService:ServiceService,private formBuilder: FormBuilder,
@@ -87,7 +88,7 @@ export class ServiceComponent implements OnInit,AfterViewInit {
 
           
 
-     
+    
 
       this.f['responseTypes'].valueChanges.subscribe(v=>{
         this.responseType = v;
@@ -132,33 +133,37 @@ export class ServiceComponent implements OnInit,AfterViewInit {
         data: this.servSearch
       });
   
-      dialogRef.afterClosed().subscribe(r => {
+      dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
-        if(r!=undefined){
-          this.servSearch = r;
-          this.servSearch.clientId=this.clientId;
+        if (result !== undefined) {
+          this.servSearch = result;
+          this.servSearch.clientId = this.clientId;
           this.serviceService.search(this.servSearch)
-          .subscribe(res=>{
-            if (res.errorCode != undefined && res.errorCode != 200) { 
-              this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
-            } else {
-              this.originalService = res.data; 
-              this.dataSource.data = res.data;
-            }           
-          });
-        this.searchMap = new Map(Object.entries(r));
-        this.isSearch = true; 
-      }
-    });
-    
-  }
+            .subscribe(res => {
+              if (res.errorCode !== undefined && res.errorCode !== 200) {
+                this.notifier.notify('error', 'Not able to onboard. Please try again in sometime');
+              } else {
+                this.originalService = res.data;
+                this.dataSource.data = res.data;
+              }
+            });
+          this.searchMap = new Map(Object.entries(result));
+          this.isSearch = true;
+        } else {
+          // Handle cancel action, e.g., reset submitButtonName to its original value
+          this.submitButtonName = 'Submit';
+        }
+      });
+    }
 
     get f() { return this.serviceForm.controls; }
     
     view(i:Service){
-      this.isOnboard = false;
-      this.submitButtonName='Edit';      
-      this.service = i;  
+      this.isOnBoard = false;
+      this.submitButtonName='Edit'; 
+      this.cancelButtonName = "Cancel"     
+      this.service = i; 
+      this.originalStatus = i.status; 
       //this.f[this.id].setValue(18)  
       this.f['id'].setValue( this.service.id)   
       this.f['applicationName'].setValue( this.service.applicationId)
@@ -257,7 +262,8 @@ addParameter(serviceId:number){
     service.responseType = this.responseType;
     service.requestType = this.requestType;   
     
-    if(this.isOnboard){
+    if(this.isOnBoard){
+      service.status = "NEW";
       this.serviceService.onBoard(service).subscribe(
         (r) => {
           if (r.errorCode != undefined && r.errorCode != 200) {
@@ -274,6 +280,7 @@ addParameter(serviceId:number){
         }
       );
     }else{
+      service.status=this.originalStatus;
       this.serviceService.editService(service).subscribe(
         (r) => {
           if (r.errorCode != undefined && r.errorCode != 200) {
@@ -291,8 +298,22 @@ addParameter(serviceId:number){
         }
         );
       }
+      this.serviceForm.reset();
+      this.submitButtonName = 'Submit';
+    }
+
+    clear() {
+      if(!this.isOnBoard) {
+        this.submitButtonName = "On Board";
+        this.isOnBoard = true;
+        this.cancelButtonName = "Clear";
+        //this.heading = "ON BOARD APPLICATION";
+      }
+      this.serviceForm.reset();
+      this.f['status'].setValue( "NEW")
     }
   
+    
     // Navigate back to the page (you might need to adjust this based on your routing setup)
     navigateBack() {
       this.router.navigate(['main/service']); // Adjust the route accordingly
@@ -347,7 +368,7 @@ addParameter(serviceId:number){
     onNoClick(): void {
       this.dialogRef.close();
     }
-
+   
    
     private fetchServiceWithParametersCount() {
       // Assume there's a method in your service to fetch service parameters count
