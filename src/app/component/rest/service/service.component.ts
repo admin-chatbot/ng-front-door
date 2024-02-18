@@ -14,6 +14,7 @@ import { CommonService } from 'src/app/services/common.service';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 
+
 export interface ServiceSearchData { 
   name: string;
   endPoint: string;
@@ -39,7 +40,8 @@ export class ServiceComponent implements OnInit,AfterViewInit {
   service = {} as Service;
   clientId:any;
   serviceId:any;
-
+  
+  disableSubmitButton: boolean = false;
   serviceForm: FormGroup;
   httpMethods: string[] = ['GET', 'POST', 'PUT', 'DELETE']; // Add more methods as needed
   //applicationNames: string[] = []; 
@@ -141,12 +143,14 @@ export class ServiceComponent implements OnInit,AfterViewInit {
               this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
             } else {
               this.originalService = res.data; 
+              this.dataSource.data = res.data;
             }           
           });
         this.searchMap = new Map(Object.entries(r));
         this.isSearch = true; 
       }
     });
+    
   }
 
     get f() { return this.serviceForm.controls; }
@@ -156,9 +160,7 @@ export class ServiceComponent implements OnInit,AfterViewInit {
       this.submitButtonName='Edit';      
       this.service = i;  
       //this.f[this.id].setValue(18)  
-      this.f['id'].setValue( this.service.id)
-      
-      //alert(this.service.applicationId) 
+      this.f['id'].setValue( this.service.id)   
       this.f['applicationName'].setValue( this.service.applicationId)
       this.f['keyword'].setValue(this.service.keyword);  
       this.f['name'].setValue( this.service.name)
@@ -233,7 +235,8 @@ addParameter(serviceId:number){
 
  
 
-  onSubmit() {    
+  onSubmit() {   
+
     if (this.serviceForm.invalid) {   
       this.notifier.notify( "error", "All field are required." );
       return;
@@ -261,6 +264,7 @@ addParameter(serviceId:number){
             this.notifier.notify('error','Not able to onboard. Please try again later.');
           } else {
             this.notifier.notify('success','Successfully onboarded.');
+            this.navigateBack();
           }
           this.submitted = false;
         },
@@ -277,6 +281,7 @@ addParameter(serviceId:number){
           } else {
             this.notifier.notify('success','Successfully edited.');
             this.getServiceByClientIdAndStatus(this.clientId,"ACTIVE");
+            this.navigateBack();
           }
           this.submitted = false;
         },
@@ -284,17 +289,18 @@ addParameter(serviceId:number){
           this.notifier.notify('error','An error occurred while communicating with the API.');
           this.submitted = false;
         }
-      ),()=>{
-        
-      };
-      
+        );
+      }
     }
-    
-    
-  }}
+  
+    // Navigate back to the page (you might need to adjust this based on your routing setup)
+    navigateBack() {
+      this.router.navigate(['main/service']); // Adjust the route accordingly
+    }
+  }
 
 
-
+  
   
   
 
@@ -353,3 +359,4 @@ addParameter(serviceId:number){
     }
     
   }
+  

@@ -54,7 +54,7 @@
                             <table mat-table [dataSource]="dataSource" style="width: 100%;">
 
                                 <!-- Position Column -->
-                                <ng-container matColumnDef="name">
+                                <ng-container matColumnDef="name" >
                                     <th mat-header-cell *matHeaderCellDef> Name </th>
                                     <td mat-cell *matCellDef="let element"> {{element.name}} </td>
                                 </ng-container>
@@ -146,26 +146,26 @@
 
                                 <div class="card-body">
                                     <div class="form-group">
-                                        <label for="txtName">Name*</label>
+                                        <label for="txtName">Name<span style="color: red;">*</span></label>
                                         <input type="text" class="form-control" id="txtName" placeholder="Enter name"
                                             formControlName="name">
                                     </div>
                                     <input type="hidden" id="applicationID" formControlName="id" />
 
                                     <div class="form-group">
-                                        <label for="txtPurpose">Purpose*</label>
+                                        <label for="txtPurpose">Purpose<span style="color: red;">*</span></label>
                                         <input type="text" class="form-control" id="txtPurpose"
                                             placeholder="Enter purpose" formControlName="purpose">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="txtSourceUrl">Source Url*</label>
+                                        <label for="txtSourceUrl">Source Url<span style="color: red;">*</span></label>
                                         <input type="text" class="form-control" id="txtSourceUrl"
                                             placeholder="Enter sourceUrl" formControlName="sourceUrl">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="txtServiceDocUrl">Service Doc Url*</label>
+                                        <label for="txtServiceDocUrl">Service Doc Url<span style="color: red;">*</span></label>
                                         <input type="text" class="form-control" id="txtServiceDocUrl"
                                             placeholder="Enter service Doc Url" formControlName="serviceDocUrl">
                                     </div>
@@ -179,7 +179,7 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="txtServiceDocUrl">Status*</label>
+                                        <label for="txtServiceDocUrl">Status<span style="color: red;">*</span></label>
                                         <select class="form-control" id="method" formControlName="status">
                                             <option value="" selected>PLEASE SELECT</option>
                                             <option *ngFor="let httpMethod of commonService.status" [value]="httpMethod"

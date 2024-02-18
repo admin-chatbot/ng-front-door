@@ -95,6 +95,8 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
       this.getApplicationsByClientIdAndStatus(this.clientId,"ACTIVE");
       this.isSearch = false;
     } else {
+      console.log(JSON.stringify(this.appSearch));
+      this.appSearch.clientId = this.clientId;    
       this.applicationService.search(this.appSearch)
           .subscribe(res=>{
             if (res.errorCode != undefined && res.errorCode != 200) { 
@@ -116,16 +118,20 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
     dialogRef.afterClosed().subscribe(r => {
       console.log('The dialog was closed');
       if(r!=undefined){ 
-        this.appSearch = r;
-        alert('searching');
-        alert(JSON.stringify(this.appSearch));
+        this.appSearch = r; 
+        this.appSearch.clientId = this.clientId;
+        console.log(JSON.stringify(this.appSearch));
         this.applicationService.search(this.appSearch)
           .subscribe(res=>{
-            if (res.errorCode != undefined && res.errorCode != 200) { 
-              this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
+            console.log(JSON.stringify(res));
+            if (res.code != undefined && res.code != 200) { 
+              this.notifier.notify('error','Not able to onboard. please try again in sometime');         
             } else {
+              //console.log(JSON.stringify(res.data));
               this.originalApplication = res.data; 
-              this.dataSource.data = r.data;
+              this.dataSource.data = res.data;
+              //console.log(JSON.stringify(this.dataSource));
+
             }           
           });
         this.searchMap = new Map(Object.entries(r));
@@ -207,6 +213,7 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
     application.status = this.f['status'].value
     application.id = this.f['id'].value;
 
+
     
     if(this.isOnBoard) {
       this.applicationService.onBoard(application)
@@ -221,6 +228,7 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
           }          
         });
     } else {
+      application.registerDate = this.f['date'].value;
       this.applicationService.edit(application)
       .subscribe(r=>{ 
         if (r.errorCode != undefined && r.errorCode != 200) { 
