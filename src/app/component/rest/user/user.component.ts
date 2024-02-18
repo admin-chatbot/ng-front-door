@@ -106,6 +106,7 @@ export class UserComponent implements OnInit,AfterViewInit {
                 this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
               } else {
                 this.originalUser = res.data; 
+                this.dataSource.data = res.data;
               }           
             });
           this.searchMap = new Map(Object.entries(r));
