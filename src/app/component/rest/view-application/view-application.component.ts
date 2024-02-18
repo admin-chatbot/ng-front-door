@@ -213,6 +213,7 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
     application.status = this.f['status'].value
     application.id = this.f['id'].value;
 
+
     
     if(this.isOnBoard) {
       this.applicationService.onBoard(application)
@@ -227,6 +228,7 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
           }          
         });
     } else {
+      application.registerDate = this.f['date'].value;
       this.applicationService.edit(application)
       .subscribe(r=>{ 
         if (r.errorCode != undefined && r.errorCode != 200) { 
