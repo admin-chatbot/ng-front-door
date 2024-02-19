@@ -26,21 +26,25 @@
                         <table mat-table [dataSource]="dataSource" style="width: 100%;">
 
                             <ng-container matColumnDef="name">
-                                <th mat-header-cell *matHeaderCellDef> Name </th>
-                                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                                <th mat-header-cell *matHeaderCellDef style="font-size: 16px;"> Name </th>
+                                <td mat-cell *matCellDef="let element" style="font-size: 14px;"> {{element.name}} </td>
                             </ng-container>
+                    
+                            <!-- Description Column -->
                             <ng-container matColumnDef="description">
-                                <th mat-header-cell *matHeaderCellDef> Description </th>
-                                <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+                                <th mat-header-cell *matHeaderCellDef style="font-size: 16px;"> Description </th>
+                                <td mat-cell *matCellDef="let element" style="font-size: 14px;"> {{element.description}} </td>
                             </ng-container>
+                    
+                            <!-- Required Column -->
                             <ng-container matColumnDef="required">
-                                <th mat-header-cell *matHeaderCellDef> Required </th>
-                                <td mat-cell *matCellDef="let element"> {{element.required}} </td>
+                                <th mat-header-cell *matHeaderCellDef style="font-size: 16px;"> Required </th>
+                                <td mat-cell *matCellDef="let element" style="font-size: 14px;"> {{element.required}} </td>
                             </ng-container>
 
                             <ng-container matColumnDef="id">
-                                <th mat-header-cell *matHeaderCellDef> Action </th>
-                                <td mat-cell *matCellDef="let element" style="width: 50px;"> 
+                                <th mat-header-cell *matHeaderCellDef style="font-size: 16px;"> Action </th>
+                                <td mat-cell *matCellDef="let element" style="font-size: 14px;">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-default">Action</button>
                                         <button type="button"

@@ -8,5 +8,6 @@ export class DashboardSearch {
     status!: String;
     timeFrame!: String;
     serviceUserOption!: String;
+    application!: number;
 
 }

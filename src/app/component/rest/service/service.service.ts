@@ -64,13 +64,17 @@ fetchParameterCountByServiceId(id:number) : Observable<Service[] | any>{
   );
 }
   editService(service:Service) : Observable<string | any> {
-    const url = this.url.service();     
+    const url = this.url.service();  
+    const existingServiceUrl = this.url.service() + service.id;   
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
+    
     return this.http.put<any>(url,service,httpOptions)
     .pipe(
       catchError(this.handleError('Edit Service'))
     )
   }
+
+  
   
   fetchApplicationNames(clientId: string): Observable<string[] | any> {
    
