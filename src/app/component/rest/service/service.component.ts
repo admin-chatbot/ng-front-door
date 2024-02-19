@@ -36,6 +36,7 @@ export class ServiceComponent implements OnInit,AfterViewInit {
 
   isOnBoard: boolean = true;
   submitButtonName:string = "On Board";
+  heading:string = "ON BOARD SERVICE";
   originalService: Service[]=[];
   service = {} as Service;
   clientId:any;
@@ -159,9 +160,10 @@ export class ServiceComponent implements OnInit,AfterViewInit {
     get f() { return this.serviceForm.controls; }
     
     view(i:Service){
-      this.isOnBoard = false;
       this.submitButtonName='Edit'; 
-      this.cancelButtonName = "Cancel"     
+      this.isOnBoard = false;      
+      this.cancelButtonName = "Cancel" 
+      this.heading = "EDIT SERVICE"    
       this.service = i; 
       this.originalStatus = i.status; 
       //this.f[this.id].setValue(18)  
@@ -246,6 +248,8 @@ addParameter(serviceId:number){
       this.notifier.notify( "error", "All field are required." );
       return;
     }
+  
+
     this.submitted = true;
     const service: Service = {} as Service;  
     service.id = this.f['id'].value;   
@@ -288,7 +292,7 @@ addParameter(serviceId:number){
           } else {
             this.notifier.notify('success','Successfully edited.');
             this.getServiceByClientIdAndStatus(this.clientId,"ACTIVE");
-            this.navigateBack();
+            //this.navigateBack();
           }
           this.submitted = false;
         },
@@ -307,7 +311,7 @@ addParameter(serviceId:number){
         this.submitButtonName = "On Board";
         this.isOnBoard = true;
         this.cancelButtonName = "Clear";
-        //this.heading = "ON BOARD APPLICATION";
+        this.heading = "ON BOARD SERVICE";
       }
       this.serviceForm.reset();
       this.f['status'].setValue( "NEW")

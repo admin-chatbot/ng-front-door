@@ -56,12 +56,12 @@
                                 <!-- Position Column -->
                                 <ng-container matColumnDef="name" >
                                     <th mat-header-cell *matHeaderCellDef style="font-size: 16px;"> Name </th>
-                                    <td mat-cell *matCellDef="let element" style="font-size: 14px;"> {{element.name}} </td>
+                                    <td mat-cell *matCellDef="let element" style="font-size: 14px;">  {{element.name}} </td>
                                 </ng-container>
 
                                 <ng-container matColumnDef="purpose">
                                     <th mat-header-cell *matHeaderCellDef style="font-size: 16px;"> Purpose </th>
-                                    <td mat-cell *matCellDef="let element" style="font-size: 14px;"> {{element.purpose}} </td>
+                                    <td mat-cell *matCellDef="let element" style="font-size: 14px;">   {{element.purpose}} </td>
                                 </ng-container>
                         
                                 <!-- Weight Column -->
@@ -73,7 +73,7 @@
                                 <!-- Symbol Column -->
                                 <ng-container matColumnDef="registerDate">
                                     <th mat-header-cell *matHeaderCellDef style="font-size: 16px;"> Date </th>
-                                    <td mat-cell *matCellDef="let element" style="font-size: 14px;"> {{element.registerDate}} </td>
+                                    <td mat-cell *matCellDef="let element" style="font-size: 14px;"> {{element.registerDate | date:'yyyy-MM-dd'}} </td>
                                 </ng-container>
                         
                                 <ng-container matColumnDef="status">
