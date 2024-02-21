@@ -183,10 +183,13 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
     this.f['purpose'].setValue( this.application.purpose)
     this.f['sourceUrl'].setValue( this.application.sourceUrl)
     this.f['serviceDocUrl'].setValue( this.application.serviceDocUrl)
-    this.f['date'].setValue(this.application.registerDate)
+    this.f['date'].setValue(this.formatDate(this.application.registerDate));
     this.f['status'].setValue( this.application.status)
   }
-
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+  }
   clear() {
     if(!this.isOnBoard) {
       this.submitButtonName = "On Board";

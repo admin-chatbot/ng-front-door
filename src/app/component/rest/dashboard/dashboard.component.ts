@@ -25,9 +25,13 @@ export class DashboardComponent implements OnInit {
 
   @ViewChild(BaseChartDirective , { static: true }) chart: BaseChartDirective | undefined;
 
+  selectedStatus: string = '';
+  selectedApplication: number = 0;
+
   public pieChartOptions: ChartOptions<'pie'> = {
     responsive: false,
   };
+
   public pieChartLabels: string[] = []; // Updated to empty array
   public pieChartDatasets: { data: number[] }[] = [{ data: [] }]; // Explicit typing
   public pieChartLegend = true;
@@ -57,9 +61,6 @@ export class DashboardComponent implements OnInit {
     ],    
   };
 
- 
-
-
   dashboardSearch: DashboardSearch = {} as DashboardSearch;  
   clientId:any;
   serviceLogs: ServiceLog[] = [];
@@ -67,27 +68,54 @@ export class DashboardComponent implements OnInit {
   logs:ServiceLogs = {} as ServiceLogs;
 
   dashboard: Dashboard = new Dashboard;
+
   constructor(private router: Router, private route: ActivatedRoute, 
-    private messageService: MessageService,
+    private messageService: MessageService, 
     private dashboardService:DashboardService,
     private chartService:DashboardChartService) { 
       this.clientId=localStorage.getItem('id');  
-      this.dashboardSearch.clientId = this.clientId; 
-      
-      
-       
-  }
-
-  chartClicked(event: any) {
+      this.dashboardSearch.clientId = this.clientId;  
+      this.dashboardSearch.clientId = this.clientId;
+      this.dashboardSearch.serviceUserOption = "SERVICE";
+      this.dashboardSearch.timeFrame = "currentDay";
+	}	 
+  
+  chartClickedStatus(event: any) {
     if (event.event.type == "click") {
-      const clickedIndex = event.active[0]?.index;      
-      const statusClicked = this.pieChartLabels[clickedIndex];  
-      this.dashboardSearch.status = statusClicked;  
+      const clickedIndex = event.active[0]?.index;
+      const statusClicked = this.pieChartLabels[clickedIndex]; 
+      this.selectedStatus = statusClicked;
+      this.dashboardSearch.status = statusClicked; 
+ 
       this.fetchDashboard( this.dashboardSearch);
     }
     
   }
-  
+
+
+  chartClickedServiceOrUser(event: any) {
+    if (event.event.type == "click") {
+      const clickedIndex = event.active[0]?.index;
+      
+      const applicationClicked = this.pieChartLabels2[clickedIndex]; 
+      
+      
+      this.dashboardSearch.application = Number(applicationClicked);
+      console.log("Service or User selected");
+      console.log(this.dashboardSearch.application);      
+      
+      this.fetchDashboard( this.dashboardSearch);
+    }
+    
+  }
+
+  chartClickedBar(event: any) {
+    if (event.event.type == "click") { 
+      
+    }
+    
+  }
+
   fetchDashboard(dashboardSearch: DashboardSearch) {
     this.dashboardService.fetchDashboard(dashboardSearch)
       .subscribe(res=>{         
@@ -118,13 +146,14 @@ export class DashboardComponent implements OnInit {
             this.chart?.update(); 
             
 
-          } else {
-            // Handle case where res is undefined or null
+          } else { 
             console.error('Response is undefined or null');
           }
         }
       });
-  }  
+  } 
+  
+  chartClicked(event: any) {}
 
   selectTimeFrame(timeFrame: string, event: Event) {
     event.preventDefault();
@@ -140,17 +169,10 @@ export class DashboardComponent implements OnInit {
    
   }
 
-   
-
    ngOnInit() {
-    setTimeout(() => {
-      this.fetchDashboard(this.dashboardSearch);
-      // comment this
     
-    }, 3000);
-    // this.chart.update();
   }
 
-
 }
+
 
