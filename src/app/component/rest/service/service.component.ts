@@ -110,8 +110,10 @@ export class ServiceComponent implements OnInit,AfterViewInit {
       this.servSearch = Object.fromEntries(this.searchMap);   
       this.servSearch.clientId = this.clientId;
     
-      
-      if(this.searchMap.size == 0) {
+      const searchParams = Object.fromEntries(this.searchMap);
+	  delete searchParams['clientId'];
+	  
+    if(Object.keys(searchParams).length === 0) {
         this.getServiceByClientIdAndStatus(this.clientId,"ACTIVE");
         this.isSearch = false;
       } else {
@@ -123,8 +125,8 @@ export class ServiceComponent implements OnInit,AfterViewInit {
                 this.originalService = res.data; 
               }           
             }); 
-      }
-     }
+    }
+}
     
     openDialog(): void {
       const dialogRef = this.dialog.open(ServiceSearchDialog, {
@@ -280,7 +282,7 @@ addParameter(serviceId:number){
             this.notifier.notify('error','Not able to edit. Please try again later.');
           } else {
             this.notifier.notify('success','Successfully edited.');
-            this.getServiceByClientIdAndStatus(this.clientId,"ACTIVE");
+            //this.getServiceByClientIdAndStatus(this.clientId,"ACTIVE");
             this.navigateBack();
           }
           this.submitted = false;

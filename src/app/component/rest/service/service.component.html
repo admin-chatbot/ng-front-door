@@ -23,13 +23,17 @@
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title" *ngIf="isSearch">
-                                Filters -  
-                                 <i *ngFor="let search of searchMap | keyvalue">  {{search.key }} : {{search.key.search('Date')==-1?search.value:search.value|date:'shortDate'}} 
-                                    &nbsp;
-                                    <i class="fas fa-times" style="cursor:pointer;" (click)="remove(search.key)"></i>
-                                    &nbsp;&nbsp;
-                                 </i> 
+                                Filters -
+                                <ng-container *ngFor="let search of searchMap | keyvalue">
+                                    <ng-container *ngIf="search.key !== 'clientId'"> <!-- Exclude clientId -->
+                                        {{ search.key }} :
+                                        {{ search.key.search('Date')==-1 ? search.value : search.value | date:'shortDate' }}
+                                        <i class="fas fa-times" style="cursor:pointer;" (click)="remove(search.key)"></i>
+                                        &nbsp;&nbsp;
+                                    </ng-container>
+                                </ng-container>
                             </h4>
+
 
                             <div class="card-tools">
                                 <div class="input-group input-group-sm">
