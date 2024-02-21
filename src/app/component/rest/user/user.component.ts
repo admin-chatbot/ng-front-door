@@ -172,7 +172,7 @@ export class UserComponent implements OnInit,AfterViewInit {
             this.notifier.notify('error','Not able to edit. please try again in sometime')           
           } else {
             this.notifier.notify('success','Successfully Edited..');
-            this.fetchByClient(this.clientId);
+            //this.fetchByClient(this.clientId);
           }
         });
 
@@ -233,8 +233,11 @@ export class UserComponent implements OnInit,AfterViewInit {
     this.userSearch = Object.fromEntries(this.searchMap);
     this.userSearch.clientId = this.clientId;
 
+    const searchParams = Object.fromEntries(this.searchMap);
+    delete searchParams['clientId'];
 
-    if (this.searchMap.size == 0) {
+
+    if(Object.keys(searchParams).length === 0) {
       this.getUsersByClientIdAndStatus(this.clientId, "ACTIVE");
       this.isSearch = false;
     } else {
