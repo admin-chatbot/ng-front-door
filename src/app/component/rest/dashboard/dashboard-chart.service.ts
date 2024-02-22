@@ -44,8 +44,7 @@ export class DashboardChartService {
     var label: string[] = [];
 
 
-    for(var i=6;i>=0;i--){
-    alert(moment().format('YYYYMD'));
+    for(var i=6;i>=0;i--){ 
      const dayOfWeek =  moment().subtract(i,'d').format('YYYYMMDD');
      console.log(dayOfWeek);
      label.push(dayOfWeek);
@@ -57,10 +56,7 @@ export class DashboardChartService {
         success.push(0);
         fail.push(0)
       }
-    } 
-    alert(label);
-    alert(success);
-    alert(fail);
+    }  
     return [label,success,fail];
   }
 
