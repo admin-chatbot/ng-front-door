@@ -29,13 +29,15 @@
                             <h4 class="card-title" *ngIf="isSearch">
                                 Filters -
                                 <ng-container *ngFor="let search of searchMap | keyvalue">
-                                    <ng-container *ngIf="search.key !== 'clientId'"> <!-- Exclude clientId -->
+                                    <ng-container *ngIf="search.value !== '' && search.key !== 'clientId'"> <!-- Check if value is not empty -->
                                         {{ search.key }} :
                                         {{ search.key.search('Date')==-1 ? search.value : search.value | date:'shortDate' }}
                                         <i class="fas fa-times" style="cursor:pointer;" (click)="remove(search.key)"></i>
                                         &nbsp;&nbsp;
                                     </ng-container>
                                 </ng-container>
+                                <button class="btn btn-danger btn-sm" (click)="clearAllFilters()">Clear All</button> <!-- Add Clear All button -->
+                                &nbsp;&nbsp;
                             </h4>
                             <div class="card-tools">
                                 <div class="input-group input-group-sm">
@@ -168,12 +170,11 @@
 
                                     <div class="form-group">
                                         <label for="method">Application Name <span style="color: red;">*</span></label>
-                                        <select class="form-control" id="applicationName" formControlName="applicationName">
-                                            <option *ngFor="let application of applications" [value]="application.id">{{
-                                                application.name }}</option>
+                                        <select class="form-control" id="applicationName" formControlName="applications">
+                                            <option *ngFor="let application of applications" [value]="application.id">{{ application.name }}</option>
                                         </select>
                                     </div>
-    
+                                        
                                     <input type="hidden" class="form-control" id="Id" placeholder="Enter Application Id"
                                         formControlName="id" required>
 

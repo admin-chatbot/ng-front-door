@@ -106,6 +106,22 @@ export class ServiceComponent implements OnInit,AfterViewInit {
     }
 
 
+    clearAllFilters() {
+      // Clear all filters and display default records
+      this.searchMap.clear();
+  
+      this.servSearch = {
+        name: '',
+        endPoint: '',
+        status: 'ACTIVE',
+        method: '',
+        clientId:this.clientId
+      };
+  
+      this.isSearch = false; // Reset the search flag
+      // Fetch default records or perform any other necessary actions
+      this.getServiceByClientIdAndStatus(this.clientId, "ACTIVE");
+    }
 
     remove(field:string){ 
       if(this.searchMap.has(field)) {
@@ -128,6 +144,7 @@ export class ServiceComponent implements OnInit,AfterViewInit {
                 this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
               } else {
                 this.originalService = res.data; 
+                this.dataSource.data = res.data;
               }           
             }); 
       }
@@ -379,6 +396,7 @@ addParameter(serviceId:number){
     }
    
    
+    
     private fetchServiceWithParametersCount() {
       // Assume there's a method in your service to fetch service parameters count
       this.originalService.forEach((service: { id: any; }) => {

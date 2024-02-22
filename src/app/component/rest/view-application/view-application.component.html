@@ -29,13 +29,15 @@
                             <h4 class="card-title" *ngIf="isSearch">
                                 Filters -
                                 <ng-container *ngFor="let search of searchMap | keyvalue">
-                                    <ng-container *ngIf="search.key !== 'clientId'"> <!-- Exclude clientId -->
+                                    <ng-container *ngIf="search.value !== '' && search.key !== 'clientId'"> <!-- Check if value is not empty -->
                                         {{ search.key }} :
                                         {{ search.key.search('Date')==-1 ? search.value : search.value | date:'shortDate' }}
                                         <i class="fas fa-times" style="cursor:pointer;" (click)="remove(search.key)"></i>
                                         &nbsp;&nbsp;
                                     </ng-container>
                                 </ng-container>
+                                <button class="btn btn-danger btn-sm" (click)="clearAllFilters()">Clear All</button> <!-- Add Clear All button -->
+                                &nbsp;&nbsp;
                             </h4>
 
                             <div class="card-tools">

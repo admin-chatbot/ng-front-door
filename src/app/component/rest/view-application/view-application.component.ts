@@ -87,6 +87,7 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
 
 
   remove(field: string){ 
+    console.log("In remove single field");
     if(this.searchMap.has(field)) {
         this.searchMap.delete(field);
     }
@@ -96,8 +97,11 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
 
     // Assign the modified searchParams to appSearch
     this.appSearch = searchParams;
+    this.appSearch.clientId = this.clientId;
 
-    if(Object.keys(searchParams).length === 0) {
+    console.log("searchParams");
+    console.log(JSON.stringify(searchParams));
+    if(Object.keys(searchParams).length === 1) {
         // If no other filters exist, fetch applications by clientId and status
         this.getApplicationsByClientIdAndStatus(this.clientId,"ACTIVE");
         this.isSearch = false;
@@ -105,14 +109,34 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
         console.log(JSON.stringify(this.appSearch));
         this.applicationService.search(this.appSearch)
             .subscribe(res => {
+                console.log(res);
                 if (res.errorCode != undefined && res.errorCode != 200) { 
                     this.notifier.notify('error','Not able to onboard. please try again in sometime');         
                 } else {
                     this.originalApplication = res.data; 
+                    this.dataSource.data = res.data;
                 }           
             }); 
     }
 }  
+
+  clearAllFilters() {
+    // Clear all filters and display default records
+    this.searchMap.clear();
+
+    this.appSearch = {
+      clientId: this.clientId,
+      purpose: '',
+      name: '',
+      toDate: '',
+      fromDate: '',
+      status: 'ACTIVE'
+    };
+
+    this.isSearch = false; // Reset the search flag
+    // Fetch default records or perform any other necessary actions
+    this.getApplicationsByClientIdAndStatus(this.clientId, "ACTIVE");
+  }
 
    openDialog(): void {
     const dialogRef = this.dialog.open(ApplicationSearchDialog, {
@@ -263,6 +287,8 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
   }
 }
 
+
+
 @Component({
   selector: 'dialog-overview-example-dialog',
   template:`<h2 mat-dialog-title>Search</h2>
@@ -319,4 +345,5 @@ export class ApplicationSearchDialog {
   }
   selectedStringOption = this.commonService.stringFilterOperations[0].value;
 
+ 
 }
