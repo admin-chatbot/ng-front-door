@@ -350,9 +350,13 @@ addParameter(serviceId:number){
         <input matInput [(ngModel)]="data.endPoint" placeholder="EndPoint"/>      
       </mat-form-field> 
       
-      <mat-form-field style="width: 300px;">
-        <input matInput [(ngModel)]="data.status" placeholder="Status"/>      
-      </mat-form-field>  
+      <div class="example-form-fields">     
+    <mat-form-field style="width: 320px;"> 
+        <mat-select [(ngModel)]="data.status"> 
+          <mat-option *ngFor="let s of this.commonService.status" value="{{s}}">{{s | uppercase}}</mat-option> 
+        </mat-select>       
+    </mat-form-field>
+  </div>
       
   
     </div>
@@ -367,7 +371,7 @@ addParameter(serviceId:number){
 
     constructor(
       public dialogRef: MatDialogRef<ServiceSearchDialog>,
-      @Inject(MAT_DIALOG_DATA) public data: ServiceSearchData) {}
+      @Inject(MAT_DIALOG_DATA) public data: ServiceSearchData,public commonService:CommonService) {}
   
     onNoClick(): void {
       this.dialogRef.close();
