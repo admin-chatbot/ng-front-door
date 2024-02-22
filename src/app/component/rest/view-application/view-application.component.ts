@@ -85,29 +85,34 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
     this.dataSource.paginator = this.paginator;     
   }
 
-   remove(field:string){ 
+
+  remove(field: string){ 
     if(this.searchMap.has(field)) {
-      this.searchMap.delete(field);
+        this.searchMap.delete(field);
     }
-    this.appSearch = Object.fromEntries(this.searchMap);   
-    this.appSearch.clientId = this.clientId;    
-    if(this.searchMap.size == 0) {
-      this.getApplicationsByClientIdAndStatus(this.clientId,"ACTIVE");
-      this.isSearch = false;
+    // Create a copy of searchMap to exclude clientId
+    const searchParams = Object.fromEntries(this.searchMap);
+    delete searchParams['clientId'];
+
+    // Assign the modified searchParams to appSearch
+    this.appSearch = searchParams;
+
+    if(Object.keys(searchParams).length === 0) {
+        // If no other filters exist, fetch applications by clientId and status
+        this.getApplicationsByClientIdAndStatus(this.clientId,"ACTIVE");
+        this.isSearch = false;
     } else {
-      console.log(JSON.stringify(this.appSearch));
-      this.appSearch.clientId = this.clientId;    
-      this.applicationService.search(this.appSearch)
-          .subscribe(res=>{
-            if (res.errorCode != undefined && res.errorCode != 200) { 
-              this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
-            } else {
-              this.originalApplication = res.data; 
-              //this.dataSource.data = res.data;
-            }           
-        }); 
+        console.log(JSON.stringify(this.appSearch));
+        this.applicationService.search(this.appSearch)
+            .subscribe(res => {
+                if (res.errorCode != undefined && res.errorCode != 200) { 
+                    this.notifier.notify('error','Not able to onboard. please try again in sometime');         
+                } else {
+                    this.originalApplication = res.data; 
+                }           
+            }); 
     }
-   }
+}  
 
    openDialog(): void {
     const dialogRef = this.dialog.open(ApplicationSearchDialog, {
@@ -238,7 +243,7 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
           this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
         } else {
           this.notifier.notify('success','Successfully Update Application')
-          this.getApplicationsByClientIdAndStatus(this.clientId,"ACTIVE");
+          //this.getApplicationsByClientIdAndStatus(this.clientId,"ACTIVE");
         }
          
       });
