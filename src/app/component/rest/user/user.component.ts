@@ -78,6 +78,7 @@ export class UserComponent implements OnInit,AfterViewInit {
         mobileNumber:['',Validators.required],
         accessType:['USER',Validators.required], 
         status:['ACTIVE',Validators.required], 
+        applicationName:['',Validators.required],
         empId:['',Validators.required]
       });
     }
@@ -167,6 +168,7 @@ export class UserComponent implements OnInit,AfterViewInit {
     } else {
 
       this.userService.edit(user)
+        
         .subscribe((res)=>{
           if (res.errorCode != undefined && res.errorCode != 200) { 
             this.notifier.notify('error','Not able to edit. please try again in sometime')           
@@ -174,12 +176,11 @@ export class UserComponent implements OnInit,AfterViewInit {
             this.notifier.notify('success','Successfully Edited..');
             //this.fetchByClient(this.clientId);
           }
-        });
-
-      this.submitted = false;
-      this.userForm.reset();
-      this.f['status'].setValue( "NEW");
-      this.f['accessType'].setValue( "USER");
+          this.submitted = false;
+          this.userForm.reset();
+          this.f['status'].setValue( "NEW");
+          this.f['accessType'].setValue( "USER");
+        });      
     }
 
   }
