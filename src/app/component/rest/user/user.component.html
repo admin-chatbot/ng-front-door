@@ -168,7 +168,7 @@
 
                                     <div class="form-group">
                                         <label for="method">Application Name <span style="color: red;">*</span></label>
-                                        <select class="form-control" id="applicationName" formControlName="applicationName">
+                                        <select class="form-control" id="applicationName" formControlName="applicationName" multiple >
                                             <option *ngFor="let application of applications" [value]="application.id">{{
                                                 application.name }}</option>
                                         </select>

@@ -78,6 +78,7 @@ export class UserComponent implements OnInit,AfterViewInit {
         mobileNumber:['',Validators.required],
         accessType:['USER',Validators.required], 
         status:['ACTIVE',Validators.required], 
+        applicationName:['',Validators.required],
         empId:['',Validators.required]
       });
     }
@@ -167,6 +168,7 @@ export class UserComponent implements OnInit,AfterViewInit {
     } else {
 
       this.userService.edit(user)
+        
         .subscribe((res)=>{
           if (res.errorCode != undefined && res.errorCode != 200) { 
             this.notifier.notify('error','Not able to edit. please try again in sometime')           
@@ -174,12 +176,11 @@ export class UserComponent implements OnInit,AfterViewInit {
             this.notifier.notify('success','Successfully Edited..');
             //this.fetchByClient(this.clientId);
           }
-        });
-
-      this.submitted = false;
-      this.userForm.reset();
-      this.f['status'].setValue( "NEW");
-      this.f['accessType'].setValue( "USER");
+          this.submitted = false;
+          this.userForm.reset();
+          this.f['status'].setValue( "NEW");
+          this.f['accessType'].setValue( "USER");
+        });      
     }
 
   }
@@ -192,14 +193,15 @@ export class UserComponent implements OnInit,AfterViewInit {
     this.heading = "EDIT USER";
 
     var user : User = {} as User;
-    user = id ;
+
+    user = id ; 
     this.f['id'].setValue(user.id );
     this.f['name'].setValue(user.name );
     this.f['accessType'].setValue(user.accessType );
     this.f['email'].setValue(user.email );
     this.f['empId'].setValue(user.empId );
     this.f['mobileNumber'].setValue(user.mobileNumber );
-    this.f['applicationName'].setValue( this.user.applicationId)
+    this.f['applicationName'].setValue(user.applications)
     this.f['status'].setValue(user.status ); 
   }
 
