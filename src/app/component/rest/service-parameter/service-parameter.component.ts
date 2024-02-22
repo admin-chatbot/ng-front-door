@@ -41,7 +41,7 @@ export class ServiceParameterComponent implements OnInit,AfterViewInit {
   
   serviceParameterForm: FormGroup  ;
   required: boolean[] = [true, false]; // Add more methods as needed
-  type: string[] = ['Header','Body','Path Param','Query Param'];
+  type: string[] = ['header','body','path_param','query_param'];
   paramType: string[] = ['String','Int','Boolean','Json','Xml'];
   questionToGetInput: string[] = [];
   submitted = false;

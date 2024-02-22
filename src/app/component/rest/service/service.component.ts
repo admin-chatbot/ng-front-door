@@ -106,6 +106,22 @@ export class ServiceComponent implements OnInit,AfterViewInit {
     }
 
 
+    clearAllFilters() {
+      // Clear all filters and display default records
+      this.searchMap.clear();
+  
+      this.servSearch = {
+        name: '',
+        endPoint: '',
+        status: 'ACTIVE',
+        method: '',
+        clientId:this.clientId
+      };
+  
+      this.isSearch = false; // Reset the search flag
+      // Fetch default records or perform any other necessary actions
+      this.getServiceByClientIdAndStatus(this.clientId, "ACTIVE");
+    }
 
     remove(field:string){ 
       if(this.searchMap.has(field)) {
@@ -128,6 +144,7 @@ export class ServiceComponent implements OnInit,AfterViewInit {
                 this.notifier.notify('error','Not able to onboard. please try again in sometime') ;         
               } else {
                 this.originalService = res.data; 
+                this.dataSource.data = res.data;
               }           
             }); 
       }
@@ -355,9 +372,13 @@ addParameter(serviceId:number){
         <input matInput [(ngModel)]="data.endPoint" placeholder="EndPoint"/>      
       </mat-form-field> 
       
-      <mat-form-field style="width: 300px;">
-        <input matInput [(ngModel)]="data.status" placeholder="Status"/>      
-      </mat-form-field>  
+      <div class="example-form-fields">     
+    <mat-form-field style="width: 320px;"> 
+        <mat-select [(ngModel)]="data.status" placeholder="Status"> 
+          <mat-option *ngFor="let s of this.commonService.status" value="{{s}}">{{s | uppercase}}</mat-option> 
+        </mat-select>       
+    </mat-form-field>
+  </div>
       
   
     </div>
@@ -372,13 +393,14 @@ addParameter(serviceId:number){
 
     constructor(
       public dialogRef: MatDialogRef<ServiceSearchDialog>,
-      @Inject(MAT_DIALOG_DATA) public data: ServiceSearchData) {}
+      @Inject(MAT_DIALOG_DATA) public data: ServiceSearchData,public commonService:CommonService) {}
   
     onNoClick(): void {
       this.dialogRef.close();
     }
    
    
+    
     private fetchServiceWithParametersCount() {
       // Assume there's a method in your service to fetch service parameters count
       this.originalService.forEach((service: { id: any; }) => {
