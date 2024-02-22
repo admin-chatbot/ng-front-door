@@ -152,6 +152,7 @@ export class UserComponent implements OnInit,AfterViewInit {
     user.mobileNumber = this.f['mobileNumber'].value;
     user.status = this.f['status'].value;
 
+    console.log("In onSubmit method");
     if(this.isOnBoard) {
       this.userService.register(user)
         .subscribe(res=>{
@@ -170,6 +171,8 @@ export class UserComponent implements OnInit,AfterViewInit {
       this.userService.edit(user)
         
         .subscribe((res)=>{
+          console.log("Response from User Edit");
+          console.log(res.errorCode);
           if (res.errorCode != undefined && res.errorCode != 200) { 
             this.notifier.notify('error','Not able to edit. please try again in sometime')           
           } else {
@@ -227,6 +230,25 @@ export class UserComponent implements OnInit,AfterViewInit {
       });
   }
 
+  clearAllFilters() {
+    // Clear all filters and display default records
+    this.searchMap.clear();
+
+    this.userSearch = {
+      status: 'ACTIVE',
+      clientId:this.clientId,
+      empId: '',
+      name: '',
+      email: '',
+      mobile: '',
+      access: ''
+    };
+
+    this.isSearch = false; // Reset the search flag
+    // Fetch default records or perform any other necessary actions
+    this.getUsersByClientIdAndStatus(this.clientId, "ACTIVE");
+  }
+
 
     remove(field: string) {
     if (this.searchMap.has(field)) {
@@ -249,6 +271,7 @@ export class UserComponent implements OnInit,AfterViewInit {
             this.notifier.notify('error', 'Not able to onboard. please try again in sometime');
           } else {
             this.originalUser = res.data;
+            this.dataSource.data = res.data;
           }
         });
     }
