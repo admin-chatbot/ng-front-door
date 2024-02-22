@@ -283,7 +283,7 @@ export class ViewApplicationComponent implements OnInit ,AfterViewInit{
 
   <div class="example-form-fields">     
     <mat-form-field style="width: 320px;"> 
-        <mat-select [(ngModel)]="data.status"> 
+        <mat-select [(ngModel)]="data.status" placeholder="Status"> 
           <mat-option *ngFor="let s of this.commonService.status" value="{{s}}">{{s | uppercase}}</mat-option> 
         </mat-select>       
     </mat-form-field>
