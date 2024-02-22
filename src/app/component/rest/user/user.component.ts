@@ -193,14 +193,15 @@ export class UserComponent implements OnInit,AfterViewInit {
     this.heading = "EDIT USER";
 
     var user : User = {} as User;
-    user = id ;
+
+    user = id ; 
     this.f['id'].setValue(user.id );
     this.f['name'].setValue(user.name );
     this.f['accessType'].setValue(user.accessType );
     this.f['email'].setValue(user.email );
     this.f['empId'].setValue(user.empId );
     this.f['mobileNumber'].setValue(user.mobileNumber );
-    this.f['applicationName'].setValue( this.user.applicationId)
+    this.f['applicationName'].setValue(user.applications)
     this.f['status'].setValue(user.status ); 
   }
 
