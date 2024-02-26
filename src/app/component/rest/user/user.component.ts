@@ -9,11 +9,8 @@ import { UserSearch } from 'src/app/entity/userSearch';
 import { NotifierService } from 'angular-notifier';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommonService } from 'src/app/services/common.service';
-import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table'; 
 import { Application } from 'src/app/entity/application';
 
 export interface UserSearchData { 
@@ -29,19 +26,21 @@ export interface UserSearchData {
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  styleUrls: ['./user.component.css'], 
 })
 export class UserComponent implements OnInit,AfterViewInit {
+
   displayedColumns: string[] = ["empId", "name", "email", "mobileNumber","accessType","status","id"];
   dataSource = new MatTableDataSource<User>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   applications: Application[] = [];
   originalUser: User[] = [];
   submitted:boolean = false;
   userForm:FormGroup;
   users:User[] = []
-  user ={} as User
+  user = {} as User
   heading:string = "Register New User";
   isOnBoard:boolean = true;
   submitButtonName:string = "Register";
@@ -56,10 +55,8 @@ export class UserComponent implements OnInit,AfterViewInit {
   private notifier: NotifierService;
 
   constructor(private router: Router, private route: ActivatedRoute, 
-    private formBuilder: FormBuilder,
-    private messageService: MessageService,
-    private userService:UserService,
-    private dataService: DataService,
+    private formBuilder: FormBuilder, 
+    private userService:UserService, 
     notifier:NotifierService,
     private dialog: MatDialog,
     public commonService:CommonService
@@ -117,6 +114,7 @@ export class UserComponent implements OnInit,AfterViewInit {
     }
 
   get f() { return this.userForm.controls; }
+
   ngOnInit(): void {
     this.fetchApplicationNames1();
   }
@@ -187,16 +185,17 @@ export class UserComponent implements OnInit,AfterViewInit {
     }
 
   }
-
+  navigateToChat(): void {
+    // Navigate to the Chat page with the user details or any necessary parameters
+    this.router.navigate(['main/chat', ]);
+}
   view(id:User) {
    
     this.submitButtonName = "Edit";
     this.isOnBoard = false;
     this.cancelButtonName = "Cancel";
     this.heading = "EDIT USER";
-
     var user : User = {} as User;
-
     user = id ; 
     this.f['id'].setValue(user.id );
     this.f['name'].setValue(user.name );

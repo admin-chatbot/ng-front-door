@@ -53,4 +53,10 @@ export class UrlService {
     return environment.baseEndpoint + "service/log/";
   }
 
+  public botLog():string {
+    return environment.baseEndpoint + "botrequestlog/";
+  }
+
+
+  
 }

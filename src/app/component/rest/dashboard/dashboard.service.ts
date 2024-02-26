@@ -37,12 +37,12 @@ export class DashboardService {
   }
 
   fetchServiceLogs(dashboardSearch: DashboardSearch) : Observable<ServiceLog | any>{  
-    const url = this.url.dashboard() + "search";     
+    const url = this.url.dashboard() + "search/servicelog/";    
 
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token,'accept':'application/json' }) };    
     return this.http.post<Dashboard>(url, dashboardSearch, httpOptions).pipe(
       tap(data => { 
-        console.log('Data received: ' + JSON.stringify(data));
+        //console.log('Data received: ' + JSON.stringify(data));
       }),
       catchError((error) => { 
         return this.handleError('Error fetching dashboard data')(error);

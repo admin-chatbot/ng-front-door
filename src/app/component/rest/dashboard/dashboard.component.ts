@@ -1,7 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'src/app/http/message.service'; 
-import { ActivatedRoute, Router } from '@angular/router';
-import { Service } from 'src/app/entity/service';
+import { ActivatedRoute, Router } from '@angular/router'; 
 import { DashboardService } from '../dashboard/dashboard.service';
 import { Dashboard } from 'src/app/entity/dashboard';
 import { ChartOptions,ChartEvent,ChartData,ChartType,ChartConfiguration } from 'chart.js';
@@ -15,16 +14,20 @@ import {
   ActiveElement,
   Chart
 } from 'chart.js';
+import { MatPaginator } from '@angular/material/paginator'; 
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit,AfterViewInit {
 
   displayedColumns: string[] = ['serviceEndpoint', 'serviceName', 'response',"status","logDate"];
+
   dataSource = new MatTableDataSource<ServiceLog>();
+
+  @ViewChild(MatPaginator, {static: false}) paginator!: MatPaginator;
 
   @ViewChild(BaseChartDirective , { static: true }) chart: BaseChartDirective | undefined;
 
@@ -34,6 +37,12 @@ export class DashboardComponent implements OnInit {
   public pieChartOptions: ChartOptions<'pie'> = {
     responsive: false,
   };
+
+  ngAfterViewInit(): void {    
+     this.dataSource.paginator = this.paginator; 
+     this.fetchServiceLog(); 
+  }
+
 
   public pieChartLabels: string[] = []; // Updated to empty array
   public pieChartDatasets: { data: number[] }[] = [{ data: [] }]; // Explicit typing
@@ -98,9 +107,10 @@ export class DashboardComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute, 
     private messageService: MessageService, 
     private dashboardService:DashboardService,
-    private chartService:DashboardChartService) { 
+    private chartService:DashboardChartService
+    ) { 
       this.clientId=localStorage.getItem('id');  
-      this.dashboardSearch.clientId = this.clientId;   
+      this.dashboardSearch.clientId = this.clientId;    
 	}	 
   
    
@@ -182,8 +192,7 @@ export class DashboardComponent implements OnInit {
     this.pieChartDatasets2[0].data = serviceData[1];
 
            
-    var weeklyBarData = this.chartService.getWeeklyBarChart() ;
-    alert(weeklyBarData[0]);
+    var weeklyBarData = this.chartService.getWeeklyBarChart() ; 
     this.barChartData.labels = weeklyBarData[0];
     this.barChartData.datasets[0].data = weeklyBarData[1];
     this.barChartData.datasets[1].data = weeklyBarData[2];
@@ -206,15 +215,22 @@ export class DashboardComponent implements OnInit {
     this.pieChartDatasets2[0].data = serviceData[1];
 
            
-    var monthlyBarData = this.chartService.getMonthlyBarChart();
-    alert(monthlyBarData[0]);
+    var monthlyBarData = this.chartService.getMonthlyBarChart(); 
     this.barChartData.labels = monthlyBarData[0]
     this.barChartData.datasets[0].data = monthlyBarData[1];
     this.barChartData.datasets[1].data = monthlyBarData[2] 
     this.chart?.update();
 
   }
+
+
   
+  fetchServiceLog(){
+    this.dashboardService.fetchServiceLogs(this.dashboardSearch)
+      .subscribe(res=>{
+        this.dataSource = res.data
+      })
+  }
    
 
   selectTimeFrame(timeFrame: string, event: Event) {

@@ -17,6 +17,7 @@
               </div>
             </div>
           </div>
+          
           <div class="input-group mb-3">
             <input type="password" class="form-control" placeholder="Password" formControlName="password">
             <div class="input-group-append">
@@ -42,7 +43,7 @@
           </div>
         </form>
 
-        <div class="social-auth-links text-center mt-2 mb-3" [hidden]="true">
+        <div class="social-auth-links text-center mt-2 mb-3">
           <a href="#" class="btn btn-block btn-primary">
             <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
           </a>
@@ -58,10 +59,13 @@
         <p class="mb-0">
           <a routerLink="/auth/signup" class="text-center">Register a new membership</a>
         </p>
+
+        <!-- Google Sign-In button -->
+        <div class="g-signin2" data-onsuccess="onGoogleSignIn"></div>
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
       </div>
       <!-- /.card-body -->
     </div>
     <!-- /.card -->
   </div>
-
-</div>>
+</div>
