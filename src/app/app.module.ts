@@ -30,8 +30,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
-import {MatSelectModule} from '@angular/material/select';
-import { ChatComponent } from './component/rest/bot-log/bot-log.component'; 
+import {MatSelectModule} from '@angular/material/select'; 
 import { NgChartsModule } from 'ng2-charts';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -112,8 +111,7 @@ const customNotifierOptions: NotifierOptions = {
     ApplicationSearchDialog,
     ServiceSearchDialog,
     UserSearchDialog,
-    ServiceParameterSearchDialog,
-    ChatComponent
+    ServiceParameterSearchDialog
     
   ],
   imports: [
