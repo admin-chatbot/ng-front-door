@@ -29,6 +29,7 @@ export interface UserSearchData {
   styleUrls: ['./user.component.css'], 
 })
 export class UserComponent implements OnInit,AfterViewInit {
+
   displayedColumns: string[] = ["empId", "name", "email", "mobileNumber","accessType","status","id"];
   dataSource = new MatTableDataSource<User>();
 
@@ -184,7 +185,10 @@ export class UserComponent implements OnInit,AfterViewInit {
     }
 
   }
-
+  navigateToChat(): void {
+    // Navigate to the Chat page with the user details or any necessary parameters
+    this.router.navigate(['main/chat', ]);
+}
   view(id:User) {
    
     this.submitButtonName = "Edit";

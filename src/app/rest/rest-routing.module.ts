@@ -11,7 +11,7 @@ import { ServiceParameterComponent } from '../component/rest/service-parameter/s
 import { ClientComponent } from '../component/rest/client-details/client-details.component';
 import { UserComponent } from '../component/rest/user/user.component';
 import { ServiceLogComponent } from '../component/rest/service-log/service-log.component';
-import { ChatComponent } from '../component/rest/chat/chat.component';
+import { ChatComponent } from '../component/rest/bot-log/bot-log.component';
 
 const routes: Routes = [
   {
