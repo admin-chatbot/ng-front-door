@@ -39,7 +39,6 @@ export class UserService {
 
 
   edit(user:User):Observable<User|any>{
-    alert(JSON.stringify(user));
     const url = this.url.user();    
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.put<any>(url,user,httpOptions)

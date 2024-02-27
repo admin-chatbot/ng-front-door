@@ -1,13 +1,13 @@
 export class BotLogDetails {
-    requestId!: number;
+    requestId!: string;
     userName!: string;
     userId!: string
     question!: string;
     response!: string;
-     requestDate!: string;
-    isIntentFound: any;
-    client!: string;
-    serviceLogId!: string; 
+    requestDate!: string;
+    intent!: string;
+    client!: number;
+    serviceLogId!: number; 
   relativeTime: string | undefined;
   logs: any;
 }

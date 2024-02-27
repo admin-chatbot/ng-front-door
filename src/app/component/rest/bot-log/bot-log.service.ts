@@ -20,16 +20,17 @@ export class BotLogService {
     this.id = localStorage.getItem('id');
   }
 
-  fetchBotLogRequests(name: string): Observable<BotLogDetails[] | any> {
-    const url = this.url.botLog() + 'agupt' + '/';
+  fetchBotLogRequests(name: string): Observable<BotLogDetails[] | any> {   
+    const url = this.url.botLog() + name + '/';
     const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER': this.token, 'Content-Type': 'application/json', 'accept': 'application/json' }) };
+    //alert(url);
     return this.http.get<BotLogDetails[]>(url, httpOptions)
       .pipe(
         catchError(this.handleError('botLogDetailList'))
       );
   }
 
-  fetchResponse(requestId: number): Observable<BotLogDetails | any> {
+  fetchResponse(requestId: string): Observable<BotLogDetails[] | any> {
     //const url = 'http://localhost:9090/api/v1/botrequestlog/request/1';
     const url = this.url.botLog() + 'request/' + requestId;
     const httpOptions = {
