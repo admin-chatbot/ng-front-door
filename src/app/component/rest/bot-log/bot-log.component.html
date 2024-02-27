@@ -1,0 +1,54 @@
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <strong>Chat History:</strong>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item active">Chat History</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6">
+          <!-- Chat History Grid -->
+          <div *ngFor="let log of botLog">
+            <div>
+              {{ log.relativeTime }}
+            </div>
+            <div>
+              <a style="cursor:pointer;" (click)="fetchResponse(log)">{{ log.question }}</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <!-- Chat Details Grid -->
+          <section class="response-section" *ngIf="selectedLogs">
+            <div>
+              <strong>Chat Details:</strong>
+              <div *ngFor="let log of selectedLogs">
+                <div>
+                  <strong>Question:</strong> {{ log.question }}
+                </div>
+                <div>
+                  <strong>Answer:</strong> {{ log.response }}
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
