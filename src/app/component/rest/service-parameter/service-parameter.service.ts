@@ -26,7 +26,7 @@ export class ServiceParameterService {
     ;     
     
  
-    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':'sfsdfklksf-sfdfsf', 'Content-Type': 'application/json','accept':'application/json' }) };
+    const httpOptions = { headers: new HttpHeaders({ 'X-AUTH-LOG-HEADER':this.token, 'Content-Type': 'application/json','accept':'application/json' }) };
     return this.http.post<any>(url,serviceParameter,httpOptions)
     .pipe(
       catchError((error) => {
