@@ -10,8 +10,7 @@ import { AutoDiscoverComponent } from '../component/rest/auto-discover/auto-disc
 import { ServiceParameterComponent } from '../component/rest/service-parameter/service-parameter.component';
 import { ClientComponent } from '../component/rest/client-details/client-details.component';
 import { UserComponent } from '../component/rest/user/user.component';
-import { ServiceLogComponent } from '../component/rest/service-log/service-log.component';
-import { ChatComponent } from '../component/rest/bot-log/bot-log.component';
+import { ServiceLogComponent } from '../component/rest/service-log/service-log.component'; 
 
 const routes: Routes = [
   {
@@ -56,12 +55,7 @@ const routes: Routes = [
       {
         path:'service/log',
         component:ServiceLogComponent
-      },
-      {
-        path:'chat',
-        component:ChatComponent
-      },
-     
+      }     
     ]
   }
 ];
