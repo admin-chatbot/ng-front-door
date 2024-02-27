@@ -1,4 +1,4 @@
-FROM nginx
+FROM nginx:alpine
 
 # Copy the built Angular app to the appropriate location in the container
 COPY dist/ng-front-door /usr/share/nginx/html

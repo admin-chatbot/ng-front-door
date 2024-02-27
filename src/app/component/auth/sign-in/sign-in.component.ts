@@ -52,7 +52,7 @@ export class SignInComponent implements OnInit {
           localStorage.setItem('email',r.data.email)
           localStorage.setItem('id',r.data.id)
           localStorage.setItem('time', new Date().getTime().toString())
-          this.router.navigate(['/']).then(() => {
+          this.router.navigate(['']).then(() => {
             window.location.reload();
           });
         }
