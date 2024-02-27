@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BotLogService } from './bot-log.service';
 import { BotLogDetails } from 'src/app/entity/botlogdetail';
 import { SelectedLogDetails } from 'src/app/entity/selectedLog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat',
@@ -15,19 +16,27 @@ export class ChatComponent implements OnInit {
   selectedLogs: SelectedLogDetails[] = [];
 responseDetails: any;
 
-  constructor(private botLogService: BotLogService) {
+  constructor(private botLogService: BotLogService, private router: Router) {
+
     this.userId = localStorage.getItem('userId');
+    //alert("In ChatComponent Constructor");
+    //alert(this.userId);
+
   }
 
   ngOnInit(): void {
-    this.fetchBotLogRequests();
-   
+    var dataRecived: any = this.router.getCurrentNavigation()?.extras.state;
+    //this.userId = dataRecived.id;
+    //alert("ngOnInit in bot log component");
+    this.fetchBotLogRequests();      
   }
 
   fetchBotLogRequests() {
+    //alert("in bot log component");
+    //alert(this.userId);
     this.botLogService.fetchBotLogRequests(this.userId)
       .subscribe(response => {
-        //alert(JSON.stringify(response));
+        //alert(JSON.stringify(response.data));
         this.botLog = response.data;
 
         // Add relative time property to each log entry
@@ -39,12 +48,12 @@ responseDetails: any;
 
   fetchResponse(log: BotLogDetails) {
     this.botLogService.fetchResponse(log.requestId)
-      .subscribe(response => {
-        alert(JSON.stringify(response));
+      .subscribe(response => {                
         this.selectedLogs = response.data;
-
       });
   }
+
+  
   
 //   fetchResponse(log: BotLogDetails) {
 //     // Call the API to get the response based on the request ID

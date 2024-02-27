@@ -185,9 +185,12 @@ export class UserComponent implements OnInit,AfterViewInit {
     }
 
   }
-  navigateToChat(): void {
+  navigateToChat(id: string): void {
+    //alert("user component");
+    localStorage.setItem("userId",id);
+    //alert(id);
     // Navigate to the Chat page with the user details or any necessary parameters
-    this.router.navigate(['main/chat', ]);
+    this.router.navigate(['main/chat',{ state: { id: id } }]);
 }
   view(id:User) {
    

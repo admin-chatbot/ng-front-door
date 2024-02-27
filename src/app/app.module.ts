@@ -34,6 +34,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { NgChartsModule } from 'ng2-charts';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ChatComponent } from './component/rest/bot-log/bot-log.component';
 
 //import { 
  // MatToolbarModule, 
@@ -111,7 +112,8 @@ const customNotifierOptions: NotifierOptions = {
     ApplicationSearchDialog,
     ServiceSearchDialog,
     UserSearchDialog,
-    ServiceParameterSearchDialog
+    ServiceParameterSearchDialog,
+    ChatComponent
     
   ],
   imports: [
